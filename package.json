@@ -1,0 +1,22 @@
+{
+  "name": "genxtract",
+  "version": "0.0.0",
+  "description": "Extract genealogicay data from various websites",
+  "scripts": {
+    "bootstrap": "lerna bootstrap"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/genxtract/genxtract.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/genxtract/genxtract/issues"
+  },
+  "homepage": "https://github.com/genxtract/genxtract#readme",
+  "devDependencies": {
+    "lerna": "^2.0.0-rc.1"
+  }
+}
