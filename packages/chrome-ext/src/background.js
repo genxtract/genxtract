@@ -1,21 +1,24 @@
-import Genxtract from '@genxtract/core';
+import Extractors from '@genxtract/extract';
 
-const genxtract = new Genxtract();
+const extractors = new Extractors({prefix: 'node_modules/@genxtract/extract'});
 
 // Listen for our browerAction to be clicked
 chrome.browserAction.onClicked.addListener((tab) => {
-
-  // Inject event pipe
-  chrome.tabs.executeScript(tab.ib, {
-    file: 'event-pipe.js'
-  });
-
   // Get matching extractors
-  const extractors = genxtract.match('bogus');
-console.log('extractors', extractors);
-  for (const extractor of extractors) {
+  const matchingExtractors = extractors.match({url: tab.url});
+  if (matchingExtractors.length > 0) {
+
+    // Inject event pipe
     chrome.tabs.executeScript(tab.ib, {
-  		file: extractor.path,
-  	});
+      file: 'events-to-console.js'
+    });
+
+    // Inject matching extractors
+    for (const extractor of matchingExtractors) {
+      console.log(`injecting ${extractor.id}, ${extractor.path}`);
+      chrome.tabs.executeScript(tab.ib, {
+        file: extractor.path,
+      });
+    }
   }
 });

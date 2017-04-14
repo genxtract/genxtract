@@ -2,10 +2,16 @@
   "name": "@genxtract/extract",
   "version": "1.0.0",
   "description": "",
+  "module": "Extractors.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "find ./src -maxdepth 1 -type f -exec basename {} \\; | xargs -I % rollup src/% -f iife -o dist/% --sourcemap",
+    "watch": "find ./src -maxdepth 1 -type f -exec basename {} \\; | xargs -I % rollup src/% -f iife -o dist/% --sourcemap -w"
   },
   "keywords": [],
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "rollup": "0.41.6",
+    "rollup-watch": "3.2.2"
+  }
 }
