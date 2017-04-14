@@ -7,7 +7,7 @@ class Extraction {
 
   start() {
     if (this.started) {
-      return this.log('called start twice');
+      return this._consoleError('called start twice');
     }
     this.started = true;
     this._dispatch({
@@ -18,10 +18,10 @@ class Extraction {
 
   data(obj) {
     if (!this.started) {
-      return this.log('sent data before starting', obj);
+      return this._consoleError('sent data before starting', obj);
     }
     if (this.ended) {
-      return this.log('sent data after ending', obj);
+      return this._consoleError('sent data after ending', obj);
     }
     this._dispatch({
       id: this.id,
@@ -32,12 +32,12 @@ class Extraction {
 
   error(error) {
     if (!this.started) {
-      return this.log('sent data before starting', obj);
+      return this._consoleError('sent data before starting', obj);
     }
     if (this.ended) {
-      return this.log('sent data after ending', obj);
+      return this._consoleError('sent data after ending', obj);
     }
-    this.log('errored', error);
+    this.log(`genxtract: ${this.id} errored.`, error);
     this._dispatch({
       id: this.id,
       type: 'ERROR',
@@ -47,7 +47,7 @@ class Extraction {
 
   end() {
     if (this.ended) {
-      return this.log('called end twice');
+      return this._consoleError('called end twice');
     }
     this.ended = true;
     this._dispatch({
@@ -56,7 +56,11 @@ class Extraction {
     });
   }
 
-  log(message, obj = '') {
+  log(...messages) {
+    console.log(...messages);
+  }
+
+  _consoleError(message, obj = '') {
     console.error(new Error(`genxtract: ${this.id} ${message}`), obj);
   }
 
