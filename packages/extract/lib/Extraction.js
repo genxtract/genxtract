@@ -37,7 +37,7 @@ class Extraction {
     if (this.ended) {
       return this._consoleError('sent data after ending', obj);
     }
-    this.log(`genxtract: ${this.id} errored.`, error);
+    this._consoleError('errored:', error);
     this._dispatch({
       id: this.id,
       type: 'ERROR',
