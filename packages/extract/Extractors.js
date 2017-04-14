@@ -3,15 +3,14 @@ const extractors = {
 };
 
 class Extractors {
-  constructor({prefix}) {
-    this.prefix = prefix;
+  constructor({prefix} = {}) {
+    this.prefix = prefix || 'node_modules/@genxtract/extract';
   }
 
   match({url}) {
     const results = [];
     for (let extractor in extractors) {
       for (const regex of extractors[extractor]) {
-        console.log(regex, url)
         if (regex.test(url)) {
           results.push({
             id: extractor,

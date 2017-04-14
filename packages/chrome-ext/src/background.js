@@ -1,6 +1,6 @@
 import Extractors from '@genxtract/extract';
 
-const extractors = new Extractors({prefix: 'node_modules/@genxtract/extract'});
+const extractors = new Extractors();
 
 // Listen for our browerAction to be clicked
 chrome.browserAction.onClicked.addListener((tab) => {
