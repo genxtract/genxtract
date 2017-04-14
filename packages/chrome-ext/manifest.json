@@ -1,0 +1,21 @@
+{
+  "name": "genxtract",
+  "version": "0.0.0",
+  "manifest_version": 2,
+  "description": "Development environment for genxtract",
+  "homepage_url": "https://github.com/genxtract/genxtract",
+  "background": {
+    "scripts": [
+      "background.js"
+    ],
+    "persistent": true
+  },
+  "browser_action": {
+    "default_title": "genxtract"
+  },
+  "permissions": [
+    "https://*/*",
+    "http://*/*",
+    "tabs"
+  ]
+}
