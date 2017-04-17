@@ -1,4 +1,5 @@
 const extractors = {
+  'werelate-tree': [/www.werelate.org\/wiki\/Person:/],
   'test': [/google\.com/],
 };
 
@@ -11,6 +12,7 @@ class Extractors {
     const results = [];
     for (let extractor in extractors) {
       for (const regex of extractors[extractor]) {
+        console.log(regex, url)
         if (regex.test(url)) {
           results.push({
             id: extractor,
