@@ -4,14 +4,30 @@ import Emit from '../lib/Emit.js';
 const extraction = new Extraction('werelate-tree');
 const emit = new Emit(extraction);
 
+const basicEvents = {
+  'burial': 'Burial',
+  'death': 'Death',
+}
+
+const basicFacts = {
+  'occupation': 'Occupation',
+}
+
 extraction.start();
 
 const person = getId(window.location.href);
 
-emit.person({
+emit.Person({
   id: person,
   primary: true,
 });
+emit.ExternalId({
+  person,
+  url: window.location.href,
+  id: person,
+});
+
+/* Main facts table */
 
 const factsTable = document.querySelector('.wr-infotable-factsevents');
 
@@ -27,47 +43,125 @@ for (let i = 0; i < facts.length; i++) {
 
   switch(type) {
     case 'name':
-      emit.name({
+      emit.Name({
         person,
-        name: fact.querySelector('span.wr-infotable-fullname').textContent,
+        name: fact.querySelector('span.wr-infotable-fullname').textContent.trim(),
       });
       break;
     case 'gender':
-      emit.gender({
+      emit.Gender({
         person,
-        gender: fact.querySelector('span.wr-infotable-gender').textContent,
+        gender: fact.querySelector('span.wr-infotable-gender').textContent.trim(),
       });
       break;
     case 'birth':
-      emit.birth({
+      emit.Birth({
         person,
         date: getDate(fact),
         place: getPlace(fact),
+        parents: [], // We don't have any parents here
       });
       break;
     case 'marriage':
-      const persons = [person];
+      const spouses = [person];
       const node = fact.querySelector('.wr-infotable-placedesc span.wr-infotable-desc');
-      if (node) {
-        // TODO check if this starts with "to"
+      if (node && node.textContent.startsWith('to ')) {
         const a = node.querySelector('a');
-        persons.push(getId(a.href));
+        const url = new URL(a.href, window.location);
+        const id = getId(url.href);
+        emitPerson({
+          id,
+          name: a.textContent.trim(),
+          url: url.href,
+        });
+        spouses.push(getId(a.href));
       }
-      emit.marriage({
-        persons,
+      emit.Marriage({
+        spouses,
         date: getDate(fact),
         place: getPlace(fact),
       });
       break;
-    case 'death':
-      emit.death({
-        person,
-        date: getDate(fact),
-        place: getPlace(fact),
-      });
-      break;
+    default:
+      if (basicEvents[type]) {
+        emit[basicEvents[type]]({
+          person,
+          date: getDate(fact),
+          place: getPlace(fact),
+        });
+      }
+      if (basicFacts[type]) {
+        emit[basicFacts[type]]({
+          person,
+          date: getDate(fact),
+          place: getPlace(fact),
+          value: getDesc(fact),
+        });
+      }
   }
 }
+
+/* Parents and Siblings */
+const parentsAndSiblings = document.querySelector('.wr-infobox-parentssiblings');
+
+// Parents
+const parents = parentsAndSiblings.querySelectorAll('ul li');
+const parentIds = [];
+for (let i = 0; i < parents.length; i++) {
+  const parent = parents[i];
+  const label = parent.querySelector('.wr-infobox-label').textContent.trim().toLowerCase();
+  const a = parent.querySelector('a');
+  const yearRange = parent.querySelector('.wr-infobox-yearrange').textContent.trim();
+  const years = yearRange.split(' - ');
+  const url = new URL(a.href, window.location);
+  const id = getId(url.href);
+  emitPerson({
+    id,
+    name: a.textContent.trim(),
+    url: url.href,
+    gender: (label == 'f') ? 'Male' : 'Female',
+    birth: (years.length === 2) ? years[0] : undefined,
+    death: (years.length === 2) ? years[1] : undefined,
+  });
+  parentIds.push(id);
+}
+// Emit a birth event if we have parents
+if (parentIds.length > 0) {
+  emit.Birth({
+    person,
+    parents: parentIds,
+  });
+}
+
+// Siblings
+const siblings = parentsAndSiblings.querySelectorAll('ol li');
+for (let i = 0; i < siblings.length; i++) {
+  const sibling = siblings[i];
+  const a = sibling.querySelector('a');
+  // If there is no link, it's the person, so skip
+  if (a === null) {
+    continue;
+  }
+  const yearRange = sibling.querySelector('.wr-infobox-yearrange').textContent.trim();
+  const years = yearRange.split(' - ');
+  const url = new URL(a.href, window.location);
+  const id = getId(url.href);
+  emitPerson({
+    id,
+    name: a.textContent.trim(),
+    url: url.href,
+    death: (years.length === 2) ? years[1].trim() : undefined,
+  });
+  emit.Birth({
+    person: id,
+    parents: parentIds,
+    date: (years.length === 2) ? years[0].trim() : undefined,
+  });
+}
+
+/* Spouse and Children */
+
+
 
 extraction.end();
 
@@ -92,4 +186,47 @@ function getPlace(elem) {
     return undefined;
   }
   return node.textContent.trim();
+}
+
+function getDesc(elem) {
+  const node = elem.querySelector('span.wr-infotable-desc');
+  if (!node) {
+    return undefined;
+  }
+  return node.textContent.trim();
+}
+
+function emitPerson({id, name, url, gender, birth, death}) {
+  emit.Person({
+    id,
+  });
+  emit.Name({
+    person: id,
+    name,
+  });
+  emit.ExternalId({
+    person: id,
+    url: url,
+    id,
+  });
+  if (gender) {
+    emit.Gender({
+      person: id,
+      gender,
+    });
+  }
+  if (birth && birth.trim()) {
+    emit.Birth({
+      person: id,
+      date: birth.trim(),
+      parents: [],
+    });
+  }
+  if (death && death.trim()) {
+    emit.Death({
+      person: id,
+      date: death.trim(),
+      parents: [],
+    });
+  }
 }
