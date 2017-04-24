@@ -125,6 +125,14 @@ for (let i = 0; i < parents.length; i++) {
   });
   parentIds.push(id);
 }
+// Emit marriage
+const parentMarriageDate = parentsAndSiblings.querySelector('.wr-infobox-event .wr-infobox-date');
+if (parentMarriageDate) {
+  emit.Marriage({
+    spouses: parentIds,
+    date: parentMarriageDate.textContent.trim(),
+  });
+}
 // Emit a birth event if we have parents
 if (parentIds.length > 0) {
   emit.Birth({
@@ -160,8 +168,64 @@ for (let i = 0; i < siblings.length; i++) {
 }
 
 /* Spouse and Children */
+const spouseAndChildren = document.querySelector('.wr-infobox-spousechildren');
+
+// Spouse
+const spouses = spouseAndChildren.querySelectorAll('ul li');
+const spouseIds = [person];
+for (let i = 0; i < spouses.length; i++) {
+  const spouse = spouses[i];
+  const label = spouse.querySelector('.wr-infobox-label').textContent.trim().toLowerCase();
+  const a = spouse.querySelector('a');
+  // If there is no link, it's the person, so skip
+  if (a === null) {
+    continue;
+  }
+  const yearRange = spouse.querySelector('.wr-infobox-yearrange').textContent.trim();
+  const years = yearRange.split(' - ');
+  const url = new URL(a.href, window.location);
+  const id = getId(url.href);
+  emitPerson({
+    id,
+    name: a.textContent.trim(),
+    url: url.href,
+    gender: (label == 'h') ? 'Male' : 'Female',
+    birth: (years.length === 2) ? years[0] : undefined,
+    death: (years.length === 2) ? years[1] : undefined,
+  });
+  spouseIds.push(id);
+}
+// Emit marriage
+const marriageDate = spouseAndChildren.querySelector('.wr-infobox-event .wr-infobox-date');
+if (marriageDate) {
+  emit.Marriage({
+    spouses: spouseIds,
+    date: marriageDate.textContent.trim(),
+  });
+}
 
 
+// Children
+const children = spouseAndChildren.querySelectorAll('ol li');
+for (let i = 0; i < children.length; i++) {
+  const child = children[i];
+  const a = child.querySelector('a');
+  const yearRange = child.querySelector('.wr-infobox-yearrange').textContent.trim();
+  const years = yearRange.split(' - ');
+  const url = new URL(a.href, window.location);
+  const id = getId(url.href);
+  emitPerson({
+    id,
+    name: a.textContent.trim(),
+    url: url.href,
+    death: (years.length === 2) ? years[1].trim() : undefined,
+  });
+  emit.Birth({
+    person: id,
+    parents: spouseIds,
+    date: (years.length === 2) ? years[0].trim() : undefined,
+  });
+}
 
 extraction.end();
 
