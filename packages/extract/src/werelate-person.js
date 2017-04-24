@@ -5,12 +5,40 @@ const extraction = new Extraction('werelate-person');
 const emit = new Emit(extraction);
 
 const basicEvents = {
+  'alt burial': 'Burial',
+  'alt christening': 'Christening',
+  'alt death': 'Death',
+  'baptism': 'Baptism',
+  'bar mitzvah': 'BarMitzvah',
+  'Blessing': 'Blessing',
   'burial': 'Burial',
+  'christening': 'Christening',
+  'confirmation': 'Confirmation',
+  'cremation': 'Cremation',
   'death': 'Death',
+  'excommunication': 'Excommunication',
+  'first communion': 'FirstCommunion',
+  'funeral': 'Funeral',
+  'ordination': 'Ordination',
 };
 
 const basicFacts = {
+  'caste': 'Caste',
+  'citizenship': 'Citizenship',
+  'degree': 'Education',
+  'education': 'Education',
+  'emigration': 'Emigration',
+  'employment': 'Occupation',
+  'graduation': 'Education',
+  'immigration': 'Immigration',
+  'nationality': 'Nationality',
+  'naturalization': 'Naturalization',
   'occupation': 'Occupation',
+};
+
+const parentEvents = {
+  'adoption': 'Adoption',
+  'birth': 'Birth',
 };
 
 extraction.start();
@@ -54,14 +82,6 @@ for (let i = 0; i < facts.length; i++) {
         gender: fact.querySelector('span.wr-infotable-gender').textContent.trim(),
       });
       break;
-    case 'birth':
-      emit.Birth({
-        person,
-        date: getDate(fact),
-        place: getPlace(fact),
-        parents: [], // We don't have any parents here
-      });
-      break;
     case 'marriage':
       const spouses = [person];
       const node = fact.querySelector('.wr-infotable-placedesc span.wr-infotable-desc');
@@ -96,6 +116,14 @@ for (let i = 0; i < facts.length; i++) {
           date: getDate(fact),
           place: getPlace(fact),
           value: getDesc(fact),
+        });
+      }
+      if (parentEvents[type]) {
+        emit[parentEvents[type]]({
+          person,
+          date: getDate(fact),
+          place: getPlace(fact),
+          parents: [], // We don't have any parents here
         });
       }
   }

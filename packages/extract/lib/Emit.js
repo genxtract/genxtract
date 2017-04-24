@@ -20,8 +20,11 @@ const basicFacts = [
   'Caste',
   'Citizenship',
   'Education',
+  'Emmigration',
+  'Immigration',
   'Mission',
   'Nationality',
+  'Naturalization',
   'Occupation',
   'Ordination',
 ];
@@ -33,7 +36,7 @@ const parentEvents = [
 ];
 
 // These expect spouses, date, place
-const marriageEvents = [
+const spouseEvents = [
   'Annulment',
   'Divorce',
   'Marriage',
@@ -189,8 +192,8 @@ for (let key of parentEvents) {
   };
 }
 
-// Extend the class with marriage events
-for (let key of marriageEvents) {
+// Extend the class with spouse events
+for (let key of spouseEvents) {
   Emit.prototype[key] = function({spouses, place, date}) {
     if (!spouses || !Array.isArray(spouses) || spouses.length === 0) {
       return this.extraction.error(new Error(`${key} missing spouses`));
