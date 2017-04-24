@@ -1,7 +1,7 @@
 import Extraction from '../lib/Extraction.js';
 import Emit from '../lib/Emit.js';
 
-const extraction = new Extraction('werelate-tree');
+const extraction = new Extraction('werelate-person');
 const emit = new Emit(extraction);
 
 const basicEvents = {

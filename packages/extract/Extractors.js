@@ -1,5 +1,5 @@
 const extractors = {
-  'werelate-tree': [/www.werelate.org\/wiki\/Person:/],
+  'werelate-person': [/www.werelate.org\/wiki\/Person:/],
   'test': [/google\.com/],
 };
 
