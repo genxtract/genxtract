@@ -7,10 +7,9 @@ chrome.browserAction.onClicked.addListener((tab) => {
   // Get matching extractors
   const matchingExtractors = extractors.match({url: tab.url});
   if (matchingExtractors.length > 0) {
-
     // Inject event pipe
     chrome.tabs.executeScript(tab.ib, {
-      file: 'events-to-console.js'
+      file: 'events-to-console.js',
     });
 
     // Inject matching extractors

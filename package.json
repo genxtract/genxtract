@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/genxtract/genxtract#readme",
   "devDependencies": {
-    "lerna": "^2.0.0-rc.1"
+    "eslint": "3.19.0",
+    "eslint-config-google": "0.7.1",
+    "lerna": "2.0.0-rc.3"
   }
 }

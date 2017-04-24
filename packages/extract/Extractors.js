@@ -1,4 +1,5 @@
 const extractors = {
+  'werelate-person': [/www.werelate.org\/wiki\/Person:/],
   'test': [/google\.com/],
 };
 
@@ -9,7 +10,7 @@ class Extractors {
 
   match({url}) {
     const results = [];
-    for (let extractor in extractors) {
+    for (let extractor of Object.keys(extractors)) {
       for (const regex of extractors[extractor]) {
         if (regex.test(url)) {
           results.push({
