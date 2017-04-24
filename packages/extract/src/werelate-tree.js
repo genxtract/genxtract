@@ -7,11 +7,11 @@ const emit = new Emit(extraction);
 const basicEvents = {
   'burial': 'Burial',
   'death': 'Death',
-}
+};
 
 const basicFacts = {
   'occupation': 'Occupation',
-}
+};
 
 extraction.start();
 

@@ -59,7 +59,7 @@ class Emit {
       data: {
         person,
         id,
-      }
+      },
     });
   }
 
@@ -80,7 +80,7 @@ class Emit {
         person,
         url,
         id,
-      }
+      },
     });
   }
 
@@ -96,7 +96,7 @@ class Emit {
       data: {
         person,
         gender,
-      }
+      },
     });
   }
 
@@ -112,7 +112,7 @@ class Emit {
       data: {
         person,
         name,
-      }
+      },
     });
   }
 
@@ -125,7 +125,7 @@ class Emit {
       data: {
         id,
         primary,
-      }
+      },
     });
   }
 }
@@ -142,9 +142,9 @@ for (let key of basicEvents) {
         person,
         place,
         date,
-      }
+      },
     });
-  }
+  };
 }
 
 // Extend the class with basic facts
@@ -163,9 +163,9 @@ for (let key of basicFacts) {
         place,
         date,
         value,
-      }
+      },
     });
-  }
+  };
 }
 
 // Extend the class with parent events
@@ -184,9 +184,9 @@ for (let key of parentEvents) {
         place,
         date,
         parents,
-      }
+      },
     });
-  }
+  };
 }
 
 // Extend the class with marriage events
@@ -201,9 +201,9 @@ for (let key of marriageEvents) {
         spouses,
         place,
         date,
-      }
+      },
     });
-  }
+  };
 }
 
 export default Emit;

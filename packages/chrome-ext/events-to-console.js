@@ -1,5 +1,4 @@
 (function() {
-
   if (!window.genxtractListening) {
     window.addEventListener('genxtract', (event) => {
       const obj = event.detail;
@@ -15,4 +14,4 @@
     });
     window.genxtractListening = true;
   }
-})()
+})();

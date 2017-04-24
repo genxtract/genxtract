@@ -6,5 +6,5 @@ export default {
   format: 'iife',
   plugins: [
     resolve({}),
-  ]
+  ],
 };

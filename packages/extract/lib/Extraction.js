@@ -12,7 +12,7 @@ class Extraction {
     this.started = true;
     this._dispatch({
       id: this.id,
-      type: 'START'
+      type: 'START',
     });
   }
 
@@ -52,7 +52,7 @@ class Extraction {
     this.ended = true;
     this._dispatch({
       id: this.id,
-      type: 'END'
+      type: 'END',
     });
   }
 
