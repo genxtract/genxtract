@@ -1,6 +1,5 @@
 const extractors = {
   'werelate-person': [/www.werelate.org\/wiki\/Person:/],
-  'test': [/google\.com/],
 };
 
 class Extractors {
