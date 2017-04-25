@@ -1,0 +1,18 @@
+{
+  "name": "@genxtract/gedcomx",
+  "version": "0.0.0",
+  "description": "",
+  "main": "dist/GedcomX.js",
+  "module": "src/GedcomX.js",
+  "scripts": {
+    "build": "rollup -c rollup.config.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@genxtract/combinator": "*",
+    "rollup": "0.41.6",
+    "rollup-plugin-node-resolve": "3.0.0"
+  }
+}

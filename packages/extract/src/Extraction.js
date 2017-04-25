@@ -65,7 +65,7 @@ class Extraction {
   }
 
   _dispatch(obj) {
-    window.dispatchEvent(new CustomEvent('genxtract', {detail: obj}));
+    window.dispatchEvent(new window.CustomEvent('genxtract', {detail: obj}));
   }
 
 }
