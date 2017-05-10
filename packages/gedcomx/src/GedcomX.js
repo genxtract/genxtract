@@ -39,6 +39,14 @@ class GedcomX extends Combinator {
       case 'Occupation':
       case 'Ordination':
         return this.fact(type, data);
+      case 'Adoption':
+      case 'Birth':
+        return this.parent(type, data);
+      case 'Annulment':
+      case 'Divorce':
+      case 'Marriage':
+      case 'Separation':
+        return this.spouse(type, data);
       default:
         // TODO silently ignore?
         console.log(`Unknown: ${type}`, data);
@@ -149,9 +157,84 @@ class GedcomX extends Combinator {
       fact.value = value;
     }
 
+    // TODO dedupe facts?
+
     this._model.persons[idx].facts.push(fact);
   }
 
+  parent(type, {person, place, date, parents}) {
+    const idx = this.person({id: person});
+    let parent1 = null;
+    let parent2 = null;
+
+    if (parents.length >= 1) {
+      parent1 = this.person({id: parents[0]});
+    }
+    if (parents.length >= 2) {
+      parent2 = this.person({id: parents[1]});
+    }
+
+    // Create the fact
+    this.fact(type, {person, place, date});
+
+    if (this._model.relationships === undefined) {
+      this._model.relationships = [];
+    }
+
+    if (parent1 !== null) {
+      // TODO ensure relationship does not already exist
+      this._model.relationships.push({
+        type: 'http://gedcomx.org/ParentChild',
+        person1: {
+          resource: `#${this._model.persons[parent1].id}`,
+        },
+        person2: {
+          resource: `#${this._model.persons[idx].id}`,
+        },
+      });
+    }
+    if (parent2 !== null) {
+      // TODO ensure relationship does not already exist
+      this._model.relationships.push({
+        type: 'http://gedcomx.org/ParentChild',
+        person1: {
+          resource: `#${this._model.persons[parent2].id}`,
+        },
+        person2: {
+          resource: `#${this._model.persons[idx].id}`,
+        },
+      });
+    }
+  }
+
+  spouse(type, {spouses, place, date}) {
+    let spouse1 = this.person({id: spouses[0]});
+    let spouse2 = null;
+
+    if (spouses.length >= 2) {
+      spouse2 = this.person({id: spouses[1]});
+    }
+
+    // Create the fact
+    this.fact(type, {person: spouses[0], place, date});
+
+    if (this._model.relationships === undefined) {
+      this._model.relationships = [];
+    }
+
+    if (spouse2 !== null) {
+      // TODO ensure relationship does not already exist
+      this._model.relationships.push({
+        type: 'http://gedcomx.org/Couple',
+        person1: {
+          resource: `#${this._model.persons[spouse1].id}`,
+        },
+        person2: {
+          resource: `#${this._model.persons[spouse2].id}`,
+        },
+      });
+    }
+  }
 }
 
 export default GedcomX;

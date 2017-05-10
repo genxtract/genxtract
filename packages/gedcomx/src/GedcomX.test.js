@@ -127,9 +127,69 @@ describe('GedcomX', () => {
     extraction.end();
   });
 
-  it('parent events');
+  it('parent events', (done) => {
+    promise.then((data) => {
+      expect(data).to.deep.equal({
+        persons: [
+          {
+            id: '12',
+            facts: [
+              {type: 'http://gedcomx.org/Birth', place: {original: 'Somewhere'}},
+            ],
+          },
+          {id: '34'},
+          {id: '56'},
+        ],
+        relationships: [
+          {
+            type: 'http://gedcomx.org/ParentChild',
+            person1: {resource: '#34'},
+            person2: {resource: '#12'},
+          },
+          {
+            type: 'http://gedcomx.org/ParentChild',
+            person1: {resource: '#56'},
+            person2: {resource: '#12'},
+          },
+        ],
+      });
+      done();
+    })
+    .catch((error) => done(error));
 
-  it('spouse events');
+    emit.Birth({person: '12', place: 'Somewhere', parents: ['34', '56']});
+
+    extraction.end();
+  });
+
+  it('spouse events', (done) => {
+    promise.then((data) => {
+      expect(data).to.deep.equal({
+        persons: [
+          {
+            id: '12',
+            facts: [
+              {type: 'http://gedcomx.org/Marriage', place: {original: 'Somewhere'}},
+            ],
+          },
+          {id: '34'},
+        ],
+        relationships: [
+          {
+            type: 'http://gedcomx.org/Couple',
+            person1: {resource: '#12'},
+            person2: {resource: '#34'},
+          },
+        ],
+      });
+      done();
+    })
+    .catch((error) => done(error));
+
+    emit.Marriage({spouses: ['12', '34'], place: 'Somewhere'});
+
+    extraction.end();
+  });
 
   it('alternate id');
 });
