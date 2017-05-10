@@ -94,6 +94,9 @@ class Emit {
     if (!gender) {
       return this.extraction.error(new Error('gender missing gender'));
     }
+    if (!['Male', 'Female'].includes(gender)) {
+      return this.extraction.error(new Error('gender invalid gender'));
+    }
     this.extraction.data({
       type: 'Gender',
       data: {

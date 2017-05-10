@@ -1,5 +1,5 @@
-import Extraction from '../lib/Extraction.js';
-import Emit from '../lib/Emit.js';
+import Extraction from '../Extraction.js';
+import Emit from '../Emit.js';
 
 const extraction = new Extraction('werelate-person');
 const emit = new Emit(extraction);

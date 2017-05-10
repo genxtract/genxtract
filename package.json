@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "description": "Extract genealogicay data from various websites",
   "scripts": {
-    "bootstrap": "lerna bootstrap"
+    "bootstrap": "lerna bootstrap",
+    "test": "lerna run test"
   },
   "repository": {
     "type": "git",

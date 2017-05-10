@@ -1,0 +1,16 @@
+{
+  "name": "@genxtract/combinator",
+  "version": "0.0.0",
+  "description": "",
+  "main": "dist/Combinator.js",
+  "module": "src/Combinator.js",
+  "scripts": {
+    "build": "rollup src/Combinator.js --format cjs --output dist/Combinator.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "rollup": "0.41.6"
+  }
+}
