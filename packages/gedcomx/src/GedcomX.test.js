@@ -104,9 +104,28 @@ describe('GedcomX', () => {
     extraction.end();
   });
 
-  it('basic events');
+  it('basic events/facts', (done) => {
+    promise.then((data) => {
+      expect(data).to.deep.equal({
+        persons: [{
+          id: '1234',
+          facts: [
+            {type: 'http://gedcomx.org/Baptism', place: {original: 'Somewhere'}},
+            {type: 'http://gedcomx.org/Death', date: {original: 'Sometime'}},
+            {type: 'http://gedcomx.org/Citizenship', value: 'Somewhere'},
+          ],
+        }],
+      });
+      done();
+    })
+    .catch((error) => done(error));
 
-  it('basic facts');
+    emit.Baptism({person: '1234', place: 'Somewhere'});
+    emit.Death({person: '1234', date: 'Sometime'});
+    emit.Citizenship({person: '1234', value: 'Somewhere'});
+
+    extraction.end();
+  });
 
   it('parent events');
 

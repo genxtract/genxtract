@@ -16,6 +16,29 @@ class GedcomX extends Combinator {
         return this.gender(data);
       case 'Name':
         return this.name(data);
+      case 'Baptism':
+      case 'BarMitzvah':
+      case 'Blessing':
+      case 'Burial':
+      case 'Christening':
+      case 'Confirmation':
+      case 'Cremation':
+      case 'Death':
+      case 'Excommunication':
+      case 'FirstCommunion':
+      case 'Funeral':
+      case 'Stillbirth':
+      case 'Caste':
+      case 'Citizenship':
+      case 'Education':
+      case 'Emmigration':
+      case 'Immigration':
+      case 'Mission':
+      case 'Nationality':
+      case 'Naturalization':
+      case 'Occupation':
+      case 'Ordination':
+        return this.fact(type, data);
       default:
         // TODO silently ignore?
         console.log(`Unknown: ${type}`, data);
@@ -37,7 +60,13 @@ class GedcomX extends Combinator {
       this._model.persons = [];
     }
 
-    let idx = this._findPerson(id);
+    let idx = null;
+    for (let i = 0; i < this._model.persons.length; i++) {
+      if (this._model.persons[i].id === id) {
+        idx = i;
+        break;
+      }
+    }
     if (idx === null) {
       const person = {id};
       if (primary) {
@@ -93,14 +122,36 @@ class GedcomX extends Combinator {
     });
   }
 
-  _findPerson(id) {
-    for (let i = 0; i < this._model.persons.length; i++) {
-      if (this._model.persons[i].id === id) {
-        return i;
-      }
+  fact(type, {person, place, date, value}) {
+    const idx = this.person({id: person});
+
+    if (this._model.persons[idx].facts === undefined) {
+      this._model.persons[idx].facts = [];
     }
-    return null;
+
+    const fact = {
+      type: `http://gedcomx.org/${type}`,
+    };
+
+    if (place) {
+      fact.place = {
+        original: place,
+      };
+    }
+
+    if (date) {
+      fact.date = {
+        original: date,
+      };
+    }
+
+    if (value) {
+      fact.value = value;
+    }
+
+    this._model.persons[idx].facts.push(fact);
   }
+
 }
 
 export default GedcomX;
