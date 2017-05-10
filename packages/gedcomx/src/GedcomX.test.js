@@ -31,6 +31,23 @@ describe('GedcomX', () => {
     extraction.end();
   });
 
+  it('primary person', (done) => {
+    promise.then((data) => {
+      expect(data).to.deep.equal({
+        persons: [{
+          id: '1234',
+          principle: true,
+        }],
+      });
+      done();
+    })
+    .catch((error) => done(error));
+
+    emit.Person({id: '1234', primary: true});
+
+    extraction.end();
+  });
+
   it('gender', (done) => {
     promise.then((data) => {
       expect(data).to.deep.equal({
@@ -49,4 +66,33 @@ describe('GedcomX', () => {
 
     extraction.end();
   });
+
+  it('name', (done) => {
+    promise.then((data) => {
+      expect(data).to.deep.equal({
+        persons: [{
+          id: '1234',
+          gender: {
+            type: 'http://gedcomx.org/Male',
+          },
+        }],
+      });
+      done();
+    })
+    .catch((error) => done(error));
+
+    emit.Gender({person: '1234', gender: 'Male'});
+
+    extraction.end();
+  });
+
+  it('basic events');
+
+  it('basic facts');
+
+  it('parent events');
+
+  it('spouse events');
+
+  it('alternate id');
 });

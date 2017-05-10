@@ -39,7 +39,7 @@ class GedcomX extends Combinator {
     if (idx === null) {
       const person = {id};
       if (primary) {
-        person.primary = true;
+        person.principle = true;
       }
       this._model.persons.push(person);
       idx = this._model.persons.length - 1;
