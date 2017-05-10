@@ -48,10 +48,7 @@ class GedcomX extends Combinator {
   }
 
   gender({person, gender}) {
-    let idx = this._findPerson(person);
-    if (idx === null) {
-      idx = this.person({id: person});
-    }
+    const idx = this.person({id: person});
 
     this._model.persons[idx].gender = {
       type: `http://gedcomx.org/${gender}`,
@@ -59,9 +56,6 @@ class GedcomX extends Combinator {
   }
 
   _findPerson(id) {
-    if (!Array.isArray(this._model.persons)) {
-      return null;
-    }
     for (let i = 0; i < this._model.persons.length; i++) {
       if (this._model.persons[i].id === id) {
         return i;
