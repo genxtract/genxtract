@@ -1,26 +1,51 @@
-const expect = null;
-const emit = null;
-const combinator = null;
+import Emit from '@genxtract/extract/src/Emit.js';
+import Extraction from '@genxtract/extract/src/Extraction.js';
+import GedcomX from './GedcomX.js';
 
-let extraction = null;
+let extraction;
+let emit;
 let promise;
 
 describe('GedcomX', () => {
   beforeEach(() => {
     extraction = new Extraction('test');
     emit = new Emit(extraction);
-    combinator = new GedcomX();
+    const combinator = new GedcomX();
     promise = combinator.start();
-    emit.start();
+    extraction.start();
   });
 
-  it('should work', (done) => {
+  it('basic person', (done) => {
     promise.then((data) => {
-      expect(data).to.deep.equal({});
+      expect(data).to.deep.equal({
+        persons: [{
+          id: '1234',
+        }],
+      });
+      done();
     })
     .catch((error) => done(error));
 
     emit.Person({id: '1234'});
+
+    extraction.end();
+  });
+
+  it('gender', (done) => {
+    promise.then((data) => {
+      expect(data).to.deep.equal({
+        persons: [{
+          id: '1234',
+          gender: {
+            type: 'http://gedcomx.org/Male',
+          },
+        }],
+      });
+      done();
+    })
+    .catch((error) => done(error));
+
+    emit.Gender({person: '1234', gender: 'Male'});
 
     extraction.end();
   });

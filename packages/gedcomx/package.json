@@ -5,13 +5,23 @@
   "main": "dist/GedcomX.js",
   "module": "src/GedcomX.js",
   "scripts": {
-    "build": "rollup -c rollup.config.js"
+    "build": "rollup -c rollup.config.js",
+    "test": "karma start --single-run"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
   "devDependencies": {
     "@genxtract/combinator": "*",
+    "@genxtract/extract": "*",
+    "chai": "3.5.0",
+    "jsdom": "10.1.0",
+    "karma": "1.7.0",
+    "karma-chai": "0.1.0",
+    "karma-jsdom-launcher": "6.1.1",
+    "karma-mocha": "1.3.0",
+    "karma-rollup-plugin": "0.2.4",
+    "mocha": "3.3.0",
     "rollup": "0.41.6",
     "rollup-plugin-node-resolve": "3.0.0"
   }
