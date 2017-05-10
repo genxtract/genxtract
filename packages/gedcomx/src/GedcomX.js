@@ -14,6 +14,8 @@ class GedcomX extends Combinator {
         return this.person(data);
       case 'Gender':
         return this.gender(data);
+      case 'Name':
+        return this.name(data);
       default:
         // TODO silently ignore?
         console.log(`Unknown: ${type}`, data);
@@ -53,6 +55,42 @@ class GedcomX extends Combinator {
     this._model.persons[idx].gender = {
       type: `http://gedcomx.org/${gender}`,
     };
+  }
+
+  name({person, name}) {
+    const idx = this.person({id: person});
+
+    if (this._model.persons[idx].names === undefined) {
+      this._model.persons[idx].names = [];
+    }
+
+    const nameParts = name.split(/\s+/g);
+
+    const nameForm = {
+      fullText: nameParts.join(' '),
+      parts: [],
+    };
+
+    if (nameParts.length === 1) {
+      nameForm.parts.push({
+        type: 'http://gedcomx.org/Given',
+        value: nameParts[0],
+      });
+    } else {
+      let surname = nameParts.pop();
+      nameForm.parts.push({
+        type: 'http://gedcomx.org/Given',
+        value: nameParts.join(' '),
+      });
+      nameForm.parts.push({
+        type: 'http://gedcomx.org/Surname',
+        value: surname,
+      });
+    }
+
+    this._model.persons[idx].names.push({
+      nameForms: [nameForm],
+    });
   }
 
   _findPerson(id) {

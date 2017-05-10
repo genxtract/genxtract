@@ -72,16 +72,34 @@ describe('GedcomX', () => {
       expect(data).to.deep.equal({
         persons: [{
           id: '1234',
-          gender: {
-            type: 'http://gedcomx.org/Male',
-          },
+          names: [{
+            nameForms: [{
+              fullText: 'John',
+              parts: [
+                {type: 'http://gedcomx.org/Given', value: 'John'},
+              ],
+            }],
+          }],
+        },
+        {
+          id: '5678',
+          names: [{
+            nameForms: [{
+              fullText: 'John C Smith',
+              parts: [
+                {type: 'http://gedcomx.org/Given', value: 'John C'},
+                {type: 'http://gedcomx.org/Surname', value: 'Smith'},
+              ],
+            }],
+          }],
         }],
       });
       done();
     })
     .catch((error) => done(error));
 
-    emit.Gender({person: '1234', gender: 'Male'});
+    emit.Name({person: '1234', name: 'John'});
+    emit.Name({person: '5678', name: 'John  C    Smith'});
 
     extraction.end();
   });
