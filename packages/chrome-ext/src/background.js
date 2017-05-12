@@ -5,19 +5,18 @@ const extractors = new Extractors();
 // Listen for our browerAction to be clicked
 chrome.browserAction.onClicked.addListener((tab) => {
   // Get matching extractors
-  const matchingExtractors = extractors.match({url: tab.url});
-  if (matchingExtractors.length > 0) {
+  const {id, path} = extractors.match({url: tab.url});
+
+  if (id) {
     // Inject event pipe
-    chrome.tabs.executeScript(tab.ib, {
+    chrome.tabs.executeScript(tab.id, {
       file: 'events-to-console.js',
     });
 
-    // Inject matching extractors
-    for (const extractor of matchingExtractors) {
-      console.log(`injecting ${extractor.id}, ${extractor.path}`);
-      chrome.tabs.executeScript(tab.ib, {
-        file: extractor.path,
-      });
-    }
+    // Inject extractor
+    console.log(`injecting ${id}, ${path}`);
+    chrome.tabs.executeScript(tab.id, {
+      file: path,
+    });
   }
 });

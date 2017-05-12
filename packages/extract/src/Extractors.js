@@ -10,7 +10,6 @@ class Extractors {
 
   // Will return the first match we find
   match({url}) {
-    const results = [];
     for (let extractor of Object.keys(extractors)) {
       for (const regex of extractors[extractor]) {
         if (regex.test(url)) {
@@ -21,7 +20,7 @@ class Extractors {
         }
       }
     }
-    return results;
+    return {};
   }
 }
 

@@ -7,7 +7,7 @@
     "build": "npm run build-lib && npm run build-extractors",
     "build-extractors": "find ./src/extractors -maxdepth 1 -type f -exec basename {} \\; | xargs -I % rollup src/extractors/% -f iife -o dist/extractors/% --sourcemap",
     "build-lib": "find ./src -maxdepth 1 -type f -exec basename {} \\; | xargs -I % rollup src/% -f cjs -o dist/%",
-    "watch": "watch 'npm run build' src lib"
+    "watch": "watch 'npm run build' src"
   },
   "keywords": [],
   "author": "",

@@ -255,6 +255,15 @@ for (let i = 0; i < children.length; i++) {
   });
 }
 
+emit.Citation({
+  title: document.title,
+  url: window.location.href,
+  accessed: Date.now(),
+  repository_name: 'WeRelate',
+  repository_website: 'werelate.org',
+  repository_url: 'http://www.werelate.org',
+});
+
 extraction.end();
 
 /* Helper functions */
