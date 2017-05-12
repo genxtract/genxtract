@@ -191,5 +191,59 @@ describe('GedcomX', () => {
     extraction.end();
   });
 
+  it('citation', (done) => {
+    promise.then((data) => {
+      expect(data).to.deep.equal({
+        description: '#1',
+        persons: [
+          {
+            id: '12',
+            facts: [
+              {type: 'http://gedcomx.org/Marriage', place: {original: 'Somewhere'}},
+            ],
+            sources: [{description: '#1'}],
+          },
+          {id: '34', sources: [{description: '#1'}]},
+        ],
+        relationships: [
+          {
+            type: 'http://gedcomx.org/Couple',
+            person1: {resource: '#12'},
+            person2: {resource: '#34'},
+            sources: [{description: '#1'}],
+          },
+        ],
+        agents: [{
+          id: 'agent',
+          names: [{lang: 'en', value: 'Example'}],
+          homepage: {resource: 'http://example.com'},
+        }],
+        sourceDescriptions: [{
+          id: '1',
+          citations: [{
+            value: 'The Title, Example (http://example.com/foo : accessed Fri May 12 2017)',
+          }],
+          about: 'http://example.com/foo',
+          titles: [{value: 'The Title'}],
+          repository: {resource: '#agent'},
+        }],
+      });
+      done();
+    })
+    .catch((error) => done(error));
+
+    emit.Marriage({spouses: ['12', '34'], place: 'Somewhere'});
+    emit.Citation({
+      title: 'The Title',
+      url: 'http://example.com/foo',
+      accessed: 1494603896789,
+      repository_name: 'Example',
+      repository_website: 'example.com',
+      repository_url: 'http://example.com',
+    });
+
+    extraction.end();
+  });
+
   it('alternate id');
 });
