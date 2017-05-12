@@ -47,6 +47,8 @@ class GedcomX extends Combinator {
       case 'Marriage':
       case 'Separation':
         return this.spouse(type, data);
+      case 'Citation':
+        return this.citation(data);
       default:
         // TODO silently ignore?
         console.log(`Unknown: ${type}`, data);
@@ -55,7 +57,27 @@ class GedcomX extends Combinator {
 
   // (Optional) Finalize
   finalizeCallback() {
-    // TODO final work
+    // If we have a sourceDescription, reference it
+    if (this._model.sourceDescriptions &&
+       this._model.sourceDescriptions.length > 0) {
+      this._model.description = '#1';
+
+      if (this._model.persons) {
+        for (let i = 0; i < this._model.persons.length; i++) {
+          this._model.persons[i].sources = [{
+            description: '#1',
+          }];
+        }
+      }
+
+      if (this._model.relationships) {
+        for (let i = 0; i < this._model.relationships.length; i++) {
+          this._model.relationships[i].sources = [{
+            description: '#1',
+          }];
+        }
+      }
+    }
   }
 
   // Serialize our model
@@ -234,6 +256,45 @@ class GedcomX extends Combinator {
         },
       });
     }
+  }
+
+  citation({title, url, accessed, repository_name, repository_website, repository_url}) {
+    if (this._model.agents === undefined) {
+      this._model.agents = [];
+    }
+
+    if (this._model.agents.length === 0) {
+      this._model.agents.push({
+        id: 'agent',
+        names: [{
+          lang: 'en',
+          value: repository_name,
+        }],
+        homepage: {
+          resource: repository_url,
+        },
+      });
+    }
+
+    if (this._model.sourceDescriptions === undefined) {
+      this._model.sourceDescriptions = [];
+    }
+
+    const description = {
+      id: this._model.sourceDescriptions + 1,
+      citations: [{
+        value: `${title}, ${repository_name} (${url} : accessed ${new Date(accessed).toDateString()})`,
+      }],
+      about: url,
+      titles: [{
+        value: title,
+      }],
+      repository: {
+        resource: '#agent',
+      },
+    };
+
+    this._model.sourceDescriptions.push(description);
   }
 }
 

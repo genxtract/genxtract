@@ -66,6 +66,30 @@ class Emit {
     });
   }
 
+  // Information about the record itself
+  Citation({title, url, accessed, repository_name, repository_website, repository_url}) {
+    if (!title) {
+      return this.extraction.error(new Error('citation missing title'));
+    }
+    if (!url) {
+      return this.extraction.error(new Error('citation missing url'));
+    }
+    if (!accessed) {
+      return this.extraction.error(new Error('citation missing accessed'));
+    }
+    this.extraction.data({
+      type: 'Citation',
+      data: {
+        title,
+        url,
+        accessed,
+        repository_name,
+        repository_website,
+        repository_url,
+      },
+    });
+  }
+
   // A person id on the website. The url should be for a user to click on
   ExternalId({person, url, id}) {
     if (!person) {
