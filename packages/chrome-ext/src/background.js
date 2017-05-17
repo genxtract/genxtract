@@ -1,6 +1,14 @@
 import Extractors from '@genxtract/extract';
 
 const extractors = new Extractors();
+const outputURL = chrome.extension.getURL('output.html');
+
+let dataTab = null;
+let data = {};
+
+window.getData = function() {
+  return data;
+};
 
 function updateIcon(url) {
   const {id} = extractors.match({url});
@@ -23,8 +31,15 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   }
 });
 
-chrome.runtime.onMessage.addListener(({events, data}) => {
-  console.log(events, data);
+chrome.runtime.onMessage.addListener((message) => {
+  data = message;
+  if (dataTab === null) {
+    chrome.tabs.create({url: outputURL}, (tab) => {
+      dataTab = tab.id;
+    });
+  } else {
+    chrome.tabs.update(dataTab, {url: outputURL, active: true});
+  }
 });
 
 // Listen for our browerAction to be clicked
