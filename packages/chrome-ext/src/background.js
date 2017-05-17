@@ -23,19 +23,22 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   }
 });
 
+chrome.runtime.onMessage.addListener(({events, data}) => {
+  console.log(events, data);
+});
+
 // Listen for our browerAction to be clicked
 chrome.browserAction.onClicked.addListener((tab) => {
   // Get matching extractors
   const {id, path} = extractors.match({url: tab.url});
 
   if (id) {
-    // Inject event pipe
+    // Inject combinator
     chrome.tabs.executeScript(tab.id, {
-      file: 'events-to-console.js',
+      file: 'combinator.js',
     });
 
     // Inject extractor
-    console.log(`injecting ${id}, ${path}`);
     chrome.tabs.executeScript(tab.id, {
       file: path,
     });
