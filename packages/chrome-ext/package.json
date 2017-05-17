@@ -5,14 +5,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "rollup -c",
-    "watch": "rollup -c --watch"
+    "build": "rollup -c --environment entry:background && rollup -c --environment entry:combinator"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
   "dependencies": {
     "@genxtract/extract": "*",
+    "@genxtract/gedcomx": "*",
     "rollup": "0.41.6",
     "rollup-plugin-node-resolve": "3.0.0",
     "rollup-watch": "3.2.2"
