@@ -31,6 +31,14 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   }
 });
 
+// If our output page gets closed, update dataTab
+chrome.tabs.onRemoved.addListener((tabId) => {
+  if (dataTab === tabId) {
+    dataTab = null;
+  }
+});
+
+// Listen for a message when extraction is complete
 chrome.runtime.onMessage.addListener((message) => {
   data = message;
   if (dataTab === null) {

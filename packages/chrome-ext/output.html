@@ -3,9 +3,56 @@
 <head>
   <meta charset=utf-8>
   <title>Genxtract data</title>
-  <script src="output.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      display: flex;
+      width: 100vw;
+      height: 100vh;
+      font-size: 16px;
+      color: #333333;
+    }
+    .section {
+      width: 50vw;
+    }
+    .section + .section {
+      border-left: 1px solid #333333;
+    }
+    .title {
+      padding: 1rem;
+      background-color: #333333;
+      font-size: 1.5rem;
+      line-height: 1.5rem;
+      color: #efefef;
+    }
+    #events,
+    #data {
+      height: calc(100vh - 3.5rem);
+      overflow: auto;
+    }
+    .event {
+      padding: 1rem;
+    }
+    .event + .event {
+      border-top: 1px solid #333333;
+    }
+    .data {
+      padding: 1rem;
+    }
+  </style>
 </head>
 <body>
-  <p>Hello World!</p>
+  <div class="section">
+    <div class="title">Events</div>
+    <div id="events"></div>
+  </div>
+  <div class="section">
+    <div class="title">Combinator Data</div>
+    <div id="data"></div>
+  </div>
 </body>
+<script src="output.js"></script>
 </html>
