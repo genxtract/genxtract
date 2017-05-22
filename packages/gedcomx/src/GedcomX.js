@@ -179,8 +179,8 @@ class GedcomX extends Combinator {
       fact.value = value;
     }
 
-    // Dedupe parent style events
-    if (type === birth) {
+    // Dedupe birth events
+    if (type === 'Birth') {
       for (const existingFact of this._model.persons[idx].facts) {
         if (existingFact.type === `http://gedcomx.org/${type}`) {
           if (existingFact.date === undefined && fact.date !== undefined) {
