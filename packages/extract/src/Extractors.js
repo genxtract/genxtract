@@ -1,6 +1,7 @@
 // NOTE: one extractor per url
 const extractors = {
   'werelate-person': [/www.werelate.org\/wiki\/Person:/],
+  'familysearch-person': [/familysearch\.org\/tree\/person\//],
 };
 
 class Extractors {
