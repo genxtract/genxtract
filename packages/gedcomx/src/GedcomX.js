@@ -238,7 +238,21 @@ class GedcomX extends Combinator {
     }
 
     // Create the fact
-    this.fact(type, {person: spouses[0], place, date});
+    const fact = {
+      type: `http://gedcomx.org/${type}`,
+    };
+
+    if (place) {
+      fact.place = {
+        original: place,
+      };
+    }
+
+    if (date) {
+      fact.date = {
+        original: date,
+      };
+    }
 
     if (this._model.relationships === undefined) {
       this._model.relationships = [];
@@ -254,6 +268,7 @@ class GedcomX extends Combinator {
         person2: {
           resource: `#${this._model.persons[spouse2].id}`,
         },
+        facts: [fact],
       });
     }
   }
