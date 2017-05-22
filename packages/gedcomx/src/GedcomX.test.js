@@ -243,5 +243,46 @@ describe('GedcomX', () => {
     extraction.end();
   });
 
+  it('should dedupe birth facts', (done) => {
+    promise.then((data) => {
+      expect(data).to.deep.equal({
+        persons: [
+          {
+            id: '12',
+            facts: [
+              {
+                type: 'http://gedcomx.org/Birth',
+                date: {original: 'Sometime'},
+                place: {original: 'Somewhere'},
+              },
+            ],
+          },
+          {id: '34'},
+          {id: '56'},
+        ],
+        relationships: [
+          {
+            type: 'http://gedcomx.org/ParentChild',
+            person1: {resource: '#34'},
+            person2: {resource: '#12'},
+          },
+          {
+            type: 'http://gedcomx.org/ParentChild',
+            person1: {resource: '#56'},
+            person2: {resource: '#12'},
+          },
+        ],
+      });
+      done();
+    })
+    .catch((error) => done(error));
+
+    emit.Birth({person: '12', place: 'Somewhere', parents: []});
+    emit.Birth({person: '12', parents: ['34', '56']});
+    emit.Birth({person: '12', date: 'Sometime', parents: []});
+
+    extraction.end();
+  });
+
   it('alternate id');
 });
