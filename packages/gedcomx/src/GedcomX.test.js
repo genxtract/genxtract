@@ -166,12 +166,7 @@ describe('GedcomX', () => {
     promise.then((data) => {
       expect(data).to.deep.equal({
         persons: [
-          {
-            id: '12',
-            facts: [
-              {type: 'http://gedcomx.org/Marriage', place: {original: 'Somewhere'}},
-            ],
-          },
+          {id: '12'},
           {id: '34'},
         ],
         relationships: [
@@ -179,6 +174,9 @@ describe('GedcomX', () => {
             type: 'http://gedcomx.org/Couple',
             person1: {resource: '#12'},
             person2: {resource: '#34'},
+            facts: [
+              {type: 'http://gedcomx.org/Marriage', place: {original: 'Somewhere'}},
+            ],
           },
         ],
       });
@@ -198,9 +196,6 @@ describe('GedcomX', () => {
         persons: [
           {
             id: '12',
-            facts: [
-              {type: 'http://gedcomx.org/Marriage', place: {original: 'Somewhere'}},
-            ],
             sources: [{description: '#1'}],
           },
           {id: '34', sources: [{description: '#1'}]},
@@ -210,6 +205,9 @@ describe('GedcomX', () => {
             type: 'http://gedcomx.org/Couple',
             person1: {resource: '#12'},
             person2: {resource: '#34'},
+            facts: [
+              {type: 'http://gedcomx.org/Marriage', place: {original: 'Somewhere'}},
+            ],
             sources: [{description: '#1'}],
           },
         ],
