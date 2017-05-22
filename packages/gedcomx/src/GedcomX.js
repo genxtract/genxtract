@@ -179,7 +179,21 @@ class GedcomX extends Combinator {
       fact.value = value;
     }
 
-    // TODO dedupe facts?
+    // Dedupe birth events
+    if (type === 'Birth') {
+      for (const existingFact of this._model.persons[idx].facts) {
+        if (existingFact.type === `http://gedcomx.org/${type}`) {
+          if (existingFact.date === undefined && fact.date !== undefined) {
+            existingFact.date = fact.date;
+          }
+          if (existingFact.place === undefined && fact.place !== undefined) {
+            existingFact.place = fact.place;
+          }
+          // We updated the fact, so return instead of adding
+          return;
+        }
+      }
+    }
 
     this._model.persons[idx].facts.push(fact);
   }
