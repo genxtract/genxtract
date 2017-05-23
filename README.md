@@ -8,6 +8,7 @@ Extracting genealogical data from various websites.
 | Website | Tree | Records |
 |---------|:----:|:-------:|
 |[FamilySearch.org](https://familysearch.org)|X||
+|[Find A Grave](http://www.findagrave.com)||X|
 |[WeRelate](http://www.werelate.org)|X||
 
 **Planned**
@@ -22,7 +23,6 @@ Extracting genealogical data from various websites.
 |[BillionGraves](http://billiongraves.com)||X|
 |[Digitalarkivet](https://www.arkivverket.no/eng/Digitalarkivet)||X|
 |[FamilySearch.org](https://familysearch.org)||X|
-|[Find A Grave](http://www.findagrave.com)||X|
 |[findmypast.com](http://www.findmypast.com)|X|X|
 |[findmypast.co.uk](http://www.findmypast.co.uk)|X|X|
 |[findmypast.com.au](http://www.findmypast.com.au)|X|X|
