@@ -79,6 +79,7 @@ emit.Citation({
 
 extraction.end();
 
+/* Helper functions */
 
 function isAvailable(text) {
   return text !== 'Not Available';
