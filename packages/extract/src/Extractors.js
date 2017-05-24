@@ -1,5 +1,6 @@
 // NOTE: one extractor per url
 const extractors = {
+  'billiongraves': [/billiongraves\.com\/grave\//],
   'werelate-person': [/www.werelate.org\/wiki\/Person:/],
   'familysearch-person': [/familysearch\.org\/tree\/person\//],
   'findagrave': [/www\.findagrave\.com\/cgi-bin\/fg\.cgi\?page=gr/],
