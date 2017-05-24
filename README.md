@@ -7,6 +7,7 @@ Extracting genealogical data from various websites.
 
 | Website | Tree | Records |
 |---------|:----:|:-------:|
+|[BillionGraves](http://billiongraves.com)||X|
 |[FamilySearch.org](https://familysearch.org)|X||
 |[Find A Grave](http://www.findagrave.com)||X|
 |[WeRelate](http://www.werelate.org)|X||
@@ -20,7 +21,6 @@ Extracting genealogical data from various websites.
 |[Ancestry.com](http://ancestry.com)|X|X|
 |[Archives.com](https://www.archives.com)||X|
 |[Australian Cemeteries Index](http://austcemindex.com)||X|
-|[BillionGraves](http://billiongraves.com)||X|
 |[Digitalarkivet](https://www.arkivverket.no/eng/Digitalarkivet)||X|
 |[FamilySearch.org](https://familysearch.org)||X|
 |[findmypast.com](http://www.findmypast.com)|X|X|
