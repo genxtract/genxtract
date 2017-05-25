@@ -10,6 +10,7 @@ Extracting genealogical data from various websites.
 |[BillionGraves](http://billiongraves.com)||X|
 |[FamilySearch.org](https://familysearch.org)|X||
 |[Find A Grave](http://www.findagrave.com)||X|
+|[Open Archives](https://www.openarch.nl)||X|
 |[WeRelate](http://www.werelate.org)|X||
 
 **Planned**
@@ -33,7 +34,6 @@ Extracting genealogical data from various websites.
 |[Geneanet](http://www.geneanet.org)|X|X|
 |[MyHeritage](https://www.myheritage.com)|X|X|
 |[Newspapers.com](https://www.newspapers.com)||X|
-|[Open Archives](https://www.openarch.nl)||X|
 |[wiewaswie.nl](https://www.wiewaswie.nl/en/)||X|
 |[WikiTree](http://www.wikitree.com)|X||
 
