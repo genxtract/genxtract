@@ -10,6 +10,7 @@ Extracting genealogical data from various websites.
 |[BillionGraves](http://billiongraves.com)||X|
 |[FamilySearch.org](https://familysearch.org)|X||
 |[Find A Grave](http://www.findagrave.com)||X|
+|[Genealogie Online](https://www.genealogieonline.nl)|X||
 |[Open Archives](https://www.openarch.nl)||X|
 |[WeRelate](http://www.werelate.org)|X||
 
@@ -29,7 +30,6 @@ Extracting genealogical data from various websites.
 |[findmypast.com.au](http://www.findmypast.com.au)|X|X|
 |[findmypast.ie](http://www.findmypast.ie)|X|X|
 |[Fold3](https://www.fold3.com)||X|
-|[Genealogie Online](https://www.genealogieonline.nl)|X||
 |[GenealogyBank](http://www.genealogybank.com)||X|
 |[Geneanet](http://www.geneanet.org)|X|X|
 |[MyHeritage](https://www.myheritage.com)|X|X|

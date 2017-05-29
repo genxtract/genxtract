@@ -3,6 +3,7 @@ const extractors = {
   'billiongraves': [/billiongraves\.com\/grave\//],
   'familysearch-person': [/familysearch\.org\/tree\/person\//],
   'findagrave': [/www\.findagrave\.com\/cgi-bin\/fg\.cgi\?page=gr/],
+  'genealogieonline': [/www\.genealogieonline\.nl\/[a-z]+\/.+\/.+\.php/],
   'openarchives': [/www\.openarch\.nl\/show\.php/],
   'werelate-person': [/www\.werelate\.org\/wiki\/Person:/],
 };
