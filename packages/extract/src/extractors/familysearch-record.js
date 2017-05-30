@@ -16,13 +16,11 @@ extract()
 
 
 async function extract() {
-  const id = window.location.pathname.split('/')[3];
-  const res = await fetch(`/platform/tree/persons/${id}?relatives`, {
+  const res = await fetch(window.location.href, {
     method: 'GET',
     credentials: 'include',
     headers: {
-      'accept': 'application/json',
-      'X-FS-Feature-Tag': 'consolidate-redundant-resources',
+      'accept': 'application/x-fs-v1+json',
     },
   });
 
@@ -31,6 +29,20 @@ async function extract() {
   }
 
   const data = await res.json();
+
+  let recordId = window.location.href.match(/[A-Z0-9-]+$/)[0];
+  let id = null;
+  // The primary person will have a persistent identifier matching this href
+  for (const person of data.persons) {
+    if (person.identifiers && person.identifiers['http://gedcomx.org/Persistent']) {
+      const persistentId = person.identifiers['http://gedcomx.org/Persistent'][0];
+      const personId = persistentId.match(/[A-Z0-9-]+$/)[0];
+      if (recordId === personId) {
+        id = person.id;
+        break;
+      }
+    }
+  }
 
   process({id, data, emit});
 

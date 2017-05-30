@@ -2,6 +2,7 @@
 const extractors = {
   'billiongraves': [/billiongraves\.com\/grave\//],
   'familysearch-person': [/familysearch\.org\/tree\/person\//],
+  'familysearch-record': [/familysearch\.org\/pal:\/MM9\.1\.1\//, /familysearch\.org\/ark:\/61903\/1:1:/],
   'findagrave': [/www\.findagrave\.com\/cgi-bin\/fg\.cgi\?page=gr/],
   'genealogieonline': [/www\.genealogieonline\.nl\/[a-z]+\/.+\/.+\.php/],
   'openarchives': [/www\.openarch\.nl\/show\.php/],
