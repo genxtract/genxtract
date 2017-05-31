@@ -5,6 +5,7 @@ const extractors = {
   'familysearch-record': [/familysearch\.org\/pal:\/MM9\.1\.1\//, /familysearch\.org\/ark:\/61903\/1:1:/],
   'findagrave': [/www\.findagrave\.com\/cgi-bin\/fg\.cgi\?page=gr/],
   'genealogieonline': [/www\.genealogieonline\.nl\/[a-z]+\/.+\/.+\.php/],
+  'myheritage-record': [/www\.myheritage\.com\/research\/record-/],
   'openarchives': [/www\.openarch\.nl\/show\.php/],
   'werelate-person': [/www\.werelate\.org\/wiki\/Person:/],
 };

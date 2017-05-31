@@ -38,6 +38,7 @@ class GedcomX extends Combinator {
       case 'Naturalization':
       case 'Occupation':
       case 'Ordination':
+      case 'Residence':
         return this.fact(type, data);
       case 'Adoption':
       case 'Birth':
