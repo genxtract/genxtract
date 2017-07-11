@@ -32,10 +32,10 @@ class Extraction {
 
   error(error) {
     if (!this.started) {
-      return this._consoleError('sent data before starting', obj);
+      return this._consoleError('sent data before starting', error);
     }
     if (this.ended) {
-      return this._consoleError('sent data after ending', obj);
+      return this._consoleError('sent data after ending', error);
     }
     this._consoleError('errored:', error);
     this._dispatch({
