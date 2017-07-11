@@ -6,7 +6,7 @@
   "homepage_url": "https://github.com/genxtract/genxtract",
   "background": {
     "scripts": [
-      "background.js"
+      "src/background.js"
     ],
     "persistent": true
   },
