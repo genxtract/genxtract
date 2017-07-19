@@ -1,7 +1,8 @@
 import Extraction from '../Extraction.js';
 import Emit from '../Emit.js';
+import VerticalTable from '../lib/VerticalTable.js';
 
-const extraction = new Extraction('familysearch-person');
+const extraction = new Extraction('myheritage-record');
 const emit = new Emit(extraction);
 
 const map = {
@@ -18,7 +19,7 @@ const map = {
 
 extraction.start();
 
-const person = window.location.pathname.split('/')[2].split('-').splice(1, 2).join('-');
+const person = getRecordId(window.location.href);
 let spouse = null;
 
 emit.Person({id: person, primary: true});
@@ -196,6 +197,94 @@ for (let i= 0; i < rows.length; i++) {
   }
 }
 
+// Additional tables
+const tables = document.querySelectorAll('.recordFieldsTable');
+for(let i = 0; i < tables.length; i++) {
+  if(i === 0) continue;
+
+  let additionalTable = tables[i];
+  let title = additionalTable.querySelector('.recordSectionTitle');
+
+  // Relatives table
+  if(title && title.textContent.toLowerCase() === 'relatives') {
+    
+    const relatives = new VerticalTable(additionalTable.querySelector('table'), {
+      labelMapper: function(label) {
+        return label.toLowerCase().trim();
+      },
+      valueMapper: function(cell) {
+        const a = cell.querySelector('a');
+        return {
+          text: cell.textContent.trim(),
+          href: a ? a.href : '',
+        };
+      },
+    });
+    
+    relatives.getRows().forEach((row) => {
+      
+      // If there is no relation, return
+      if (!row.relation.text.trim()) return;
+
+      const relativeId = getRecordId(row.name.href);
+      const relation = row.relation.text.toLowerCase();
+
+      emit.Person({id: relativeId});
+      emit.Name({
+        person: relativeId,
+        name: row.name.text,
+      });
+
+      // Update their birth/death information
+      if (row.birth && row.birth.text) {
+        emit.Birth({
+          person: relativeId,
+          parents: [],
+          date: row.birth.text.trim(),
+        });
+      }
+      if (row.death && row.death.text) {
+        emit.Death({
+          person: relativeId,
+          date: row.death.text.trim(),
+        });
+      }
+
+      // Add relationships
+      if(/^(husband|wife)/.test(relation)) {
+        emit.Marriage({
+          spouses: [person, relativeId],
+        });
+      } else if(/^(son|daughter)/.test(relation)) {
+        emit.Birth({
+          parents: [person],
+          person: relativeId,
+        });
+      } else if(/^(mother|father)/.test(relation)) {
+        emit.Birth({
+          parents: [relativeId],
+          person: person,
+        });
+      }
+
+      // Gender
+      if(/^(husband|son|father)/.test(relation)) {
+        emit.Gender({
+          person: relativeId,
+          gender: 'Male',
+        });
+      } else if(/^(wife|daughter|mother)/.test(relation)) {
+        emit.Gender({
+          person: relativeId,
+          gender: 'Female',
+        });
+      }
+    });
+  }
+}
+
+// TODO: household table
+
 emit.Citation({
   title: document.title,
   url: window.location.href,
@@ -206,3 +295,14 @@ emit.Citation({
 });
 
 extraction.end();
+
+/**
+ * Extract the record ID from a record URL
+ * 
+ * @param {String} url
+ * @return {String}
+ */
+function getRecordId(url) {
+  const parts = url.match(/\/record-(\d+)-([^\/]+)\//);
+  return `${parts[1]}-${parts[2]}`;
+}
