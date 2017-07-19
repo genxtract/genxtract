@@ -12,6 +12,7 @@ const basicEvents = [
   'Excommunication',
   'FirstCommunion',
   'Funeral',
+  'Residence',
   'Stillbirth',
 ];
 
@@ -27,7 +28,6 @@ const basicFacts = [
   'Naturalization',
   'Occupation',
   'Ordination',
-  'Residence',
 ];
 
 // These expect person, place, date, parents

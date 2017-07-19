@@ -1,6 +1,7 @@
 import Extraction from '../Extraction.js';
 import Emit from '../Emit.js';
 import VerticalTable from '../lib/VerticalTable.js';
+import HorizontalTable from '../lib/HorizontalTable.js';
 
 const extraction = new Extraction('myheritage-record');
 const emit = new Emit(extraction);
@@ -21,6 +22,7 @@ extraction.start();
 
 const person = getRecordId(window.location.href);
 let spouse = null;
+let censusDate = null;
 
 emit.Person({id: person, primary: true});
 
@@ -36,7 +38,7 @@ if (names.length > 1) {
 
 // Loop through the record rows
 // We have to keep track of the current "in scope" person throughout the loop
-const rows = document.querySelectorAll('.recordFieldsTable > tbody > tr');
+const rows = document.querySelectorAll('.recordFieldsTable:first-of-type > tbody > tr');
 let inScopePerson = person;
 let indented = false;
 
@@ -56,7 +58,7 @@ for (let i= 0; i < rows.length; i++) {
     if (spouse) {
       inScopePerson = (value.textContent.trim() === names[0]) ? person : spouse;
     } else {
-      const id = `${person}-${i}`;
+      const id = getDataItemId(value.querySelector('span'));
       emit.Person({id});
       emit.Name({person: id, name: value.textContent.trim()});
       emit.Marriage({spouses: [person, id]});
@@ -71,7 +73,7 @@ for (let i= 0; i < rows.length; i++) {
     if (spouse) {
       inScopePerson = (value.textContent.trim() === names[0]) ? person : spouse;
     } else {
-      const id = `${person}-${i}`;
+      const id = getDataItemId(value.querySelector('span'));
       emit.Person({id});
       emit.Name({person: id, name: value.textContent.trim()});
       emit.Marriage({spouses: [person, id]});
@@ -83,7 +85,7 @@ for (let i= 0; i < rows.length; i++) {
   }
 
   if (label === 'mother') {
-    const id = `${person}-${i}`;
+    const id = getDataItemId(value.querySelector('span'));
     emit.Person({id});
     emit.Name({person: id, name: value.textContent.trim()});
     emit.Birth({person, parents: [id]});
@@ -94,7 +96,7 @@ for (let i= 0; i < rows.length; i++) {
   }
 
   if (label === 'father') {
-    const id = `${person}-${i}`;
+    const id = getDataItemId(value.querySelector('span'));
     emit.Person({id});
     emit.Name({person: id, name: value.textContent.trim()});
     emit.Birth({person, parents: [id]});
@@ -105,7 +107,7 @@ for (let i= 0; i < rows.length; i++) {
   }
 
   if (label === 'daughter' || label === 'daughter (implied)') {
-    const id = `${person}-${i}`;
+    const id = getDataItemId(value.querySelector('span'));
     emit.Person({id});
     emit.Name({person: id, name: value.textContent.trim()});
     emit.Birth({person: id, parents: [person]});
@@ -116,7 +118,7 @@ for (let i= 0; i < rows.length; i++) {
   }
 
   if (label === 'son' || label === 'son (implied)') {
-    const id = `${person}-${i}`;
+    const id = getDataItemId(value.querySelector('span'));
     emit.Person({id});
     emit.Name({person: id, name: value.textContent.trim()});
     emit.Birth({person: id, parents: [person]});
@@ -127,23 +129,21 @@ for (let i= 0; i < rows.length; i++) {
   }
 
   if (label === 'children' || label === 'children (implied)') {
-    const rawNames = value.innerHTML;
-    const names = rawNames.split(/<br ?\/?>/).map((val) => val.trim());
-    for (let j = 0; j < names.length; j++) {
-      const id = `${person}-${i}-${j}`;
+    const children = value.querySelectorAll('span');
+    for (let j = 0; j < children.length; j++) {
+      const id = getDataItemId(children[j]);
       emit.Person({id});
-      emit.Name({person: id, name: names[j]});
+      emit.Name({person: id, name: children[j].textContent});
       emit.Birth({person: id, parents: [person]});
     }
   }
 
   if (label === 'siblings' || label === 'siblings (implied)') {
-    const rawNames = value.innerHTML;
-    const names = rawNames.split(/<br ?\/?>/).map((val) => val.trim());
-    for (let j = 0; j < names.length; j++) {
-      const id = `${person}-${i}-${j}`;
+    const siblings = value.querySelectorAll('span');
+    for (let j = 0; j < siblings.length; j++) {
+      const id = getDataItemId(siblings[j]);
       emit.Person({id});
-      emit.Name({person: id, name: names[j]});
+      emit.Name({person: id, name: siblings[j].textContent});
     }
   }
 
@@ -281,9 +281,79 @@ for(let i = 0; i < tables.length; i++) {
       }
     });
   }
+
+  // Census table
+  if(title && title.textContent.toLowerCase() === 'census') {
+    const census = new HorizontalTable(additionalTable.querySelector('table'), {
+      labelMapper: function(label) {
+        return label.toLowerCase().replace(/:$/, '');
+      },
+    });
+    if (census.hasMatch(/date/)) {
+      censusDate = census.getMatchText(/date/).trim();
+    }
+  }
 }
 
-// TODO: household table
+// Household table
+const household = document.querySelector('.recordSection .groupTable');
+if (household !== null) {
+  
+  const householdMembers = new VerticalTable(household, {
+    labelMapper: function(label) {
+      return label.toLowerCase().trim();
+    },
+    valueMapper: function(cell) {
+      const a = cell.querySelector('a');
+      return {
+        text: cell.textContent.trim(),
+        href: a ? a.href : '',
+      };
+    },
+  });
+
+  householdMembers.getRows().forEach(function(row) {
+    const relativeId = getRecordId(row.name.href);
+    
+    emit.Person({id: relativeId});
+    emit.Name({
+      person: relativeId,
+      name: row.name.text,
+    });
+
+    // Update their birth date based on their age (if not set)
+    if (censusDate && row.age) {
+      const rawAge = row.age.text.trim();
+      const year = rawAge.split(/ +/)[0];
+      const age = censusDate - year;
+      emit.Birth({
+        person: relativeId,
+        parents: [],
+        date: 'About ' + age,
+      });
+    }
+
+    // If we are looking at the primary person, we're done
+    if (relativeId === person) return;
+
+    // Update the gender
+    const relation = row['relation to head'].text.toLowerCase();
+
+    if (/^(wife|daughter|mother|aunt)/.test(relation)) {
+      emit.Gender({
+        person: relativeId,
+        gender: 'Female',
+      });
+    } else if (/^(husband|son|father|uncle)/.test(relation)) {
+      emit.Gender({
+        person: relativeId,
+        gender: 'Male',
+      });
+    }
+
+    // Note: We have all of the relations from the main table above
+  });
+}
 
 emit.Citation({
   title: document.title,
@@ -303,6 +373,21 @@ extraction.end();
  * @return {String}
  */
 function getRecordId(url) {
-  const parts = url.match(/\/record-(\d+)-([^\/]+)\//);
-  return `${parts[1]}-${parts[2]}`;
+  const parts = url.match(/\/record-\d+-([^\/]+)\//);
+  return `${parts[1]}`;
+}
+
+/**
+ * Get the data-item-id value from a span
+ * 
+ * @param {Element} span
+ * @return {String}
+ */
+function getDataItemId(span) {
+  if(span) {
+    const value = span.getAttribute('data-item-id');
+    if(value) {
+      return value.replace(/-$/, '');
+    }
+  }
 }

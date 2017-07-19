@@ -8,7 +8,6 @@ class VerticalTable {
    * @param {Object=} options - Options passed on to processTable()
    */
   constructor(table, options) {
-    console.log('VerticalTable constructor');
     this.rows = [];
     this.processTable(table, options);
   }
