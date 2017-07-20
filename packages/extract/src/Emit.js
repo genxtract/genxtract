@@ -131,18 +131,22 @@ class Emit {
     });
   }
 
-  Name({person, name}) {
+  Name({person, name, given, surname, prefix, suffix}) {
     if (!person) {
       return this.extraction.error(new Error('name missing person'));
     }
-    if (!name) {
-      return this.extraction.error(new Error('name missing name'));
+    if (!name && !given && !surname && !prefix && !suffix) {
+      return this.extraction.error(new Error('name must have a name or at least one part'));
     }
     this.extraction.data({
       type: 'Name',
       data: {
         person,
         name,
+        given,
+        surname,
+        prefix,
+        suffix,
       },
     });
   }

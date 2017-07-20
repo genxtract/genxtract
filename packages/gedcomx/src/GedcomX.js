@@ -117,14 +117,76 @@ class GedcomX extends Combinator {
     };
   }
 
-  name({person, name}) {
+  name({person, name, given, surname, prefix, suffix}) {
     const idx = this.person({id: person});
 
     if (this._model.persons[idx].names === undefined) {
       this._model.persons[idx].names = [];
     }
 
+    // Check to see if any parts are specified. If not then
+    // process the name to get the parts.
+    if (name && !(given || surname)) {
+      const nameParts = name.split(/\s+/g);
+      if (nameParts.length === 1) {
+        given = nameParts[0];
+      } else {
+        surname = nameParts.pop();
+        given = nameParts.join(' ');
+      }
+    }
+    
+    // This is populated as we process the parts so that later
+    // we can join them together to generate the full text value
+    const pieces = [];
+
+    const nameForm = {
+      parts: [],
+    };
+
+    if(prefix) {
+      prefix = prefix.trim();
+      nameForm.parts.push({
+        type: 'http://gedcomx.org/Prefix',
+        value: prefix,
+      });
+      pieces.push(prefix);
+    }
+    if(given) {
+      given = given.trim();
+      nameForm.parts.push({
+        type: 'http://gedcomx.org/Given',
+        value: given,
+      });
+      pieces.push(given);
+    }
+    if(surname) {
+      surname = surname.trim();
+      nameForm.parts.push({
+        type: 'http://gedcomx.org/Surname',
+        value: surname,
+      });
+      pieces.push(surname);
+    }
+    if(suffix) {
+      suffix = suffix.trim();
+      nameForm.parts.push({
+        type: 'http://gedcomx.org/Suffix',
+        value: suffix,
+      });
+      pieces.push(suffix);
+    }
+
+    // Check to see if the name is specified. If not then
+    // create it by joining the parts.
+    if (!name && pieces.length) {
+      name = pieces.join(' ');
+    }
+
+    nameForm.fullText = name;
+
     // Check for a duplicate name
+    // TODO: consider making this more robust by comparing name parts
     let duplicate = false;
     for(let n of this._model.persons[idx].names) {
       for(let nf of n.nameForms) {
@@ -135,30 +197,6 @@ class GedcomX extends Combinator {
     }
     if(duplicate) {
       return;
-    }
-
-    const nameParts = name.split(/\s+/g);
-
-    const nameForm = {
-      fullText: nameParts.join(' '),
-      parts: [],
-    };
-
-    if (nameParts.length === 1) {
-      nameForm.parts.push({
-        type: 'http://gedcomx.org/Given',
-        value: nameParts[0],
-      });
-    } else {
-      let surname = nameParts.pop();
-      nameForm.parts.push({
-        type: 'http://gedcomx.org/Given',
-        value: nameParts.join(' '),
-      });
-      nameForm.parts.push({
-        type: 'http://gedcomx.org/Surname',
-        value: surname,
-      });
     }
 
     this._model.persons[idx].names.push({
