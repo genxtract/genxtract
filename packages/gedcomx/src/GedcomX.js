@@ -16,6 +16,8 @@ class GedcomX extends Combinator {
         return this.gender(data);
       case 'Name':
         return this.name(data);
+      case 'NameParts':
+        return this.nameParts(data);
       case 'Baptism':
       case 'BarMitzvah':
       case 'Blessing':
@@ -118,47 +120,76 @@ class GedcomX extends Combinator {
   }
 
   name({person, name}) {
+    const nameParts = name.split(/\s+/g);
+    const parts = {};
+
+    if (nameParts.length === 1) {
+      parts.given = nameParts[0];
+    } else {
+      parts.surname = nameParts.pop();
+      parts.given = nameParts.join(' ');
+    }
+
+    this.nameParts({person, parts});
+  }
+
+  nameParts({person, parts}) {
     const idx = this.person({id: person});
 
     if (this._model.persons[idx].names === undefined) {
       this._model.persons[idx].names = [];
     }
 
+    // This is populated as we process the parts so that later
+    // we can join them together to generate the full text value
+    const pieces = [];
+
+    const nameForm = {
+      parts: [],
+    };
+
+    if(parts.prefix) {
+      nameForm.parts.push({
+        type: 'http://gedcomx.org/Prefix',
+        value: parts.suffix,
+      });
+      pieces.push(parts.suffix);
+    }
+    if(parts.given) {
+      nameForm.parts.push({
+        type: 'http://gedcomx.org/Given',
+        value: parts.given,
+      });
+      pieces.push(parts.given);
+    }
+    if(parts.surname) {
+      nameForm.parts.push({
+        type: 'http://gedcomx.org/Surname',
+        value: parts.surname,
+      });
+      pieces.push(parts.surname);
+    }
+    if(parts.suffix) {
+      nameForm.parts.push({
+        type: 'http://gedcomx.org/Suffix',
+        value: parts.suffix,
+      });
+      pieces.push(parts.suffix);
+    }
+
+    nameForm.fullText = pieces.join(' ');
+
     // Check for a duplicate name
     let duplicate = false;
     for(let n of this._model.persons[idx].names) {
       for(let nf of n.nameForms) {
-        if(nf.fullText === name) {
+        if(nf.fullText === nameForm.fullText) {
           duplicate = true;
         }
       }
     }
     if(duplicate) {
       return;
-    }
-
-    const nameParts = name.split(/\s+/g);
-
-    const nameForm = {
-      fullText: nameParts.join(' '),
-      parts: [],
-    };
-
-    if (nameParts.length === 1) {
-      nameForm.parts.push({
-        type: 'http://gedcomx.org/Given',
-        value: nameParts[0],
-      });
-    } else {
-      let surname = nameParts.pop();
-      nameForm.parts.push({
-        type: 'http://gedcomx.org/Given',
-        value: nameParts.join(' '),
-      });
-      nameForm.parts.push({
-        type: 'http://gedcomx.org/Surname',
-        value: surname,
-      });
     }
 
     this._model.persons[idx].names.push({

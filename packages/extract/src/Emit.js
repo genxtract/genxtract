@@ -147,6 +147,22 @@ class Emit {
     });
   }
 
+  NameParts({person, parts}) {
+    if (!person) {
+      return this.extraction.error(new Error('name parts missing person'));
+    }
+    if (!parts) {
+      return this.extraction.error(new Error('name parts missing parts'));
+    }
+    this.extraction.data({
+      type: 'Name',
+      data: {
+        person,
+        parts,
+      },
+    });
+  }
+
   Person({id, primary}) {
     if (!id) {
       return this.extraction.error(new Error('person missing id'));
