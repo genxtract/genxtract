@@ -74,7 +74,20 @@ function process(emit, treeId, personId, pageHtml, eventHtml) {
     name: pageHtml.querySelector('#BreadcrumbsFinalText').textContent,
   });
 
-  // TODO: gender
+  // There is no identifying text for the gender. The best we can see
+  // is to examine the profile silhouette which is determined by a CSS class
+  const silhouette = pageHtml.querySelector('#profileSilhouetteContainer .PK_Silhouette');
+  if(silhouette.classList.contains('PK_Silhouette_S_192_M_A_LTR')) {
+    emit.Gender({
+      person: personId,
+      gender: 'Male',
+    });
+  } else if(silhouette.classList.contains('PK_Silhouette_S_192_F_A_LTR')) {
+    emit.Gender({
+      person: personId,
+      gender: 'Female',
+    });
+  }
 
   // Get events
   let events = eventHtml.querySelectorAll('.EventRow');
