@@ -12,6 +12,7 @@ Extracting genealogical data from various websites.
 |[FamilySearch.org](https://familysearch.org)|X|X|
 |[Find A Grave](http://www.findagrave.com)||X|
 |[Genealogie Online](https://www.genealogieonline.nl)|X||
+|[MyHeritage](https://www.myheritage.com)|X|X|
 |[Open Archives](https://www.openarch.nl)||X|
 |[WeRelate](http://www.werelate.org)|X||
 
@@ -32,7 +33,6 @@ Extracting genealogical data from various websites.
 |[Fold3](https://www.fold3.com)||X|
 |[GenealogyBank](http://www.genealogybank.com)||X|
 |[Geneanet](http://www.geneanet.org)|X|X|
-|[MyHeritage](https://www.myheritage.com)|X|X|
 |[Newspapers.com](https://www.newspapers.com)||X|
 |[wiewaswie.nl](https://www.wiewaswie.nl/en/)||X|
 |[WikiTree](http://www.wikitree.com)|X||

@@ -12,6 +12,9 @@ const basicEvents = [
   'Excommunication',
   'FirstCommunion',
   'Funeral',
+  'Emmigration',
+  'Immigration',
+  'Naturalization',
   'Residence',
   'Stillbirth',
 ];
@@ -21,11 +24,8 @@ const basicFacts = [
   'Caste',
   'Citizenship',
   'Education',
-  'Emmigration',
-  'Immigration',
   'Mission',
   'Nationality',
-  'Naturalization',
   'Occupation',
   'Ordination',
 ];
