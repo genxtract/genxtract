@@ -74,10 +74,10 @@ describe('GedcomX', () => {
           id: '1234',
           names: [{
             nameForms: [{
-              fullText: 'John',
               parts: [
                 {type: 'http://gedcomx.org/Given', value: 'John'},
               ],
+              fullText: 'John',
             }],
           }],
         },
@@ -85,11 +85,25 @@ describe('GedcomX', () => {
           id: '5678',
           names: [{
             nameForms: [{
-              fullText: 'John C Smith',
               parts: [
                 {type: 'http://gedcomx.org/Given', value: 'John C'},
                 {type: 'http://gedcomx.org/Surname', value: 'Smith'},
               ],
+              fullText: 'John C Smith',
+            }],
+          }],
+        },
+        {
+          id: '910',
+          names: [{
+            nameForms: [{
+              parts: [
+                {type: 'http://gedcomx.org/Prefix', value: 'Sir'},
+                {type: 'http://gedcomx.org/Given', value: 'Richard Charles Nicholas'},
+                {type: 'http://gedcomx.org/Surname', value: 'Branson'},
+                {type: 'http://gedcomx.org/Suffix', value: 'III'},
+              ],
+              fullText: 'Sir Richard Charles Nicholas Branson III',
             }],
           }],
         }],
@@ -100,7 +114,9 @@ describe('GedcomX', () => {
 
     emit.Name({person: '1234', name: 'John'});
     emit.Name({person: '1234', name: 'John'}); // making sure we ignore duplicate names
-    emit.Name({person: '5678', name: 'John  C    Smith'});
+    emit.Name({person: '5678', name: 'John C Smith'});
+    emit.Name({person: '5678', given: 'John C', surname: 'Smith'});
+    emit.Name({person: '910', prefix: 'Sir', given: 'Richard Charles Nicholas', surname: 'Branson', suffix: 'III'});
 
     extraction.end();
   });
