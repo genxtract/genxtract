@@ -228,7 +228,6 @@ for (let key of parentEvents) {
 for (let key of spouseEvents) {
   Emit.prototype[key] = function({spouses, place, date}) {
     if (!spouses || !Array.isArray(spouses) || spouses.length === 0) {
-      console.log(spouses);
       return this.extraction.error(new Error(`${key} missing spouses`));
     }
     this.extraction.data({

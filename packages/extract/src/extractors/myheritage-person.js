@@ -74,6 +74,8 @@ function process(emit, treeId, personId, pageHtml, eventHtml) {
     name: pageHtml.querySelector('#BreadcrumbsFinalText').textContent,
   });
 
+  // TODO: gender
+
   // Get events
   let events = eventHtml.querySelectorAll('.EventRow');
 
@@ -86,11 +88,11 @@ function process(emit, treeId, personId, pageHtml, eventHtml) {
     let date = '';
 
     if (parts.length == 2) {
-      place = parts[1].textContent;
+      place = parts[1].textContent.trim();
     }
     if (parts.length == 3) {
-      place = parts[1].textContent;
-      date = parts[2].textContent;
+      place = parts[1].textContent.trim();
+      date = parts[2].textContent.trim();
     }
 
     // Handle basic event types
@@ -98,8 +100,8 @@ function process(emit, treeId, personId, pageHtml, eventHtml) {
       if (typeText.match(mapping.regex)) {
         emit[mapping.type]({
           person: personId,
-          date: date.trim(),
-          place: place.trim(),
+          date: date,
+          place: place,
         });
       }
     });
@@ -108,8 +110,8 @@ function process(emit, treeId, personId, pageHtml, eventHtml) {
     if (typeText.match(/^birth$/)) {
       emit.Birth({
         person: personId,
-        date: date.trim(),
-        place: place.trim(),
+        date: date,
+        place: place,
         parents: [],
       });
     }
@@ -130,60 +132,63 @@ function process(emit, treeId, personId, pageHtml, eventHtml) {
       });
     }
 
-    /*
+    // TODO: can we assume that the previously seen spouse
+    // is the parent of all succeeding children?
 
     // Handle Daughter
     if (typeText.match(/^birth of daughter/)) {
-      var aTag = type.querySelector('a');
-      var person = new GedcomX.Person({
-        id: getRecordId(aTag.href),
-        identifiers: {
-          'genscrape': getRecordIdentifier(aTag.href),
-        },
+      const aTag = type.querySelector('a');
+      const daughterId = getRecordId(aTag.href);
+      emit.Person({
+        id: daughterId,
       });
-      person.addSimpleName(aTag.textContent.trim());
-      person.setGender({
-        type: 'http://gedcomx.org/Female',
+      emit.Name({
+        person: daughterId,
+        name: aTag.textContent.trim(),
       });
-      gedx.addPerson(person);
-      gedx.addRelationship({
-        type: 'http://gedcomx.org/ParentChild',
-        person1: primaryPerson,
-        person2: person,
+      emit.Gender({
+        person: daughterId,
+        gender: 'Female',
+      });
+      emit.Birth({
+        person: daughterId,
+        date: date,
+        place: place,
+        parents: [personId],
       });
     }
 
     // Handle Son
     if (typeText.match(/^birth of son/)) {
-      var aTag = type.querySelector('a');
-      var person = new GedcomX.Person({
-        id: getRecordId(aTag.href),
-        identifiers: {
-          'genscrape': getRecordIdentifier(aTag.href),
-        },
+      const aTag = type.querySelector('a');
+      const sonId = getRecordId(aTag.href);
+      emit.Person({
+        id: sonId,
       });
-      person.addSimpleName(aTag.textContent.trim());
-      person.setGender({
-        type: 'http://gedcomx.org/Male',
+      emit.Name({
+        person: sonId,
+        name: aTag.textContent.trim(),
       });
-      gedx.addPerson(person);
-      gedx.addRelationship({
-        type: 'http://gedcomx.org/ParentChild',
-        person1: primaryPerson,
-        person2: person,
+      emit.Gender({
+        person: sonId,
+        gender: 'Male',
+      });
+      emit.Birth({
+        person: sonId,
+        date: date,
+        place: place,
+        parents: [personId],
       });
     }
 
-    */
-
   }
 
-  /*
-
-  // Get immediate family section
-  // There is no identifiers for this table, so get the first table under the h2
-  let h2s = $page.querySelectorAll('h2');
-  for (var i = 0; i < h2s.length; i++) {
+  // Get immediate family section.
+  // Here we only grab the parents because we already got the spouse and
+  // children from the events table.
+  // There are no identifiers for this table, so get the first table under the h2
+  let h2s = pageHtml.querySelectorAll('h2');
+  for (let i = 0; i < h2s.length; i++) {
     if (h2s[i].textContent.toLowerCase().trim() === 'immediate family') {
       let table = h2s[i].nextSibling;
       let tds = table.querySelectorAll('td');
@@ -191,53 +196,51 @@ function process(emit, treeId, personId, pageHtml, eventHtml) {
         let td = tds[j];
         // Skip empty tds
         if (td.textContent.trim() === '') continue;
-        var aTag = td.querySelector('a');
-        let rel = td.querySelector('span').textContent.trim();
+        let aTag = td.querySelector('a');
+        let rel = td.querySelector('span').textContent.toLowerCase().trim();
 
         // Mother
-        if (rel.toLowerCase() == 'his mother') {
-          var person = new GedcomX.Person({
-            id: getRecordId(aTag.href),
-            identifiers: {
-              'genscrape': getRecordIdentifier(aTag.href),
-            },
+        if (/^(his|her) mother/.test(rel)) {
+          const motherId = getRecordId(aTag.href);
+          emit.Person({
+            id: motherId,
           });
-          person.addSimpleName(aTag.textContent.trim());
-          person.setGender({
-            type: 'http://gedcomx.org/Female',
+          emit.Name({
+            person: motherId,
+            name: aTag.textContent.trim(),
           });
-          gedx.addPerson(person);
-          gedx.addRelationship({
-            type: 'http://gedcomx.org/ParentChild',
-            person1: person,
-            person2: primaryPerson,
+          emit.Gender({
+            person: motherId,
+            gender: 'Female',
+          });
+          emit.Birth({
+            person: personId,
+            parents: [motherId],
           });
         }
 
         // Father
-        if (rel.toLowerCase() == 'his father') {
-          var person = new GedcomX.Person({
-            id: getRecordId(aTag.href),
-            identifiers: {
-              'genscrape': getRecordIdentifier(aTag.href),
-            },
+        if (/^(his|her) father/.test(rel)) {
+          const fatherId = getRecordId(aTag.href);
+          emit.Person({
+            id: fatherId,
           });
-          person.addSimpleName(aTag.textContent.trim());
-          person.setGender({
-            type: 'http://gedcomx.org/Male',
+          emit.Name({
+            person: fatherId,
+            name: aTag.textContent.trim(),
           });
-          gedx.addPerson(person);
-          gedx.addRelationship({
-            type: 'http://gedcomx.org/ParentChild',
-            person1: person,
-            person2: primaryPerson,
+          emit.Gender({
+            person: fatherId,
+            gender: 'Male',
+          });
+          emit.Birth({
+            person: personId,
+            parents: [fatherId],
           });
         }
       }
     }
   }
-
-  */
 
   emit.Citation({
     title: document.title,
