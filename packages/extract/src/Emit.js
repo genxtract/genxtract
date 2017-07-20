@@ -12,6 +12,7 @@ const basicEvents = [
   'Excommunication',
   'FirstCommunion',
   'Funeral',
+  'Residence',
   'Stillbirth',
 ];
 

@@ -2,7 +2,7 @@ import Extraction from '../Extraction.js';
 import Emit from '../Emit.js';
 import process from '../lib/familysearch.js';
 
-const extraction = new Extraction('familysearch-person');
+const extraction = new Extraction('familysearch-record');
 const emit = new Emit(extraction);
 
 extraction.start();
