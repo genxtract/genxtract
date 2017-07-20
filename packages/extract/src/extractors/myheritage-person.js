@@ -69,11 +69,8 @@ function process(emit, treeId, personId, pageHtml, eventHtml) {
     id: personId,
     primary: true,
   });
-  emit.Name({
-    person: personId,
-    name: pageHtml.querySelector('#BreadcrumbsFinalText').textContent,
-  });
-
+  emitNames(emit, personId, pageHtml.querySelector('#BreadcrumbsFinalText').textContent);
+  
   // There is no identifying text for the gender. The best we can see
   // is to examine the profile silhouette which is determined by a CSS class
   const silhouette = pageHtml.querySelector('#profileSilhouetteContainer .PK_Silhouette');
@@ -136,10 +133,7 @@ function process(emit, treeId, personId, pageHtml, eventHtml) {
       emit.Person({
         id: spouseId,
       });
-      emit.Name({
-        person: spouseId,
-        name: aTag.textContent.trim(),
-      });
+      emitNames(emit, spouseId, aTag.textContent.trim());
       emit.Marriage({
         spouses: [personId, spouseId],
       });
@@ -155,10 +149,7 @@ function process(emit, treeId, personId, pageHtml, eventHtml) {
       emit.Person({
         id: daughterId,
       });
-      emit.Name({
-        person: daughterId,
-        name: aTag.textContent.trim(),
-      });
+      emitNames(emit, daughterId, aTag.textContent.trim());
       emit.Gender({
         person: daughterId,
         gender: 'Female',
@@ -218,10 +209,7 @@ function process(emit, treeId, personId, pageHtml, eventHtml) {
           emit.Person({
             id: motherId,
           });
-          emit.Name({
-            person: motherId,
-            name: aTag.textContent.trim(),
-          });
+          emitNames(emit, motherId, aTag.textContent.trim());
           emit.Gender({
             person: motherId,
             gender: 'Female',
@@ -281,6 +269,49 @@ function parseHtml(html) {
   const div = window.document.createElement('div');
   div.innerHTML = html;
   return div;
+}
+
+/**
+ * The purpose of this function is to handle the parsing of femail names
+ * which may have their maiden name specified in () such as "Sarah Smith (born Thompson)"
+ * 
+ * @param {Object} emit 
+ * @param {string} person 
+ * @param {string} name 
+ */
+function emitNames(emit, person, name) {
+  const pieces = name.split(/ \((born )?/);
+  
+  // Single name
+  if(pieces.length === 1) {
+    emit.Name({
+      person,
+      name,
+    });
+  } else {
+    
+    // Here we have a female name with the maiden name in parenthesis
+    // so we split up the name into pieces and emit both the married
+    // name and the maiden name.
+    const marriedName = pieces[0];
+    const maidenName = pieces[2].replace(')', '');
+    const nameParts = marriedName.split(' ');
+    const marriedSurname = nameParts.pop();
+    const given = nameParts.join(' ');
+
+    emit.Name({
+      person,
+      name: marriedName,
+      given,
+      surname: marriedSurname,
+    });
+    emit.Name({
+      person,
+      name: `${given} ${maidenName}`,
+      given,
+      surname: maidenName,
+    });
+  }
 }
 
 function getRecordId(url) {
