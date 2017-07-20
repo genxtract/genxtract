@@ -123,6 +123,19 @@ class GedcomX extends Combinator {
       this._model.persons[idx].names = [];
     }
 
+    // Check for a duplicate name
+    let duplicate = false;
+    for(let n of this._model.persons[idx].names) {
+      for(let nf of n.nameForms) {
+        if(nf.fullText === name) {
+          duplicate = true;
+        }
+      }
+    }
+    if(duplicate) {
+      return;
+    }
+
     const nameParts = name.split(/\s+/g);
 
     const nameForm = {

@@ -99,6 +99,7 @@ describe('GedcomX', () => {
     .catch((error) => done(error));
 
     emit.Name({person: '1234', name: 'John'});
+    emit.Name({person: '1234', name: 'John'}); // making sure we ignore duplicate names
     emit.Name({person: '5678', name: 'John  C    Smith'});
 
     extraction.end();
@@ -285,4 +286,6 @@ describe('GedcomX', () => {
   });
 
   it('alternate id');
+
+  it('external id');
 });
