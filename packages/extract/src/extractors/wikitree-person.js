@@ -1,6 +1,6 @@
 import Extraction from '../Extraction.js';
 import Emit from '../Emit.js';
-import maybe from '../lib/maybe.js';
+import { maybe } from '../lib/utils.js';
 import schema from '../lib/schema.js';
 
 const prefixes = [
