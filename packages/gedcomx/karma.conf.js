@@ -3,7 +3,7 @@ const resolve = require('rollup-plugin-node-resolve');
 module.exports = function(config) {
   config.set({
     frameworks: ['mocha', 'chai'],
-    browsers: ['jsdom'],
+    browsers: ['ChromeHeadless'],
     files: [
       'src/*.test.js',
     ],
