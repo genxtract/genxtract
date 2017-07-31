@@ -13,6 +13,7 @@ Extracting genealogical data from various websites.
 |[MyHeritage](https://www.myheritage.com)|X|X|
 |[Open Archives](https://www.openarch.nl)||X|
 |[WeRelate](http://www.werelate.org)|X||
+|[WikiTree](https://www.wikitree.com)|X||
 
 ## Install
 
@@ -26,4 +27,5 @@ npm install && npm run bootstrap
 1. install the chrome extension in `packages/chrome-ext` as an [unpacked extension](https://developer.chrome.com/extensions/getstarted#unpacked)
 1. cd to `packages/extract` and run `npm run watch`. 
 
-You do not have to reload the chrome extension on changes. The extension will always inject files pulled from `packages/extract/dist`. Note that source maps are included, so look carefully at the stack traces in errors to pick the original and not the bundled line number.
+You do not have to reload the chrome extension everytime an extractor is changed. You only have to reload when `Emit`, `Extraction`, 
+or `Extractors` are changed. Note that source maps are included, so look carefully at the stack traces in errors to pick the original and not the bundled line number.

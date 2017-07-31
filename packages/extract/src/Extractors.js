@@ -9,6 +9,7 @@ const extractors = {
   'myheritage-record': [/www\.myheritage\.com\/research\/record-/],
   'openarchives': [/www\.openarch\.nl\/show\.php/],
   'werelate-person': [/www\.werelate\.org\/wiki\/Person:/],
+  'wikitree-person': [/www\.wikitree\.com\/wiki\/.+-.+/],
 };
 
 class Extractors {
