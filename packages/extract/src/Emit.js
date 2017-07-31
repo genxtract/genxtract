@@ -209,9 +209,6 @@ for (let key of parentEvents) {
     if (!person) {
       return this.extraction.error(new Error(`${key} missing person`));
     }
-    if (!parents || !Array.isArray(parents)) {
-      return this.extraction.error(new Error(`${key} missing parents`));
-    }
     this.extraction.data({
       type: key,
       data: {

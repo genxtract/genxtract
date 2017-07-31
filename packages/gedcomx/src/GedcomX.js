@@ -250,7 +250,7 @@ class GedcomX extends Combinator {
     this._model.persons[idx].facts.push(fact);
   }
 
-  parent(type, {person, place, date, parents}) {
+  parent(type, {person, place, date, parents = []}) {
     const idx = this.person({id: person});
     let parent1 = null;
     let parent2 = null;
