@@ -35,6 +35,7 @@ Extracting genealogical data from various websites.
 |[Geneanet](http://www.geneanet.org)|X|X|
 |[Newspapers.com](https://www.newspapers.com)||X|
 |[wiewaswie.nl](https://www.wiewaswie.nl/en/)||X|
+|[WikiData](https://www.wikidata.org)||X|
 |[WikiTree](http://www.wikitree.com)|X||
 
 ## Install
