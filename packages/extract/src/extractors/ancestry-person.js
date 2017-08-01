@@ -96,7 +96,7 @@ function process($html) {
     switch(gender) {
       case 'Female':
       case 'Male':
-        emit.Person({
+        emit.Gender({
           person: personId,
           gender,
         });
@@ -119,6 +119,90 @@ function process($html) {
         emit[config.type](fact);
       });
     }
+  });
+
+  //
+  // Relationships
+  //
+
+  const relLists = getRelLists($html);
+
+  // Parents
+  relLists.parents.forEach(function($parentsList) {
+    const $parents = $parentsList.querySelectorAll('.card');
+    const $father = $parents[0];
+    const $mother = $parents[1];
+    let fatherId = null;
+    let motherId = null;
+    
+    // Create parents and parent-child relationships
+    
+    if(!$father.classList.contains('cardEmpty')) {
+      fatherId = getPersonFromCard($father);
+    }
+    
+    if(!$mother.classList.contains('cardEmpty')) {
+      motherId = getPersonFromCard($mother);
+    }
+    
+    // Create couple relationship if both the father and mother exist
+    if(fatherId && motherId) {
+      emit.Marriage({
+        spouses: [fatherId, motherId],
+      });
+      emit.Birth({
+        person: personId,
+        parents: [fatherId, motherId],
+      });
+    } else if(fatherId) {
+      emit.Birth({
+        person: personId,
+        parents: [fatherId],
+      });
+    } else if(motherId) {
+      emit.Birth({
+        person: personId,
+        parents: [motherId],
+      });
+    }
+    
+  });
+
+  // TODO: siblings and half-siblings
+
+  // Spouses and Children
+  relLists.spouses.forEach(function($spouseList) {
+    const $children = Array.from($spouseList.querySelectorAll('.card'));
+    const $spouse = $children.shift();
+    const parents = [personId];
+
+    if(!$spouse.classList.contains('cardEmpty')) {
+      const spouseId = getPersonFromCard($spouse);
+      const marriage = {
+        spouses: [personId, spouseId],
+      };
+
+      // Try to find a marriage event from the facts list
+      // so that we can get the marriage date and place, if possible
+      const spouseName = getPersonName($spouse);
+      facts.getCards('marriage').forEach(function($marriage) {
+        const $spouseName = $marriage.querySelector('.userPerson');
+        if($spouseName && $spouseName.textContent === spouseName) {
+          Object.assign(marriage, cardToFact($marriage));
+        }
+      });
+
+      emit.Marriage(marriage);
+      parents.push(spouseId);
+    }
+    
+    $children.forEach(function($childCard) {
+      const childId = getPersonFromCard($childCard);
+      emit.Birth({
+        person: childId,
+        parents,
+      });
+    });
   });
 
 }
@@ -153,18 +237,127 @@ function firstChildText($element) {
 }
 
 /**
- * Create a GedcomX Fact from a fact card
+ * Create a fact from a card
  * 
  * @param {HTMLElement} $card
- * @param {String} factType
  * @return {{date,place}}
  */
-function cardToFact($card, factType) {
+function cardToFact($card) {
   const $date = $card.querySelector('.factItemDate');
   const date = $date ? toTitleCase($date.textContent.trim()) : null;
   const $place = $card.querySelector('.factItemLocation');
   const place = $place ? $place.textContent.trim() : null;
   return {date, place};
+}
+
+/**
+ * Get all relationship lists separated into categories: parents, siblings, halfsiblings, spouses
+ * 
+ * @param {HTMLElement} $dom
+ * @return {{parents: Array, siblings: Array, halfsiblings: Array, spouses: Array}}
+ */
+function getRelLists($dom) {
+  const lists = {
+    
+    // Right now Ancestry only shows one set of parents. We assume multiple
+    // in case that changes in the future (it really should).
+    'parents': [],
+    
+    // Since we only have one set of parents we also only have one set of siblings
+    'siblings': [],
+    
+    // I don't know that we can do anything with half siblings
+    'halfsiblings': [],
+    
+    // Spouses lists include children
+    'spouses': [],
+  };
+  
+  // Get subtitles so that we know which type of list we're looking at
+  const $familySection = $dom.querySelector('#familySection');
+  const familyNodes = $familySection.querySelectorAll('.factsSubtitle, .researchList, .toggleSiblingsButton');
+  let currentNode = null;
+  let listType = 'parents';
+
+  for(let i = 0; i < familyNodes.length; i++) {
+    currentNode = familyNodes[i];
+    
+    // Subtitle
+    if(currentNode.classList.contains('factsSubtitle')) {
+      switch(currentNode.textContent.toLowerCase()) {
+        case 'parents':
+          listType = 'parents';
+          break;
+        case 'half siblings':
+          listType = 'halfsiblings';
+          break;
+        case 'spouse':
+        case 'spouse & children':
+          listType = 'spouses';
+          break;
+      }
+    }
+    
+    // Siblings button
+    else if(currentNode.classList.contains('toggleSiblingsButton')) {
+      listType = 'siblings';
+    }
+    
+    // List
+    else if(currentNode.classList.contains('researchList')) {
+      lists[listType].push(currentNode);
+    }
+  }
+  
+  return lists;
+}
+
+/**
+ * Processes and emits the person from the card then returns their ID.
+ * 
+ * @param {HTMLElement} $card
+ * @return {String} person ID
+ */
+function getPersonFromCard($card) {
+  const personId = getRecordId($card.href);
+  emit.Person({
+    id: personId,
+  });
+
+  emit.Name({
+    person: personId,
+    name: getPersonName($card),
+  });
+
+  const $lifespan = $card.querySelector('.userCardSubTitle');
+  if($lifespan) {
+    const lifespanParts = $lifespan.textContent.trim().split('–');
+    const birthYear = lifespanParts[0];
+    const deathYear = lifespanParts[1];
+    if(birthYear) {
+      emit.Birth({
+        person: personId,
+        date: birthYear,
+      });
+    }
+    if(deathYear) {
+      emit.Death({
+        person: personId,
+        date: deathYear,
+      });
+    }
+  }
+  return personId;
+}
+
+/**
+ * Get the name from a family member card
+ * 
+ * @param {HTMLElement} card
+ * @return {String}
+ */
+function getPersonName(card) {
+  return firstChildText(card.querySelector('.userCardTitle'));
 }
 
 /**
