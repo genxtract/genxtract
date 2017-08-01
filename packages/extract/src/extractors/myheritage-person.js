@@ -1,5 +1,6 @@
 import Extraction from '../Extraction.js';
 import Emit from '../Emit.js';
+import {parseHtml} from '../lib/utils.js';
 
 const eventMappings = [
   {
@@ -263,12 +264,6 @@ async function getHtml(url) {
   }
   const text = await res.text();
   return parseHtml(text);
-}
-
-function parseHtml(html) {
-  const div = window.document.createElement('div');
-  div.innerHTML = html;
-  return div;
 }
 
 /**
