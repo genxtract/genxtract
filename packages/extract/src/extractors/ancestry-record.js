@@ -135,6 +135,68 @@ if(dataTable.hasData()) {
     }
   });
 
+  //
+  // Family
+  //
+  
+  const parents = [];
+  let fatherId;
+  let motherId;
+
+  // TODO: get the father and mother ID from the href 
+  // (pointing to their record) when it exists (doesn't always exist)
+
+  // Father
+  if(dataTable.hasMatch(/^father('s)?/)) {
+    const fathersName = dataTable.getMatchText(/^father('s)?( name)?$/);
+    if(fathersName) {
+      fatherId = `${personId}-father`;
+      parents.push(fatherId);
+      emit.Person({
+        id: fatherId,
+      });
+      emit.Name({
+        person: fatherId,
+        name: fathersName.trim(),
+      });
+      if(dataTable.hasMatch(/^father('s)? (birthplace|place of birth)$/)) {
+        emit.Birth({
+          person: fatherId,
+          place: dataTable.getMatchText(/^father('s)? (birthplace|place of birth)$/),
+        });
+      }
+    }
+  }
+  
+  // Mother
+  if(dataTable.hasMatch(/^mother('s)?/)) {
+    const mothersName = dataTable.getMatchText(/^mother('s)?( name)?$/);
+    if(mothersName) {
+      motherId = `${personId}-mother`;
+      parents.push(motherId);
+      emit.Person({
+        id: motherId,
+      });
+      emit.Name({
+        person: motherId,
+        name: mothersName.trim(),
+      });
+      if(dataTable.hasMatch(/^mother('s)? (birthplace|place of birth)$/)) {
+        emit.Birth({
+          person: motherId,
+          place: dataTable.getMatchText(/^mother('s)? (birthplace|place of birth)$/),
+        });
+      }
+    }
+  }
+
+  if(parents.length) {
+    emit.Birth({
+      person: personId,
+      parents,
+    });
+  }
+
 }
 
 emit.Citation({
