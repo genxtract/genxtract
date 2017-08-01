@@ -1,6 +1,7 @@
 // NOTE: one extractor per url
 const extractors = {
   'ancestry-person': [/www\.ancestry\.com\/family-tree\/person\/tree\/[^\/]+\/person\//],
+  'ancestry-record': [/search\.ancestry\.com\/cgi-bin\/sse.dll/],
   'billiongraves': [/billiongraves\.com\/grave\//],
   'familysearch-person': [/familysearch\.org\/tree\/person\//],
   'familysearch-record': [/familysearch\.org\/pal:\/MM9\.1\.1\//, /familysearch\.org\/ark:\/61903\/1:1:/],

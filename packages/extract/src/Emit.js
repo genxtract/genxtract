@@ -24,10 +24,14 @@ const basicFacts = [
   'Caste',
   'Citizenship',
   'Education',
+  'Ethnicity',
+  'MaritalStatus',
   'Mission',
   'Nationality',
+  'NationalId',
   'Occupation',
   'Ordination',
+  'Race',
 ];
 
 // These expect person, place, date, parents
