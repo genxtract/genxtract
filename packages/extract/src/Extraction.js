@@ -46,6 +46,7 @@ class Extraction {
   }
 
   end() {
+    // TODO: throw error if extraction hasn't started?
     if (this.ended) {
       return this._consoleError('called end twice');
     }

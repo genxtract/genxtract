@@ -35,13 +35,17 @@ class GedcomX extends Combinator {
       case 'Caste':
       case 'Citizenship':
       case 'Education':
+      case 'Ethnicity':
       case 'Emmigration':
       case 'Immigration':
+      case 'MaritalStatus':
       case 'Mission':
       case 'Nationality':
+      case 'NationalId':
       case 'Naturalization':
       case 'Occupation':
       case 'Ordination':
+      case 'Race':
       case 'Residence':
         return this.fact(type, data);
       case 'Adoption':
