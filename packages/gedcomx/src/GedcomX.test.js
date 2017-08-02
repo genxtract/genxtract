@@ -301,7 +301,35 @@ describe('GedcomX', () => {
     extraction.end();
   });
 
-  it('alternate id');
+  it('alternate id', (done) => {
+    promise.then((data) => {
+      expect(data).to.deep.equal({
+        persons: [{
+          id: '1234',
+          gender: {
+            type: 'http://gedcomx.org/Female',
+          },
+        }, {
+          id: 'xyz',
+          gender: {
+            type: 'http://gedcomx.org/Female',
+          },
+        }],
+      });
+      done();
+    })
+    .catch((error) => done(error));
+
+    emit.Person({id: '1234'});
+    emit.AlternateId({person: '1234', id: '5678'});
+    emit.Gender({person: '5678', gender: 'Female'});
+
+    emit.Person({id: 'abc'});
+    emit.AlternateId({person: 'abc', id: 'xyz', preferred: true});
+    emit.Gender({person: 'xyz', gender: 'Female'});
+
+    extraction.end();
+  });
 
   it('external id');
 });
