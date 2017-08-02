@@ -56,6 +56,17 @@ const dataTable = new HorizontalTable(document.getElementById('recordData'), {
   }, 
 });
 
+// An index of relatives we've added. Keys are the relative's name
+// and the values are the ID we used the first time they were emitted.
+// This index is needed for matching up household persons with those added
+// from the main table. It's common for parents from census records
+// to be listed in the main table as well as the household table.
+// We have to process both because relationships aren't included in
+// the household table. If they were then we could process the household
+// table first and ignore relationships in the main table that have
+// already been added, but alas we can't do that.
+const relativesIndex = {};
+
 extraction.start();
 
 if(dataTable.hasData()) {
@@ -147,13 +158,11 @@ if(dataTable.hasData()) {
   const $father = dataTable.getMatch(/^father('s)?( name)?$/);
   if($father) {
     const fatherId = getRelativesRecordId($father, `${personId}-father`);
+    const fatherName = $father.textContent.trim();
     parents.push(fatherId);
-    emit.Person({
-      id: fatherId,
-    });
     emit.Name({
       person: fatherId,
-      name: $father.textContent.trim(),
+      name: fatherName,
     });
     if(dataTable.hasMatch(/^father('s)? (birthplace|place of birth)$/)) {
       emit.Birth({
@@ -161,19 +170,18 @@ if(dataTable.hasData()) {
         place: dataTable.getMatchText(/^father('s)? (birthplace|place of birth)$/),
       });
     }
+    relativesIndex[fatherName] = fatherId;
   }
   
   // Mother
   const $mother = dataTable.getMatch(/^mother('s)?( name)?$/);
   if($mother) {
     const motherId = getRelativesRecordId($mother, `${personId}-mother`);
+    const motherName = $mother.textContent.trim();
     parents.push(motherId);
-    emit.Person({
-      id: motherId,
-    });
     emit.Name({
       person: motherId,
-      name: $mother.textContent.trim(),
+      name: motherName,
     });
     if(dataTable.hasMatch(/^mother('s)? (birthplace|place of birth)$/)) {
       emit.Birth({
@@ -181,6 +189,7 @@ if(dataTable.hasData()) {
         place: dataTable.getMatchText(/^mother('s)? (birthplace|place of birth)$/),
       });
     }
+    relativesIndex[motherName] = motherId;
   }
 
   if(parents.length) {
@@ -193,14 +202,12 @@ if(dataTable.hasData()) {
   // Spouse
   const $spouse = dataTable.getMatch(/^spouse('s)?( name)?$/);
   if($spouse) {
-    const spouseId = getRelativesRecordId($spouse, `${personId}-spouse`) ;
+    const spouseId = getRelativesRecordId($spouse, `${personId}-spouse`);
+    const spouseName = $spouse.textContent.trim();
     
-    emit.Person({
-      id: spouseId,
-    });
     emit.Name({
       person: spouseId,
-      name: $spouse.textContent.trim(),
+      name: spouseName,
     });
     
     if(dataTable.hasLabel('spouse gender')) {
@@ -228,6 +235,8 @@ if(dataTable.hasData()) {
 
     emit.Marriage(marriage);
     childrensParents.push(spouseId);
+
+    relativesIndex[spouseName] = spouseId;
   }
 
   // Children
@@ -236,9 +245,6 @@ if(dataTable.hasData()) {
     // Here we are assuming they are always just text.
     dataTable.getText('children').split('; ').forEach(function(name, i) {
       const childId = `${personId}-child-${i+1}`;
-      emit.Person({
-        id: childId,
-      });
       emit.Name({
         person: childId,
         name,
@@ -247,15 +253,79 @@ if(dataTable.hasData()) {
         person: childId,
         parents: childrensParents,
       });
+      relativesIndex[name] = childId;
     });
   }
   
   // TODO: siblings; see web obituary test; how do we detect and handle "of {PLACE}" strings?
 
+  // Process household persons
+  if(dataTable.hasLabel('household members')) {
+    const householdTable = new VerticalTable(dataTable.getValue('household members'), {
+      labelMapper: function(label) {
+        return label.toLowerCase();
+      },
+      valueMapper: function(cell) {
+        const a = cell.querySelector('a');
+        return {
+          text: cell.textContent.trim(),
+          href: a ? a.href : '',
+        };
+      },
+    });
+
+    const recordYear = getRecordYear();
+    
+    householdTable.getRows().forEach(function(rowData) {
+      
+      // There's no point in processing this data if there isn't at least a name
+      if(rowData.name) {
+        
+        // Check to see if we've already added this person. Parents are often
+        // explicitly listed in the data table which we process above.
+        const name = rowData.name.text;
+        const relativeId = getRecordId(rowData.name.href);
+        const existingPerson = relativesIndex[name];
+        
+        // Update an existing person's IDs
+        if(existingPerson) {
+          emit.AlternateId({
+            person: existingPerson,
+            id: relativeId,
+            preferred: true,
+          });
+        } 
+        
+        // Create a new person
+        else {
+          emit.Name({
+            person: relativeId,
+            name,
+          });
+        }
+        
+        // Primary person already has birth year extracted
+        // TODO: enhance to check whether the primary person actually has
+        // a birth fact; right now we're just assuming since Ancestry
+        // usually calculates an estimated age for us
+        if(relativeId !== personId) {
+          const age = parseInt(rowData.age.text, 10);
+          if(!isNaN(age) && recordYear) {
+            const estimatedBirthYear = recordYear - age;
+            emit.Birth({
+              person: relativeId,
+              date: `about ${estimatedBirthYear}`,
+            });
+          }
+        }
+      }
+    });
+  }
+
 }
 
 emit.Citation({
-  title: document.title,
+  title: getTitle(),
   url: window.location.href,
   accessed: Date.now(),
   repository_name: 'Ancestry',
@@ -308,4 +378,28 @@ function getGender(gender) {
     case 'Female':
       return 'Female';
   }
+}
+
+/**
+ * Attempt to calculate a year for the record.
+ * 
+ * Right now it just tries to get a year (4-digit number) from the title.
+ * 
+ * @return {Integer}
+ */
+function getRecordYear() {
+  const title = getTitle();
+  const matches = title.match(/\d{4}/g);
+  if(matches.length === 1) {
+    return parseInt(matches[0], 10);
+  }
+}
+
+/**
+ * Get the record title
+ * 
+ * @returns {String}
+ */
+function getTitle() {
+  return document.querySelector('h1').textContent.replace(/\s/g, ' ').trim();
 }
