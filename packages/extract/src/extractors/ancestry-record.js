@@ -141,6 +141,7 @@ if(dataTable.hasData()) {
   //
   
   const parents = [];
+  const childrensParents = [personId];
 
   // Father
   const $father = dataTable.getMatch(/^father('s)?( name)?$/);
@@ -226,6 +227,7 @@ if(dataTable.hasData()) {
     }
 
     emit.Marriage(marriage);
+    childrensParents.push(spouseId);
   }
 
   // Children
@@ -240,6 +242,10 @@ if(dataTable.hasData()) {
       emit.Name({
         person: childId,
         name,
+      });
+      emit.Birth({
+        person: childId,
+        parents: childrensParents,
       });
     });
   }
