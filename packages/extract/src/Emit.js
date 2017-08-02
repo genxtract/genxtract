@@ -50,8 +50,15 @@ class Emit {
     this.extraction = extraction;
   }
 
-  // Used to show that two people are the same person in the extraction
-  AlternateId({person, id}) {
+  /**
+   * Used to show that two people are the same person in the extraction.
+   * 
+   * @param {Object} data
+   * @param {String} data.person person ID
+   * @param {String} data.id alternate person ID
+   * @param {Boolean=} data.preferred whether the combinator should use the alternate ID in the output
+   */ 
+  AlternateId({person, id, preferred = false}) {
     if (!person) {
       return this.extraction.error(new Error('alternateId missing person'));
     }
@@ -63,6 +70,7 @@ class Emit {
       data: {
         person,
         id,
+        preferred,
       },
     });
   }

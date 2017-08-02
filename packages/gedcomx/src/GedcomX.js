@@ -3,8 +3,12 @@ import Combinator from '@genxtract/combinator';
 class GedcomX extends Combinator {
   constructor(args = {}) {
     super(args);
-    // Setup model
+
+    // Represents the constructed GEDCOM X data
     this._model = {};
+
+    // And index to the persons, keyed by person ID
+    this._personsIndex = {};
   }
 
   // Update our internal model
@@ -50,6 +54,8 @@ class GedcomX extends Combinator {
         return this.spouse(type, data);
       case 'Citation':
         return this.citation(data);
+      case 'AlternateId':
+        return this.alternateId(data);
       default:
         // TODO silently ignore?
         console.log(`Unknown: ${type}`, data);
@@ -87,41 +93,48 @@ class GedcomX extends Combinator {
   }
 
   person({id, primary}) {
+    
+    // Create the list of persons if it doesn't already exist
     if (this._model.persons === undefined) {
       this._model.persons = [];
     }
 
-    let idx = null;
-    for (let i = 0; i < this._model.persons.length; i++) {
-      if (this._model.persons[i].id === id) {
-        idx = i;
-        break;
-      }
-    }
-    if (idx === null) {
-      const person = {id};
+    // Check to see if the person has already been created
+    let person = this._personsIndex[id];
+
+    // Create the person if they don't already exist
+    if(!person) {
+      person = {id};
       if (primary) {
         person.principle = true;
       }
       this._model.persons.push(person);
-      idx = this._model.persons.length - 1;
+      this._personsIndex[id] = person;
     }
-    return idx;
+
+    return person;
+  }
+
+  alternateId({person, id, preferred}) {
+    const p = this.person({id: person});
+    this._personsIndex[id] = p;
+    if(preferred) {
+      p.id = id;
+    }
   }
 
   gender({person, gender}) {
-    const idx = this.person({id: person});
-
-    this._model.persons[idx].gender = {
+    const p = this.person({id: person});
+    p.gender = {
       type: `http://gedcomx.org/${gender}`,
     };
   }
 
   name({person, name, given, surname, prefix, suffix}) {
-    const idx = this.person({id: person});
+    const p = this.person({id: person});
 
-    if (this._model.persons[idx].names === undefined) {
-      this._model.persons[idx].names = [];
+    if (p.names === undefined) {
+      p.names = [];
     }
 
     // Check to see if any parts are specified. If not then
@@ -188,7 +201,7 @@ class GedcomX extends Combinator {
     // Check for a duplicate name
     // TODO: consider making this more robust by comparing name parts
     let duplicate = false;
-    for(let n of this._model.persons[idx].names) {
+    for(let n of p.names) {
       for(let nf of n.nameForms) {
         if(nf.fullText === name) {
           duplicate = true;
@@ -199,16 +212,16 @@ class GedcomX extends Combinator {
       return;
     }
 
-    this._model.persons[idx].names.push({
+    p.names.push({
       nameForms: [nameForm],
     });
   }
 
   fact(type, {person, place, date, value}) {
-    const idx = this.person({id: person});
+    const p = this.person({id: person});
 
-    if (this._model.persons[idx].facts === undefined) {
-      this._model.persons[idx].facts = [];
+    if (p.facts === undefined) {
+      p.facts = [];
     }
 
     const fact = {
@@ -233,7 +246,7 @@ class GedcomX extends Combinator {
 
     // Dedupe birth events
     if (type === 'Birth') {
-      for (const existingFact of this._model.persons[idx].facts) {
+      for (const existingFact of p.facts) {
         if (existingFact.type === `http://gedcomx.org/${type}`) {
           if (existingFact.date === undefined && fact.date !== undefined) {
             existingFact.date = fact.date;
@@ -247,11 +260,11 @@ class GedcomX extends Combinator {
       }
     }
 
-    this._model.persons[idx].facts.push(fact);
+    p.facts.push(fact);
   }
 
   parent(type, {person, place, date, parents = []}) {
-    const idx = this.person({id: person});
+    const p = this.person({id: person});
     let parent1 = null;
     let parent2 = null;
 
@@ -274,10 +287,10 @@ class GedcomX extends Combinator {
       this._model.relationships.push({
         type: 'http://gedcomx.org/ParentChild',
         person1: {
-          resource: `#${this._model.persons[parent1].id}`,
+          resource: `#${parent1.id}`,
         },
         person2: {
-          resource: `#${this._model.persons[idx].id}`,
+          resource: `#${p.id}`,
         },
       });
     }
@@ -286,10 +299,10 @@ class GedcomX extends Combinator {
       this._model.relationships.push({
         type: 'http://gedcomx.org/ParentChild',
         person1: {
-          resource: `#${this._model.persons[parent2].id}`,
+          resource: `#${parent2.id}`,
         },
         person2: {
-          resource: `#${this._model.persons[idx].id}`,
+          resource: `#${p.id}`,
         },
       });
     }
@@ -329,10 +342,10 @@ class GedcomX extends Combinator {
       this._model.relationships.push({
         type: 'http://gedcomx.org/Couple',
         person1: {
-          resource: `#${this._model.persons[spouse1].id}`,
+          resource: `#${spouse1.id}`,
         },
         person2: {
-          resource: `#${this._model.persons[spouse2].id}`,
+          resource: `#${spouse2.id}`,
         },
         facts: [fact],
       });
