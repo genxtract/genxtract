@@ -2,6 +2,7 @@ import Extraction from '../Extraction.js';
 import Emit from '../Emit.js';
 import HorizontalTable from '../lib/HorizontalTable.js';
 import VerticalTable from '../lib/VerticalTable.js';
+import {maybe} from '../lib/utils.js';
 
 const eventsConfig = [
   {
@@ -140,53 +141,44 @@ if(dataTable.hasData()) {
   //
   
   const parents = [];
-  let fatherId;
-  let motherId;
-
-  // TODO: get the father and mother ID from the href 
-  // (pointing to their record) when it exists (doesn't always exist)
 
   // Father
-  if(dataTable.hasMatch(/^father('s)?/)) {
-    const fathersName = dataTable.getMatchText(/^father('s)?( name)?$/);
-    if(fathersName) {
-      fatherId = `${personId}-father`;
-      parents.push(fatherId);
-      emit.Person({
-        id: fatherId,
-      });
-      emit.Name({
+  const $father = dataTable.getMatch(/^father('s)?( name)?$/);
+  if($father) {
+    const fatherId = getRelativesRecordId($father, `${personId}-father`);
+    parents.push(fatherId);
+    emit.Person({
+      id: fatherId,
+    });
+    emit.Name({
+      person: fatherId,
+      name: $father.textContent.trim(),
+    });
+    if(dataTable.hasMatch(/^father('s)? (birthplace|place of birth)$/)) {
+      emit.Birth({
         person: fatherId,
-        name: fathersName.trim(),
+        place: dataTable.getMatchText(/^father('s)? (birthplace|place of birth)$/),
       });
-      if(dataTable.hasMatch(/^father('s)? (birthplace|place of birth)$/)) {
-        emit.Birth({
-          person: fatherId,
-          place: dataTable.getMatchText(/^father('s)? (birthplace|place of birth)$/),
-        });
-      }
     }
   }
   
   // Mother
-  if(dataTable.hasMatch(/^mother('s)?/)) {
-    const mothersName = dataTable.getMatchText(/^mother('s)?( name)?$/);
-    if(mothersName) {
-      motherId = `${personId}-mother`;
-      parents.push(motherId);
-      emit.Person({
-        id: motherId,
-      });
-      emit.Name({
+  const $mother = dataTable.getMatch(/^mother('s)?( name)?$/);
+  if($mother) {
+    const motherId = getRelativesRecordId($mother, `${personId}-mother`);
+    parents.push(motherId);
+    emit.Person({
+      id: motherId,
+    });
+    emit.Name({
+      person: motherId,
+      name: $mother.textContent.trim(),
+    });
+    if(dataTable.hasMatch(/^mother('s)? (birthplace|place of birth)$/)) {
+      emit.Birth({
         person: motherId,
-        name: mothersName.trim(),
+        place: dataTable.getMatchText(/^mother('s)? (birthplace|place of birth)$/),
       });
-      if(dataTable.hasMatch(/^mother('s)? (birthplace|place of birth)$/)) {
-        emit.Birth({
-          person: motherId,
-          place: dataTable.getMatchText(/^mother('s)? (birthplace|place of birth)$/),
-        });
-      }
     }
   }
 
@@ -196,6 +188,63 @@ if(dataTable.hasData()) {
       parents,
     });
   }
+
+  // Spouse
+  const $spouse = dataTable.getMatch(/^spouse('s)?( name)?$/);
+  if($spouse) {
+    const spouseId = getRelativesRecordId($spouse, `${personId}-spouse`) ;
+    
+    emit.Person({
+      id: spouseId,
+    });
+    emit.Name({
+      person: spouseId,
+      name: $spouse.textContent.trim(),
+    });
+    
+    if(dataTable.hasLabel('spouse gender')) {
+      emit.Gender({
+        person: spouseId,
+        gender: getGender(dataTable.getText('spouse gender')),
+      });
+    }
+    
+    const marriage = {
+      spouses: [personId, spouseId],
+    };
+    
+    // Marriage
+    // TODO: is it possible for a event to be listed without a spouse? If so
+    // then this code block won't detect it
+    const marriageDate = dataTable.getText('marriage date');
+    const marriagePlace = dataTable.getText('marriage place');
+    if(marriageDate) {
+      marriage.date = marriageDate;
+    }
+    if(marriagePlace) {
+      marriage.place = marriagePlace;
+    }
+
+    emit.Marriage(marriage);
+  }
+
+  // Children
+  if(dataTable.hasLabel('children')) {
+    // TODO: are there ever records that list children with links to the childrens' records?
+    // Here we are assuming they are always just text.
+    dataTable.getText('children').split('; ').forEach(function(name, i) {
+      const childId = `${personId}-child-${i+1}`;
+      emit.Person({
+        id: childId,
+      });
+      emit.Name({
+        person: childId,
+        name,
+      });
+    });
+  }
+  
+  // TODO: siblings; see web obituary test; how do we detect and handle "of {PLACE}" strings?
 
 }
 
@@ -221,6 +270,19 @@ extraction.end();
 function getRecordId(url) {
   const params = new URLSearchParams(new URL(url).search);
   return (params.get('dbid') || params.get('db')) + '-' + params.get('h');
+}
+
+/**
+ * Get the record ID of a relative, if possible.
+ * 
+ * @param {Element} $relative
+ * @param {String=} defaultId
+ * @return {String}
+ */
+function getRelativesRecordId($relative, defaultId) {
+  const a = $relative.querySelector('a');
+  const url = maybe(a).href;
+  return url ? getRecordId(url) : defaultId;
 }
 
 /**
