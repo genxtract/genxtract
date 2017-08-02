@@ -11,9 +11,19 @@ const eventsConfig = [
     place: /^(birth ?place)$/,
   },
   {
+    type: 'Baptism',
+    date: /^(baptism date|died)$/,
+    place: /^(baptism place)$/,
+  },
+  {
     type: 'Death',
     date: /^(death date|died)$/,
     place: /^(death place)$/,
+  },
+  {
+    type: 'Burial',
+    date: /^(burial date|died)$/,
+    place: /^(burial place)$/,
   },
   {
     type: 'Immigration',
@@ -320,6 +330,29 @@ if(dataTable.hasData()) {
         }
       }
     });
+  }
+  
+  // Handle FamilySearch style events labeled as "Event Type","Event Date","Event Place"
+  // We do this last so that we can properly attach any relationship events
+  if(dataTable.hasLabel('event type')) {
+    const otherEventType = dataTable.getText('event type');
+    const otherEventDate = dataTable.getText('event date');
+    const otherEventPlace = dataTable.getText('event place');
+    if(otherEventType && emit[otherEventType] && (otherEventDate || otherEventPlace)) {
+      const otherEvent = {};
+      if(otherEventDate) {
+        otherEvent.date = otherEventDate;
+      }
+      if(otherEventPlace) {
+        otherEvent.place = otherEventPlace;
+      }
+      if(otherEventType === 'Marriage') {
+        otherEvent.spouses = childrensParents;
+        emit.Marriage(otherEvent);
+      } else {
+        emit[otherEventType](otherEvent);
+      }
+    }
   }
 
 }
