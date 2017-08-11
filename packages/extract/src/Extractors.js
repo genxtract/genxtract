@@ -6,6 +6,7 @@ const extractors = {
   'familysearch-person': [/familysearch\.org\/tree\/person\//],
   'familysearch-record': [/familysearch\.org\/pal:\/MM9\.1\.1\//, /familysearch\.org\/ark:\/61903\/1:1:/],
   'findagrave': [/www\.findagrave\.com\/cgi-bin\/fg\.cgi\?page=gr/],
+  'findmypast-person': [/tree\.findmypast\.(co\.uk|com|ie|com\.au)/],
   'genealogieonline': [/www\.genealogieonline\.nl\/[a-z]+\/.+\/.+\.php/],
   'myheritage-person': [/www\.myheritage\.com\/person-/, /www\.myheritage\.com\/site-family-tree-/],
   'myheritage-record': [/www\.myheritage\.com\/research\/record-/],
