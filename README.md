@@ -10,6 +10,7 @@ Extracting genealogical data from various websites.
 |[BillionGraves](http://billiongraves.com)||X|
 |[FamilySearch.org](https://familysearch.org)|X|X|
 |[Find A Grave](http://www.findagrave.com)||X|
+|[findmypast](http://www.findmypast.com)|X||
 |[Genealogie Online](https://www.genealogieonline.nl)|X||
 |[MyHeritage](https://www.myheritage.com)|X|X|
 |[Open Archives](https://www.openarch.nl)||X|
