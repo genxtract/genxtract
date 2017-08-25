@@ -16,6 +16,7 @@ describe('GedcomX', () => {
   });
 
   it('basic person', (done) => {
+    extractionErrorListener(done);
     promise.then((data) => {
       expect(data).to.deep.equal({
         persons: [{
@@ -32,6 +33,7 @@ describe('GedcomX', () => {
   });
 
   it('primary person', (done) => {
+    extractionErrorListener(done);
     promise.then((data) => {
       expect(data).to.deep.equal({
         persons: [{
@@ -49,6 +51,7 @@ describe('GedcomX', () => {
   });
 
   it('gender', (done) => {
+    extractionErrorListener(done);
     promise.then((data) => {
       expect(data).to.deep.equal({
         persons: [{
@@ -68,6 +71,7 @@ describe('GedcomX', () => {
   });
 
   it('name', (done) => {
+    extractionErrorListener(done);
     promise.then((data) => {
       expect(data).to.deep.equal({
         persons: [{
@@ -122,6 +126,7 @@ describe('GedcomX', () => {
   });
 
   it('basic events/facts', (done) => {
+    extractionErrorListener(done);
     promise.then((data) => {
       expect(data).to.deep.equal({
         persons: [{
@@ -145,6 +150,7 @@ describe('GedcomX', () => {
   });
 
   it('parent events', (done) => {
+    extractionErrorListener(done);
     promise.then((data) => {
       expect(data).to.deep.equal({
         persons: [
@@ -180,6 +186,7 @@ describe('GedcomX', () => {
   });
 
   it('spouse events', (done) => {
+    extractionErrorListener(done);
     promise.then((data) => {
       expect(data).to.deep.equal({
         persons: [
@@ -207,6 +214,7 @@ describe('GedcomX', () => {
   });
 
   it('citation', (done) => {
+    extractionErrorListener(done);
     promise.then((data) => {
       expect(data).to.deep.equal({
         description: '#1',
@@ -261,6 +269,7 @@ describe('GedcomX', () => {
   });
 
   it('should dedupe birth facts', (done) => {
+    extractionErrorListener(done);
     promise.then((data) => {
       expect(data).to.deep.equal({
         persons: [
@@ -302,6 +311,7 @@ describe('GedcomX', () => {
   });
 
   it('alternate id', (done) => {
+    extractionErrorListener(done);
     promise.then((data) => {
       expect(data).to.deep.equal({
         persons: [{
@@ -332,4 +342,35 @@ describe('GedcomX', () => {
   });
 
   it('external id');
+
+  it('don\'t create relationships array unless a rel is added', (done) => {
+    extractionErrorListener(done);
+    promise.then((data) => {
+      expect(data).to.deep.equal({
+        persons: [{
+          id: '1234',
+          facts: [{
+            type: 'http://gedcomx.org/Birth',
+            date: {
+              original: 'Sometime',
+            },
+          }],
+        }],
+      });
+      done();
+    })
+    .catch(done);
+
+    emit.Birth({person: '1234', date: 'Sometime'});
+    emit.Marriage({spouses: ['1234'], date: 'Sometime'});
+    extraction.end();
+  });
 });
+
+function extractionErrorListener(done) {
+  window.addEventListener('genxtract', (e) => {
+    if(e.detail.type === 'ERROR') {
+      done(new Error(e.detail.data));
+    };
+  });
+}
