@@ -350,6 +350,14 @@ class GedcomX extends Combinator {
         facts: [fact],
       });
     }
+
+    // When we only have one spouse just add the fact to the person
+    else {
+      if(!Array.isArray(spouse1.facts)) {
+        spouse1.facts = [];
+      }
+      spouse1.facts.push(fact);
+    }
   }
 
   citation({title, url, accessed, repository_name, repository_website, repository_url}) {
