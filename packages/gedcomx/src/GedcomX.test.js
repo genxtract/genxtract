@@ -366,7 +366,7 @@ describe('GedcomX', () => {
     extraction.end();
   });
 
-  it.only('marriage event with unknown spouse is added to the person', (done) => {
+  it('marriage event with unknown spouse is added to the person', (done) => {
     extractionErrorListener(done);
     promise.then((data) => {
       expect(data).to.deep.equal({
