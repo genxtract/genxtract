@@ -1,6 +1,7 @@
 import Combinator from '@genxtract/combinator';
 
 class GedcomX extends Combinator {
+  
   constructor(args = {}) {
     super(args);
 
@@ -282,11 +283,8 @@ class GedcomX extends Combinator {
     // Create the fact
     this.fact(type, {person, place, date});
 
-    if (this._model.relationships === undefined) {
-      this._model.relationships = [];
-    }
-
     if (parent1 !== null) {
+      this._ensureRelationships();
       // TODO ensure relationship does not already exist
       this._model.relationships.push({
         type: 'http://gedcomx.org/ParentChild',
@@ -299,6 +297,7 @@ class GedcomX extends Combinator {
       });
     }
     if (parent2 !== null) {
+      this._ensureRelationships();
       // TODO ensure relationship does not already exist
       this._model.relationships.push({
         type: 'http://gedcomx.org/ParentChild',
@@ -337,11 +336,8 @@ class GedcomX extends Combinator {
       };
     }
 
-    if (this._model.relationships === undefined) {
-      this._model.relationships = [];
-    }
-
     if (spouse2 !== null) {
+      this._ensureRelationships();
       // TODO ensure relationship does not already exist
       this._model.relationships.push({
         type: 'http://gedcomx.org/Couple',
@@ -393,6 +389,15 @@ class GedcomX extends Combinator {
     };
 
     this._model.sourceDescriptions.push(description);
+  }
+
+  /**
+   * Make sure that the relationships array exists on the model.
+   */
+  _ensureRelationships() {
+    if (!Array.isArray(this._model.relationships)) {
+      this._model.relationships = [];
+    }
   }
 }
 
