@@ -281,7 +281,9 @@ class GedcomX extends Combinator {
     }
 
     // Create the fact
-    this.fact(type, {person, place, date});
+    if(place || date) {
+      this.fact(type, {person, place, date});
+    }
 
     if (parent1 !== null) {
       this._ensureRelationships();
