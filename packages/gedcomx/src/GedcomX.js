@@ -289,30 +289,10 @@ class GedcomX extends Combinator {
     }
 
     if (parent1 !== null) {
-      this._ensureRelationships();
-      // TODO ensure relationship does not already exist
-      this._model.relationships.push({
-        type: 'http://gedcomx.org/ParentChild',
-        person1: {
-          resource: `#${parent1.id}`,
-        },
-        person2: {
-          resource: `#${p.id}`,
-        },
-      });
+      this._addRelationship('ParentChild', parent1.id, p.id);
     }
     if (parent2 !== null) {
-      this._ensureRelationships();
-      // TODO ensure relationship does not already exist
-      this._model.relationships.push({
-        type: 'http://gedcomx.org/ParentChild',
-        person1: {
-          resource: `#${parent2.id}`,
-        },
-        person2: {
-          resource: `#${p.id}`,
-        },
-      });
+      this._addRelationship('ParentChild', parent2.id, p.id);
     }
   }
 
@@ -342,18 +322,7 @@ class GedcomX extends Combinator {
     }
 
     if (spouse2 !== null) {
-      this._ensureRelationships();
-      // TODO ensure relationship does not already exist
-      this._model.relationships.push({
-        type: 'http://gedcomx.org/Couple',
-        person1: {
-          resource: `#${spouse1.id}`,
-        },
-        person2: {
-          resource: `#${spouse2.id}`,
-        },
-        facts: [fact],
-      });
+      this._addRelationship('Couple', spouse1.id, spouse2.id, [fact]);
     }
 
     // When we only have one spouse just add the fact to the person
@@ -404,14 +373,138 @@ class GedcomX extends Combinator {
     this._model.sourceDescriptions.push(description);
   }
 
-  /**
-   * Make sure that the relationships array exists on the model.
-   */
-  _ensureRelationships() {
+  _addRelationship(type, id1, id2, facts) {
     if (!Array.isArray(this._model.relationships)) {
       this._model.relationships = [];
     }
+
+    const relationship = {
+      type: `http://gedcomx.org/${type}`,
+      person1: {
+        resource: `#${id1}`,
+      },
+      person2: {
+        resource: `#${id2}`,
+      },
+    };
+    if(Array.isArray(facts)) {
+      relationship.facts = facts;
+    }
+
+    // Check for an existing relationship
+    const existingRelationship = this._model.relationships.find((rel) => {
+      return relationshipsEqual(relationship, rel);
+    });
+    
+    // Merge facts into an existing relationship
+    if(existingRelationship && relationship.facts) {
+      if(!Array.isArray(existingRelationship.facts)) {
+        existingRelationship.facts = [];
+      }
+      mergeFacts(existingRelationship.facts, relationship.facts);
+    }
+
+    // Add the relationship if it doesn't already exist
+    if(!existingRelationship) {
+      this._model.relationships.push(relationship);
+    }
+    
   }
+
+}
+
+/**
+ * Merge a list of facts into another list of facts.
+ * Compares facts to avoid adding duplicates.
+ * 
+ * @param {[Object]} originalFacts
+ * @param {[Object]} newFacts
+ */
+function mergeFacts(originalFacts, newFacts) {
+  if(originalFacts === undefined || newFacts === undefined) {
+    return;
+  }
+  newFacts.forEach((fact) => {
+    addFact(originalFacts, fact);
+  });
+}
+
+/**
+ * Add a fact to a list of facts, comparing to the
+ * existing facts to avoid adding duplicates.
+ * 
+ * @param {[Object]} facts
+ * @param {Object} newFact
+ */
+function addFact(facts, newFact) {
+  const existingFact = facts.find((f) => {
+    return factsEqual(newFact, f);
+  });
+  if(!existingFact) {
+    facts.push(newFact);
+  }
+}
+
+/**
+ * Compare to GEDCOM X relationships. Returns true if the type,
+ * person1, and person2 are equal. Facts are not compared.
+ * 
+ * @param {Object} rel1
+ * @param {Object} rel2
+ * @return {Boolean}
+ */
+function relationshipsEqual(rel1, rel2) {
+  if(rel1 === rel2) {
+    return true;
+  }
+  return rel1 && rel2 && rel1.type === rel2.type &&
+    rel1.person1.resource === rel2.person1.resource &&
+    rel1.person2.resource === rel2.person2.resource;
+}
+
+/**
+ * Determine whether two facts are equal
+ * 
+ * @param {Object} fact1
+ * @param {Object} fact2
+ * @return {Boolean}
+ */
+function factsEqual(fact1, fact2) {
+  if(fact1 === fact2) {
+    return true;
+  }
+  return fact1 && fact2 &&
+    fact1.type === fact2.type &&
+    datesEqual(fact1.date, fact2.date) &&
+    placesEqual(fact1.place, fact2.place);
+}
+
+/**
+ * Determine whether two dates are equal
+ * 
+ * @param {Object} date1
+ * @param {Object} date2
+ * @return {Boolean}
+ */
+function datesEqual(date1, date2) {
+  if(date1 === date2) {
+    return true;
+  }
+  return date1 && date2 && date1.original === date2.original;
+}
+
+/**
+ * Determine whether two places are equal
+ * 
+ * @param {Object} place1
+ * @param {Object} place2
+ * @return {Boolean}
+ */
+function placesEqual(place1, place2) {
+  if(place1 === place2) {
+    return true;
+  }
+  return place1 && place2 && place1.original === place2.original;
 }
 
 export default GedcomX;

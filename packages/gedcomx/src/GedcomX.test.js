@@ -425,7 +425,40 @@ describe('GedcomX', () => {
     })
     .catch((error) => done(error));
     emit.Person({id: 1234});
-    emit.Birth({person: 1234, date: 'Somewhere'}),
+    emit.Birth({person: 1234, date: 'Somewhere'});
+    extraction.end();
+  });
+
+  it('don\'t create duplicate relationships', (done) => {
+    extractionErrorListener(done);
+    promise.then((data) => {
+      expect(data).to.deep.equal({
+        persons: [
+          {id: '1234'},
+          {id: '90'},
+          {id: '5678'},
+        ],
+        relationships: [{
+          type: 'http://gedcomx.org/ParentChild',
+          person1: {resource: '#90'},
+          person2: {resource: '#1234'},
+        }, {
+          type: 'http://gedcomx.org/Couple',
+          person1: {resource: '#1234'},
+          person2: {resource: '#5678'},
+          facts: [{
+            type: 'http://gedcomx.org/Marriage',
+            place: {original: 'Somewhere'},
+          }],
+        }],
+      });
+      done();
+    })
+    .catch((error) => done(error));
+    emit.Birth({person: '1234', parents: ['90']});
+    emit.Birth({person: '1234', parents: ['90']});
+    emit.Marriage({spouses: ['1234', '5678'], place: 'Somewhere'});
+    emit.Marriage({spouses: ['1234', '5678'], place: 'Somewhere'});
     extraction.end();
   });
 });
