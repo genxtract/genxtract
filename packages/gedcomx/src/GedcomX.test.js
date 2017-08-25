@@ -373,16 +373,14 @@ describe('GedcomX', () => {
         persons: [{
           id: '1234',
           facts: [
-            {type: 'http://gedcomx.org/Baptism', place: {original: 'Somewhere'}, date: {original: 'Sometime'}},
+            {type: 'http://gedcomx.org/Marriage', place: {original: 'Somewhere'}, date: {original: 'Sometime'}},
           ],
         }],
       });
       done();
     })
     .catch((error) => done(error));
-
     emit.Marriage({spouses: ['1234'], place: 'Somewhere', date: 'Sometime'});
-
     extraction.end();
   });
 });
