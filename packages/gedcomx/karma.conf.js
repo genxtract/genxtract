@@ -19,5 +19,11 @@ module.exports = function(config) {
       format: 'iife',
       sourceMap: 'inline',
     },
+    client: {
+      chai: {
+        includeStack: true,
+        truncateThreshold: 0,
+      },
+    },
   });
 };

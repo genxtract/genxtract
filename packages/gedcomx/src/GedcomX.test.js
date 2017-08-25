@@ -354,7 +354,11 @@ describe('GedcomX', () => {
             date: {
               original: 'Sometime',
             },
-          }],
+          }, {
+            type: 'http://gedcomx.org/Marriage', 
+            date: {original: 'Sometime'},
+          },
+        ],
         }],
       });
       done();
@@ -381,6 +385,28 @@ describe('GedcomX', () => {
     })
     .catch((error) => done(error));
     emit.Marriage({spouses: ['1234'], place: 'Somewhere', date: 'Sometime'});
+    extraction.end();
+  });
+
+  it('birth event is only added when a date or place is given', (done) => {
+    extractionErrorListener(done);
+    promise.then((data) => {
+      expect(data).to.deep.equal({
+        persons: [{
+          id: '1234',
+        }, {
+          id: '567',
+        }],
+        relationships: [{
+          type: 'http://gedcomx.org/ParentChild',
+          person1: {resource: '#567'},
+          person2: {resource: '#1234'},
+        }],
+      });
+      done();
+    })
+    .catch((error) => done(error));
+    emit.Birth({person: '1234', parents: ['567']});
     extraction.end();
   });
 });
