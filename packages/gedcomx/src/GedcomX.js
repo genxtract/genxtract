@@ -104,6 +104,9 @@ class GedcomX extends Combinator {
       this._model.persons = [];
     }
 
+    // Cast as a string
+    id = '' + id;
+
     // Check to see if the person has already been created
     let person = this._personsIndex[id];
 
@@ -385,7 +388,7 @@ class GedcomX extends Combinator {
     }
 
     const description = {
-      id: this._model.sourceDescriptions + 1,
+      id: '' + (this._model.sourceDescriptions.length + 1),
       citations: [{
         value: `${title}, ${repository_name} (${url} : accessed ${new Date(accessed).toDateString()})`,
       }],

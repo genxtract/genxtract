@@ -409,6 +409,25 @@ describe('GedcomX', () => {
     emit.Birth({person: '1234', parents: ['567']});
     extraction.end();
   });
+
+  it('ids are cast to strings', (done) => {
+    extractionErrorListener(done);
+    promise.then((data) => {
+      expect(data).to.deep.equal({
+        persons: [{
+          id: '1234',
+          facts: [
+            {type: 'http://gedcomx.org/Birth', date: {original: 'Somewhere'}},
+          ],
+        }],
+      });
+      done();
+    })
+    .catch((error) => done(error));
+    emit.Person({id: 1234});
+    emit.Birth({person: 1234, date: 'Somewhere'}),
+    extraction.end();
+  });
 });
 
 function extractionErrorListener(done) {
