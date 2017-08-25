@@ -417,8 +417,8 @@ class GedcomX extends Combinator {
  * Merge a list of facts into another list of facts.
  * Compares facts to avoid adding duplicates.
  * 
- * @param {[Object]} originalFacts
- * @param {[Object]} newFacts
+ * @param {Object[]} originalFacts
+ * @param {Object[]} newFacts
  */
 function mergeFacts(originalFacts, newFacts) {
   if(originalFacts === undefined || newFacts === undefined) {
@@ -433,7 +433,7 @@ function mergeFacts(originalFacts, newFacts) {
  * Add a fact to a list of facts, comparing to the
  * existing facts to avoid adding duplicates.
  * 
- * @param {[Object]} facts
+ * @param {Object[]} facts
  * @param {Object} newFact
  */
 function addFact(facts, newFact) {
