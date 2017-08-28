@@ -431,7 +431,7 @@ function getRecordYear() {
 /**
  * Get the record title
  * 
- * @returns {String}
+ * @return {String}
  */
 function getTitle() {
   return document.querySelector('h1').textContent.replace(/\s/g, ' ').trim();

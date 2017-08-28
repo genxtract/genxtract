@@ -16,6 +16,7 @@ module.exports = {
     'camelcase': 0,
     'linebreak-style': 0,
     'padded-blocks': 0,
-    'no-trailing-spaces': 0
+    'no-trailing-spaces': 0,
+    'brace-style': 0,
   },
 }

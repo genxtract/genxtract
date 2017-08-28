@@ -1,13 +1,21 @@
 class Extraction {
+  
+  /**
+   * @param {String} id ID of the extraction. Used to differentiate multiple extractions on the same page.
+   */
   constructor(id) {
     this.id = id;
     this.started = false;
     this.ended = false;
   }
 
+  /**
+   * Signal the start of the extraction.
+   */
   start() {
     if (this.started) {
-      return this._consoleError('called start twice');
+      this._consoleError('called start twice');
+      return;
     }
     this.started = true;
     this._dispatch({
@@ -16,26 +24,40 @@ class Extraction {
     });
   }
 
-  data(obj) {
+  /**
+   * Dispatch data
+   * 
+   * @param {Object} data
+   */
+  data(data) {
     if (!this.started) {
-      return this._consoleError('sent data before starting', obj);
+      this._consoleError('sent data before starting', data);
+      return;
     }
     if (this.ended) {
-      return this._consoleError('sent data after ending', obj);
+      this._consoleError('sent data after ending', data);
+      return;
     }
     this._dispatch({
       id: this.id,
       type: 'DATA',
-      data: obj,
+      data: data,
     });
   }
 
+  /**
+   * Dispatch an error
+   * 
+   * @param {Error|String} error 
+   */
   error(error) {
     if (!this.started) {
-      return this._consoleError('sent data before starting', error);
+      this._consoleError('sent data before starting', error);
+      return;
     }
     if (this.ended) {
-      return this._consoleError('sent data after ending', error);
+      this._consoleError('sent data after ending', error);
+      return;
     }
     this._consoleError('errored:', error);
     this._dispatch({
@@ -45,10 +67,14 @@ class Extraction {
     });
   }
 
+  /**
+   * Signal the end of extraction.
+   */
   end() {
     // TODO: throw error if extraction hasn't started?
     if (this.ended) {
-      return this._consoleError('called end twice');
+      this._consoleError('called end twice');
+      return;
     }
     this.ended = true;
     this._dispatch({
@@ -57,14 +83,19 @@ class Extraction {
     });
   }
 
-  log(...messages) {
-    console.log(...messages);
-  }
-
+  /**
+   * DEPRECATED. REMOVE.
+   * https://github.com/genxtract/genxtract/issues/88
+   */
   _consoleError(message, obj = '') {
     console.error(new Error(`genxtract: ${this.id} ${message}`), obj);
   }
 
+  /**
+   * Dispatch data as a custom `genxtract` event
+   * 
+   * @param {*} obj 
+   */
   _dispatch(obj) {
     window.dispatchEvent(new window.CustomEvent('genxtract', {detail: obj}));
   }

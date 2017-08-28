@@ -1,3 +1,4 @@
+// Map of extractor IDs to a list of regexes that match URLs for that extractor.
 // NOTE: one extractor per url
 const extractors = {
   'ancestry-person': [/www\.ancestry\.com\/family-tree\/person\/tree\/[^\/]+\/person\//],
@@ -17,11 +18,23 @@ const extractors = {
 };
 
 class Extractors {
+  
+  /**
+   * @param {Object=} data 
+   * @param {Object=} data.prefix Path prefix to the extract package directory
+   */
   constructor({prefix} = {}) {
     this.prefix = prefix || 'node_modules/@genxtract/extract';
   }
 
-  // Will return the first match we find
+  /**
+   * Find a matching extractor for the given URL.
+   * First one to match is returned.
+   * 
+   * @param {Object} data
+   * @param {String} data.url
+   * @return {Object} {id, path}
+   */
   match({url}) {
     for (let extractor of Object.keys(extractors)) {
       for (let regex of extractors[extractor]) {

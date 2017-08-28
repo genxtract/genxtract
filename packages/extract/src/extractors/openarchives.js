@@ -23,8 +23,6 @@ async function extract() {
   const json = await res.json();
   const data = json[0];
 
-  console.log(data);
-
   // Persons
   for (const rawPerson of data.a2a_Person) {
     const person = rawPerson.pid;
