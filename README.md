@@ -81,3 +81,5 @@ Notes:
 
 You do not have to reload the chrome extension everytime an extractor is changed. You only have to reload when `Emit`, `Extraction`, 
 or `Extractors` are changed. Note that source maps are included, so look carefully at the stack traces in errors to pick the original and not the bundled line number.
+
+When adding a new extractor, be sure to update `packages/extract/src/Extractors.js` with the new extractor ID and URL regex.
