@@ -1,6 +1,6 @@
 # genxtract
 
-Extracting genealogical data from various websites.
+Extracting genealogical data from various websites. Designed to be used in browser extensions.
 
 ## Extractors
 
@@ -22,6 +22,56 @@ Extracting genealogical data from various websites.
 ````bash
 npm install && npm run bootstrap
 ````
+
+## Usage
+
+1. Inject a combinator into the page and call `combinator.start()`, keeping a reference to the promise that is returned.
+2. Use `Extractors.match()` to get the path of the extractor for that page.
+3. Inject the extractor.
+4. Wait for the promise from `combinator.start()` to be resolved.
+
+Here are snippets from the `chrome-ext` developer test extension that show how this can be done:
+
+```js
+// In a background script...
+
+// Listen for our browerAction to be clicked
+chrome.browserAction.onClicked.addListener((tab) => {
+
+  // Get a matching extractor
+  const {id, path} = extractors.match({url: tab.url});
+  if (id) {
+
+    // Inject combinator
+    chrome.tabs.executeScript(tab.id, {
+      file: 'combinator.js',
+    });
+
+    // Inject extractor
+    chrome.tabs.executeScript(tab.id, {
+      file: path,
+    });
+  }
+});
+```
+
+```js
+// combinator.js
+const combinator = new GedcomX();
+combinator.start()
+  .then((data) => {
+    // Send the data to the background script
+    chrome.runtime.sendMessage(data);
+  })
+  .catch((error) => console.error(error));
+```
+
+Notes:
+
+* We inject and start the combinator first so that it is ready to listen for events from the extractor.
+  The extractor will likely start firing events as soon as it's injected.
+* In the example above, `combinator.js` is a small file that wraps the combinator to initialize it
+  and interface with the browser extension.
 
 ## Developing extractors
 

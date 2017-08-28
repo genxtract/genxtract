@@ -85,6 +85,7 @@ class Extraction {
 
   /**
    * DEPRECATED. REMOVE.
+   * https://github.com/genxtract/genxtract/issues/88
    */
   _consoleError(message, obj = '') {
     console.error(new Error(`genxtract: ${this.id} ${message}`), obj);
