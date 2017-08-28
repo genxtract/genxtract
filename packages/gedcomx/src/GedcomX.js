@@ -1,7 +1,14 @@
 import Combinator from '@genxtract/combinator';
 
+/**
+ * Combinator that outputs data in the GEDCOM X JavaScript format.
+ * Data is returned as a POJO.
+ */
 class GedcomX extends Combinator {
   
+  /**
+   * @param {Object=} args See the Combinator docs for available options.
+   */
   constructor(args = {}) {
     super(args);
 
@@ -12,7 +19,16 @@ class GedcomX extends Combinator {
     this._personsIndex = {};
   }
 
-  // Update our internal model
+  /**
+   * Process data from the extractor. This method is called by
+   * methods defined in Combinator.
+   * 
+   * @abstract
+   * @param {Object} obj
+   * @param {String} obj.type Data type
+   * @param {Object} obj.data Data
+   * @return {void}
+   */
   dataCallback({type, data}) {
     switch(type) {
       case 'Person':
@@ -67,9 +83,13 @@ class GedcomX extends Combinator {
     }
   }
 
-  // (Optional) Finalize
+  /**
+   * Post-processing of data before it's serialized.
+   * 
+   * We reference a sourceDescription from persons and
+   * relationships, if a sourceDescription is available.
+   */
   finalizeCallback() {
-    // If we have a sourceDescription, reference it
     if (this._model.sourceDescriptions &&
        this._model.sourceDescriptions.length > 0) {
       this._model.description = '#1';
@@ -92,11 +112,23 @@ class GedcomX extends Combinator {
     }
   }
 
-  // Serialize our model
+  /**
+   * Serialize the model. This returns a POJO.
+   * 
+   * @return {Object}
+   */
   serializeCallback() {
     return this._model;
   }
 
+  /**
+   * Add a person
+   * 
+   * @param {Object} data
+   * @param {String} data.id Person's ID
+   * @param {Boolean=} data.primary Whether the person is the primary/principle person of the record
+   * @return {Person} The GEDCOM X person object
+   */
   person({id, primary}) {
     
     // Create the list of persons if it doesn't already exist
@@ -123,6 +155,14 @@ class GedcomX extends Combinator {
     return person;
   }
 
+  /**
+   * Allow for a person to be reference by an alternate ID
+   * 
+   * @param {Object} data
+   * @param {String} data.person Previous person ID
+   * @param {String} data.id Alternate person ID
+   * @param {Boolean=} data.preferred If preferred, this ID will be included in the serialized data
+   */
   alternateId({person, id, preferred}) {
     const p = this.person({id: person});
     this._personsIndex[id] = p;
@@ -131,6 +171,13 @@ class GedcomX extends Combinator {
     }
   }
 
+  /**
+   * Add a person's gender
+   * 
+   * @param {Object} data
+   * @param {String} data.person Person ID
+   * @param {String} data.gender `Male` or `Female`
+   */
   gender({person, gender}) {
     const p = this.person({id: person});
     p.gender = {
@@ -138,6 +185,20 @@ class GedcomX extends Combinator {
     };
   }
 
+  /**
+   * Add a name to a person. While all of the name options are
+   * marked as optional, at least one of them must be specified.
+   * If the parts are specified without the full name then the
+   * full name will be constructed from the parts.
+   * 
+   * @param {Object} data
+   * @param {String} data.person Person ID
+   * @param {String=} data.name Person's full name
+   * @param {String=} data.given Person's given names
+   * @param {String=} data.surname Person's surnames
+   * @param {String=} data.prefix Person's name prefix
+   * @param {String=} data.suffix Person's name suffix
+   */
   name({person, name, given, surname, prefix, suffix}) {
     const p = this.person({id: person});
 
@@ -225,6 +286,16 @@ class GedcomX extends Combinator {
     });
   }
 
+  /**
+   * Add a fact to a person.
+   * 
+   * @param {String} type 
+   * @param {Object} data
+   * @param {String} data.person Person ID
+   * @param {String=} data.place Place name
+   * @param {String=} data.date Date
+   * @param {String=} data.value Fact value
+   */
   fact(type, {person, place, date, value}) {
     const p = this.person({id: person});
 
@@ -271,6 +342,16 @@ class GedcomX extends Combinator {
     p.facts.push(fact);
   }
 
+  /**
+   * Add parents of a person and or a parent event
+   * 
+   * @param {String} type Event type
+   * @param {Object} data
+   * @param {String} data.person
+   * @param {String=} data.place
+   * @param {String=} data.date
+   * @param {String[]=} data.parents List of parent IDs.
+   */
   parent(type, {person, place, date, parents = []}) {
     const p = this.person({id: person});
     let parent1 = null;
@@ -296,6 +377,15 @@ class GedcomX extends Combinator {
     }
   }
 
+  /**
+   * Add a spouse event and or a spouse relationship
+   * 
+   * @param {String} type Event type
+   * @param {Object} data
+   * @param {String[]} data.spouses List of spouse (person) IDs.
+   * @param {String=} data.place
+   * @param {String=} data.date
+   */
   spouse(type, {spouses, place, date}) {
     let spouse1 = this.person({id: spouses[0]});
     let spouse2 = null;
@@ -334,6 +424,17 @@ class GedcomX extends Combinator {
     }
   }
 
+  /**
+   * Add a citation for the record being extracted.
+   * 
+   * @param {Object} data
+   * @param {String} data.title Title of the record
+   * @param {String} data.url URL of the record
+   * @param {Integer} data.accessed Timestamp representing when the record was accessed
+   * @param {String=} data.repository_name Human-readable name for the repository where the record exists
+   * @param {String=} data.repository_website Domain of the repository website
+   * @param {String=} data.repository_url Full URL of the repository website
+   */
   citation({title, url, accessed, repository_name, repository_website, repository_url}) {
     if (this._model.agents === undefined) {
       this._model.agents = [];
@@ -373,6 +474,17 @@ class GedcomX extends Combinator {
     this._model.sourceDescriptions.push(description);
   }
 
+  /**
+   * Add a relationship to the model. This method checks for and avoid
+   * creating duplicate relationships. If facts are specified and an
+   * existing relationship is found then that existing relationship 
+   * will have the new facts merged into it and deduplicated.
+   * 
+   * @param {String} type Relationship type
+   * @param {String} id1 ID of person1
+   * @param {String} id2 ID of person2
+   * @param {Object[]} facts List of facts that should be added to the relationship.
+   */
   _addRelationship(type, id1, id2, facts) {
     if (!Array.isArray(this._model.relationships)) {
       this._model.relationships = [];

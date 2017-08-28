@@ -185,7 +185,7 @@ class Emit {
 
   /**
    * Add a name to a person. While all of the name options are
-   * classified as optional, at least one of them must be specified.
+   * marked as optional, at least one of them must be specified.
    * If the parts are specified without the full name then the
    * full name will be constructed from the parts.
    * 

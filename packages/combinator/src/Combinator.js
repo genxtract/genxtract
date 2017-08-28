@@ -49,12 +49,23 @@ class Combinator {
   }
 
   /**
-   * Optional method that can be used for post-processing before data is serialized.
+   * Serialize the model. The combinator may return any type it desires.
+   * This allows combinators to return a type that it appropriate for
+   * their format. Some may choose to return a file descriptor, some
+   * may return a string, others may return an object.
    * 
    * @abstract
+   * @return {*}
+   */
+  serializeCallback() {
+    throw new Error('Method must be implemented by subclasses.');
+  }
+
+  /**
+   * Optional method that can be used for post-processing before data is serialized.
    */
   finalizeCallback() {
-    throw new Error('Method must be implemented by subclasses.');
+    // The subclass may override this method 
   }
 
   /**
@@ -98,10 +109,7 @@ class Combinator {
         }
         // We are done at this point
         this.__ended = true;
-        // If there is a finalize callback, call it
-        if (this.finalizeCallback) {
-          this.finalizeCallback();
-        }
+        this.finalizeCallback();
         // Complete without an error
         this.__complete();
         break;
