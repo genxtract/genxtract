@@ -1,4 +1,4 @@
-const setupTest = require('../setupTest');
+const setupTest = require('../tester')('wikitree-person');
 
 describe('wikitree-person', () => {
 

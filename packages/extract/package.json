@@ -6,7 +6,8 @@
   "scripts": {
     "build": "node build.js",
     "watch": "watch \"npm run build\" src",
-    "test": "npm run build && mocha --recursive"
+    "test": "npm run build && mocha --recursive",
+    "test:record": "npm run build && env RECORD=1 mocha --recursive"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +20,7 @@
     "chai": "4.1.1",
     "debug": "^3.0.1",
     "glob": "7.1.2",
+    "mkdirp": "^0.5.1",
     "mocha": "3.5.0",
     "puppeteer": "0.10.1",
     "watch": "1.0.2"
