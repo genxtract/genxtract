@@ -2,7 +2,14 @@
 
 Extracting genealogical data from various websites. Designed to be used in browser extensions.
 
-## Extractors
+This repository contains multiple packages:
+
+* [chrome-ext](packages/chrome-ext) - A Chrome extension used in development for running tests
+* [combinator](packages/combinator) - Base class for combinator implmentations
+* [extract](packages/extract) - Contains the extractors and code they depend on
+* [gedcomx](packages/extract) - A combinator for GEDCOM X
+
+## Available Extractors
 
 | Website | Tree | Records |
 |---------|:----:|:-------:|
@@ -16,12 +23,6 @@ Extracting genealogical data from various websites. Designed to be used in brows
 |[Open Archives](https://www.openarch.nl)||X|
 |[WeRelate](http://www.werelate.org)|X||
 |[WikiTree](https://www.wikitree.com)|X||
-
-## Install
-
-````bash
-npm install && npm run bootstrap
-````
 
 ## Usage
 
@@ -72,14 +73,3 @@ Notes:
   The extractor will likely start firing events as soon as it's injected.
 * In the example above, `combinator.js` is a small file that wraps the combinator to initialize it
   and interface with the browser extension.
-
-## Developing extractors
-
-1. cd to `packages/chrome-ext` and run `npm run build` to build the extension
-1. install the chrome extension in `packages/chrome-ext` as an [unpacked extension](https://developer.chrome.com/extensions/getstarted#unpacked)
-1. cd to `packages/extract` and run `npm run watch`. 
-
-You do not have to reload the chrome extension everytime an extractor is changed. You only have to reload when `Emit`, `Extraction`, 
-or `Extractors` are changed. Note that source maps are included, so look carefully at the stack traces in errors to pick the original and not the bundled line number.
-
-When adding a new extractor, be sure to update `packages/extract/src/Extractors.js` with the new extractor ID and URL regex.

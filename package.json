@@ -4,7 +4,8 @@
   "description": "Extract genealogicay data from various websites",
   "scripts": {
     "bootstrap": "lerna bootstrap",
-    "test": "lerna run test"
+    "test": "lerna run test",
+    "postinstall": "npm run bootstrap"
   },
   "repository": {
     "type": "git",

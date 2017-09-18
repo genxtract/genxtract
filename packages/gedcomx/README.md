@@ -1,10 +1,14 @@
-# GedcomX
+# GEDCOM X
+
+A combinator for GEDCOM X
 
 `npm install @genxtract/gedcomx`
 
 ## Usage
 
-````javascript
+```javascript
+// First we setup the combinator
+
 import GedcomX from '@genxtract/gedcomx';
 
 const combinator = new GedcomX({timeout = 5});
@@ -26,7 +30,7 @@ window.addEventListener('genxtract', (e) => {
 
 ...
 
-// In another script that executed after this one
+// In another script that executes after the combinator was setup
+// we then inject the extractor.
 import extractor from '@genxtract/extract/dist/werelate-person.js';
-
-````
+```
