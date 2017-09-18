@@ -7,20 +7,66 @@ const extractors = new Extractors({
   prefix: './',
 });
 const expect = require('chai').expect;
-const debug = require('debug')('genxtract:setupTest');
+const debug = require('debug')('genxtract:tester');
 const RECORD = !!process.env.RECORD;
-const ACCESSED_DATE_OVERRIDE = 1483228800000; // 1 Jan 2017 00:00:00 UTC
 
-/**
- * Create a test setup factory
- * 
- * @param {String} extractor Name of the extractor; used in directory structure of recordings
- * @return {Function} function(fileName, url)
- */
-module.exports = function tester(extractor) {
+class Tester {
   
-  const outputPath = joinPath(__dirname, 'data', extractor);
+  /**
+   * @param {String} extractor Name of the extractor; used in directory structure of recordings
+   */
+  constructor(extractor) {
+    this.extractorName = extractor;
+    this.outputPath = joinPath(__dirname, 'data', extractor);
+  }
 
+  get username() {
+    return process.env.GENXTRACT_USERNAME;
+  }
+  
+  get password() {
+    return process.env.GENXTRACT_PASSWORD;
+  }
+
+  get dateOverride() {
+    return 1483228800000; // 1 Jan 2017 00:00:00 UTC
+  }
+
+  /**
+   * New browser instance
+   */
+  async launchBrowser() {
+    await this.cleanup();
+    this.browser = await puppeteer.launch();
+  }
+
+  /**
+   * Launch puppeteer and get a page
+   * 
+   * @param {Boolean} fresh If truthy, launch a new browser instance
+   * @return {*} puppeteer page
+   */
+  async page(fresh) {
+    if(!this.browser || fresh) {
+      await this.launchBrowser();
+    }
+    const page = await this.browser.newPage();
+    await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.91 Safari/537.36');
+    page.on('console', (...args) => {
+      debug(...args);
+    });
+    return page;
+  }
+
+  /**
+   * Close the browser
+   */
+  async cleanup() {
+    if(this.browser) {
+      await this.browser.close();
+    }
+  }
+  
   /**
    * Setup a mocha test.
    * 
@@ -28,8 +74,13 @@ module.exports = function tester(extractor) {
    * @param {Sting} url
    * @return {Function} function(done)
    */
-  return function test(fileName, url) {
-    debug(fileName, url);
+  test(fileName, url) {
+
+    debug('test', fileName, url);
+
+    // In the mocha test body below we need `this` to have the context
+    // setup by mocha so here we keep a reference to the tester instance
+    const tester = this;
 
     // Mocha test body
     return async function() {
@@ -37,8 +88,7 @@ module.exports = function tester(extractor) {
 
       debug('running test', fileName);
 
-      const browser = await puppeteer.launch();
-      const page = await browser.newPage();
+      const page = await tester.page();
       await page.goto(url);
 
       debug('page loaded');
@@ -72,19 +122,23 @@ module.exports = function tester(extractor) {
       // Force the accessed property of citations to be consistent for the sake of testing
       for(let event of events) {
         if(event.type === 'DATA' && event.data.type === 'Citation') {
-          event.data.data.accessed = ACCESSED_DATE_OVERRIDE;
+          event.data.data.accessed = tester.dateOverride;
         }
       }
 
       // Record or compare
-      const outputFile = joinPath(outputPath, `${fileName}.json`);
+      const outputFile = joinPath(tester.outputPath, `${fileName}.json`);
       if(RECORD) {
-        mkdirp(outputPath);
+        mkdirp(tester.outputPath);
         fs.writeFileSync(outputFile, JSON.stringify(events, null, 2));
       } else {
         const recording = JSON.parse(fs.readFileSync(outputFile, 'utf8'));
         expect(events).to.deep.equal(recording);
       }
     };
-  };
+  }
+}
+
+module.exports = function(extractor) {
+  return new Tester(extractor);
 };
