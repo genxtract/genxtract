@@ -1,0 +1,475 @@
+[
+  {
+    "id": "wikitree-person",
+    "type": "START"
+  },
+  {
+    "id": "wikitree-person",
+    "type": "DATA",
+    "data": {
+      "type": "Person",
+      "data": {
+        "id": "Roosevelt-18",
+        "primary": true
+      }
+    }
+  },
+  {
+    "id": "wikitree-person",
+    "type": "DATA",
+    "data": {
+      "type": "Name",
+      "data": {
+        "person": "Roosevelt-18",
+        "name": null,
+        "given": "Theodore",
+        "surname": "Roosevelt",
+        "prefix": "President",
+        "suffix": "Jr."
+      }
+    }
+  },
+  {
+    "id": "wikitree-person",
+    "type": "DATA",
+    "data": {
+      "type": "Gender",
+      "data": {
+        "person": "Roosevelt-18",
+        "gender": "Male"
+      }
+    }
+  },
+  {
+    "id": "wikitree-person",
+    "type": "DATA",
+    "data": {
+      "type": "Birth",
+      "data": {
+        "person": "Roosevelt-18",
+        "place": "New York City, New York, USA",
+        "date": "27 Oct 1858",
+        "parents": null
+      }
+    }
+  },
+  {
+    "id": "wikitree-person",
+    "type": "DATA",
+    "data": {
+      "type": "Death",
+      "data": {
+        "person": "Roosevelt-18",
+        "place": "Oyster Bay, Long Island, New York, USA",
+        "date": "6 Jan 1919"
+      }
+    }
+  },
+  {
+    "id": "wikitree-person",
+    "type": "DATA",
+    "data": {
+      "type": "Person",
+      "data": {
+        "id": "Lee-16",
+        "primary": null
+      }
+    }
+  },
+  {
+    "id": "wikitree-person",
+    "type": "DATA",
+    "data": {
+      "type": "Name",
+      "data": {
+        "person": "Lee-16",
+        "name": null,
+        "given": "Alice Hathaway",
+        "surname": "Lee",
+        "prefix": null,
+        "suffix": null
+      }
+    }
+  },
+  {
+    "id": "wikitree-person",
+    "type": "DATA",
+    "data": {
+      "type": "Name",
+      "data": {
+        "person": "Lee-16",
+        "name": null,
+        "given": "Alice Hathaway",
+        "surname": "Roosevelt",
+        "prefix": null,
+        "suffix": null
+      }
+    }
+  },
+  {
+    "id": "wikitree-person",
+    "type": "DATA",
+    "data": {
+      "type": "Marriage",
+      "data": {
+        "spouses": [
+          "Roosevelt-18",
+          "Lee-16"
+        ],
+        "place": null,
+        "date": null
+      }
+    }
+  },
+  {
+    "id": "wikitree-person",
+    "type": "DATA",
+    "data": {
+      "type": "Person",
+      "data": {
+        "id": "Carow-1",
+        "primary": null
+      }
+    }
+  },
+  {
+    "id": "wikitree-person",
+    "type": "DATA",
+    "data": {
+      "type": "Name",
+      "data": {
+        "person": "Carow-1",
+        "name": null,
+        "given": "Edith Kermit",
+        "surname": "Carow",
+        "prefix": null,
+        "suffix": null
+      }
+    }
+  },
+  {
+    "id": "wikitree-person",
+    "type": "DATA",
+    "data": {
+      "type": "Name",
+      "data": {
+        "person": "Carow-1",
+        "name": null,
+        "given": "Edith Kermit",
+        "surname": "Roosevelt",
+        "prefix": null,
+        "suffix": null
+      }
+    }
+  },
+  {
+    "id": "wikitree-person",
+    "type": "DATA",
+    "data": {
+      "type": "Marriage",
+      "data": {
+        "spouses": [
+          "Roosevelt-18",
+          "Carow-1"
+        ],
+        "place": null,
+        "date": null
+      }
+    }
+  },
+  {
+    "id": "wikitree-person",
+    "type": "DATA",
+    "data": {
+      "type": "Person",
+      "data": {
+        "id": "Roosevelt-17",
+        "primary": null
+      }
+    }
+  },
+  {
+    "id": "wikitree-person",
+    "type": "DATA",
+    "data": {
+      "type": "Name",
+      "data": {
+        "person": "Roosevelt-17",
+        "name": null,
+        "given": "Alice Lee",
+        "surname": "Roosevelt",
+        "prefix": null,
+        "suffix": null
+      }
+    }
+  },
+  {
+    "id": "wikitree-person",
+    "type": "DATA",
+    "data": {
+      "type": "Name",
+      "data": {
+        "person": "Roosevelt-17",
+        "name": null,
+        "given": "Alice Lee",
+        "surname": "Longworth",
+        "prefix": null,
+        "suffix": null
+      }
+    }
+  },
+  {
+    "id": "wikitree-person",
+    "type": "DATA",
+    "data": {
+      "type": "Birth",
+      "data": {
+        "person": "Roosevelt-17",
+        "place": null,
+        "date": null,
+        "parents": [
+          "Roosevelt-18"
+        ]
+      }
+    }
+  },
+  {
+    "id": "wikitree-person",
+    "type": "DATA",
+    "data": {
+      "type": "Person",
+      "data": {
+        "id": "Roosevelt-41",
+        "primary": null
+      }
+    }
+  },
+  {
+    "id": "wikitree-person",
+    "type": "DATA",
+    "data": {
+      "type": "Name",
+      "data": {
+        "person": "Roosevelt-41",
+        "name": null,
+        "given": "Theodore ",
+        "surname": "Roosevelt",
+        "prefix": null,
+        "suffix": "III"
+      }
+    }
+  },
+  {
+    "id": "wikitree-person",
+    "type": "DATA",
+    "data": {
+      "type": "Birth",
+      "data": {
+        "person": "Roosevelt-41",
+        "place": null,
+        "date": null,
+        "parents": [
+          "Roosevelt-18"
+        ]
+      }
+    }
+  },
+  {
+    "id": "wikitree-person",
+    "type": "DATA",
+    "data": {
+      "type": "Person",
+      "data": {
+        "id": "Roosevelt-46",
+        "primary": null
+      }
+    }
+  },
+  {
+    "id": "wikitree-person",
+    "type": "DATA",
+    "data": {
+      "type": "Name",
+      "data": {
+        "person": "Roosevelt-46",
+        "name": null,
+        "given": "Kermit ",
+        "surname": "Roosevelt",
+        "prefix": null,
+        "suffix": null
+      }
+    }
+  },
+  {
+    "id": "wikitree-person",
+    "type": "DATA",
+    "data": {
+      "type": "Birth",
+      "data": {
+        "person": "Roosevelt-46",
+        "place": null,
+        "date": null,
+        "parents": [
+          "Roosevelt-18"
+        ]
+      }
+    }
+  },
+  {
+    "id": "wikitree-person",
+    "type": "DATA",
+    "data": {
+      "type": "Person",
+      "data": {
+        "id": "Roosevelt-42",
+        "primary": null
+      }
+    }
+  },
+  {
+    "id": "wikitree-person",
+    "type": "DATA",
+    "data": {
+      "type": "Name",
+      "data": {
+        "person": "Roosevelt-42",
+        "name": null,
+        "given": "Ethel Carow",
+        "surname": "Roosevelt",
+        "prefix": null,
+        "suffix": null
+      }
+    }
+  },
+  {
+    "id": "wikitree-person",
+    "type": "DATA",
+    "data": {
+      "type": "Name",
+      "data": {
+        "person": "Roosevelt-42",
+        "name": null,
+        "given": "Ethel Carow",
+        "surname": "Derby",
+        "prefix": null,
+        "suffix": null
+      }
+    }
+  },
+  {
+    "id": "wikitree-person",
+    "type": "DATA",
+    "data": {
+      "type": "Birth",
+      "data": {
+        "person": "Roosevelt-42",
+        "place": null,
+        "date": null,
+        "parents": [
+          "Roosevelt-18"
+        ]
+      }
+    }
+  },
+  {
+    "id": "wikitree-person",
+    "type": "DATA",
+    "data": {
+      "type": "Person",
+      "data": {
+        "id": "Roosevelt-43",
+        "primary": null
+      }
+    }
+  },
+  {
+    "id": "wikitree-person",
+    "type": "DATA",
+    "data": {
+      "type": "Name",
+      "data": {
+        "person": "Roosevelt-43",
+        "name": null,
+        "given": "Archibald Bulloch",
+        "surname": "Roosevelt",
+        "prefix": null,
+        "suffix": null
+      }
+    }
+  },
+  {
+    "id": "wikitree-person",
+    "type": "DATA",
+    "data": {
+      "type": "Birth",
+      "data": {
+        "person": "Roosevelt-43",
+        "place": null,
+        "date": null,
+        "parents": [
+          "Roosevelt-18"
+        ]
+      }
+    }
+  },
+  {
+    "id": "wikitree-person",
+    "type": "DATA",
+    "data": {
+      "type": "Person",
+      "data": {
+        "id": "Roosevelt-44",
+        "primary": null
+      }
+    }
+  },
+  {
+    "id": "wikitree-person",
+    "type": "DATA",
+    "data": {
+      "type": "Name",
+      "data": {
+        "person": "Roosevelt-44",
+        "name": null,
+        "given": "Quentin ",
+        "surname": "Roosevelt",
+        "prefix": null,
+        "suffix": null
+      }
+    }
+  },
+  {
+    "id": "wikitree-person",
+    "type": "DATA",
+    "data": {
+      "type": "Birth",
+      "data": {
+        "person": "Roosevelt-44",
+        "place": null,
+        "date": null,
+        "parents": [
+          "Roosevelt-18"
+        ]
+      }
+    }
+  },
+  {
+    "id": "wikitree-person",
+    "type": "DATA",
+    "data": {
+      "type": "Citation",
+      "data": {
+        "title": "Theodore Roosevelt Jr. (1858-1919) | WikiTree FREE Family Tree",
+        "url": "https://www.wikitree.com/wiki/Roosevelt-18",
+        "accessed": 1483228800000,
+        "repository_name": "WikiTree",
+        "repository_website": "wikitree.com",
+        "repository_url": "https://www.wikitree.com"
+      }
+    }
+  },
+  {
+    "id": "wikitree-person",
+    "type": "END"
+  }
+]
