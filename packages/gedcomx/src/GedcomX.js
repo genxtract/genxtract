@@ -156,7 +156,7 @@ class GedcomX extends Combinator {
   }
 
   /**
-   * Allow for a person to be reference by an alternate ID
+   * Allow for a person to be referenced by an alternate ID
    * 
    * @param {Object} data
    * @param {String} data.person Previous person ID
@@ -168,6 +168,17 @@ class GedcomX extends Combinator {
     this._personsIndex[id] = p;
     if(preferred) {
       p.id = id;
+      // Update references in relationships
+      if(this._model.relationships) {
+        this._model.relationships.forEach((rel) => {
+          if(rel.person1.resource.substr(1) === person) {
+            rel.person1.resource = `#${id}`;
+          }
+          if(rel.person2.resource.substr(1) === person) {
+            rel.person2.resource = `#${id}`;
+          }
+        });
+      }
     }
   }
 
