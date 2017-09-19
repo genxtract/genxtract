@@ -20,6 +20,7 @@
     "karma-chai": "genxtract/karma-chai",
     "karma-chrome-launcher": "2.2.0",
     "karma-mocha": "1.3.0",
+    "karma-mocha-reporter": "^2.2.4",
     "karma-rollup-plugin": "0.2.4",
     "mocha": "3.3.0",
     "rollup": "0.41.6",

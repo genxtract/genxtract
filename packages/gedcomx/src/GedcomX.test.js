@@ -325,6 +325,15 @@ describe('GedcomX', () => {
             type: 'http://gedcomx.org/Female',
           },
         }],
+        relationships: [{
+          type: 'http://gedcomx.org/ParentChild',
+          person1: {
+            resource: '#1234',
+          },
+          person2: {
+            resource: '#xyz',
+          },
+        }],
       });
       done();
     })
@@ -335,8 +344,12 @@ describe('GedcomX', () => {
     emit.Gender({person: '5678', gender: 'Female'});
 
     emit.Person({id: 'abc'});
+    emit.Birth({
+      person: 'abc',
+      parents: ['1234'],
+    });
     emit.AlternateId({person: 'abc', id: 'xyz', preferred: true});
-    emit.Gender({person: 'xyz', gender: 'Female'});
+    emit.Gender({person: 'abc', gender: 'Female'});
 
     extraction.end();
   });
