@@ -310,7 +310,7 @@ describe('GedcomX', () => {
     extraction.end();
   });
 
-  it('alternate id', (done) => {
+  it.only('alternate id', (done) => {
     extractionErrorListener(done);
     promise.then((data) => {
       expect(data).to.deep.equal({
@@ -324,6 +324,8 @@ describe('GedcomX', () => {
           gender: {
             type: 'http://gedcomx.org/Female',
           },
+        }, {
+          id: 'jry',
         }],
         relationships: [{
           type: 'http://gedcomx.org/ParentChild',
@@ -332,6 +334,14 @@ describe('GedcomX', () => {
           },
           person2: {
             resource: '#xyz',
+          },
+        }, {
+          type: 'http://gedcomx.org/ParentChild',
+          person1: {
+            resource: '#xyz',
+          },
+          person2: {
+            resource: '#jry',
           },
         }],
       });
@@ -350,6 +360,11 @@ describe('GedcomX', () => {
     });
     emit.AlternateId({person: 'abc', id: 'xyz', preferred: true});
     emit.Gender({person: 'abc', gender: 'Female'});
+
+    emit.Birth({
+      person: 'jry',
+      parents: ['abc'],
+    });
 
     extraction.end();
   });
