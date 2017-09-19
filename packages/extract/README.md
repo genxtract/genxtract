@@ -27,3 +27,12 @@ You do not have to reload the chrome extension everytime an extractor is changed
 You only have to reload when `Emit`, `Extraction`, or `Extractors` are changed. 
 Note that source maps are included, so look carefully at the stack traces in errors
 to pick the original and not the bundled line number.
+
+### Testing
+
+Tests are run live via [puppetteer](https://github.com/GoogleChrome/puppeteer).
+Output of the extracts can be recorded by running `npm run test:record`. The output
+is saved and later copmared in subsequent test runs when recording is not enabled.
+
+`GENXTRACT_USERNAME` and `GENXTRACT_PASSWORD` are required env vars for testing
+extractors that require an authenticated session with the site.
