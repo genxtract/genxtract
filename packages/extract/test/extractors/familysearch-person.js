@@ -1,5 +1,4 @@
 const tester = require('../Tester')('familysearch-person');
-const joinPath = require('path').join;
 
 describe('familysearch-person', () => {
 

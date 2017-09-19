@@ -21,10 +21,16 @@ class Tester {
   }
 
   get username() {
+    if(!process.env.GENXTRACT_USERNAME) {
+      throw new Error('GENXTRACT_USERNAME env var is missing');
+    }
     return process.env.GENXTRACT_USERNAME;
   }
   
   get password() {
+    if(!process.env.GENXTRACT_PASSWORD) {
+      throw new Error('GENXTRACT_PASSWORD env var is missing');
+    }
     return process.env.GENXTRACT_PASSWORD;
   }
 
