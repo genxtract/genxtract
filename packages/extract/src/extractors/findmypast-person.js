@@ -14,6 +14,8 @@ if(personId) {
     .then((data) => {
       if(data && data.Object) {
         processData(treeId, personId, data.Object);
+      } else {
+        console.log('no data');
       }
       extraction.end();
     })
@@ -166,14 +168,22 @@ function getRelations(treeId, personId) {
  * @return {Object}
  */
 async function api(treeId, url) {
-  const response = await fetch('/api/proxy/get?url=' + encodeURIComponent(url), {
+  const request = new Request('/api/proxy/get?url=' + encodeURIComponent(url), {
     credentials: 'include',
     headers: new Headers({
       'Family-Tree-Ref': treeId,
     }),
   });
+  const response = await fetch(request);
   if(response.ok) {
     return await response.json();
+  } else {
+    console.log('bad response');
+    console.dir(Array.from(response.headers.values()));
+    console.dir(response.status);
+    console.dir(response.statusText);
+    console.dir(await response.json());
+    throw new Error(`${response.status} ${response.statusText}`);
   }
 }
 

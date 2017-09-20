@@ -1,5 +1,4 @@
 import Extraction from '../Extraction.js';
-import Emit from '../Emit.js';
 import {parseHtml} from '../lib/utils.js';
 
 const eventMappings = [
@@ -26,24 +25,23 @@ const eventMappings = [
 ];
 
 const extraction = new Extraction('myheritage-person');
-const emit = new Emit(extraction);
 
 if(window.location.href.indexOf('myheritage.com/person-') !== -1) {
   const matches = window.location.pathname.match(/\/person-([0-9]+)_([0-9]+)_([0-9]+)\//);
   const personId = matches[1];
   const treeId = matches[2];
-  run(emit, treeId, personId);
+  run(extraction, treeId, personId);
 } else if(window.location.href.indexOf('myheritage.com/site-family-tree-') !== -1) {
   const treeMatches = window.location.pathname.match(/\/site-family-tree-([0-9]+)\//);
   const treeId = treeMatches[1];
   const personMatches = window.location.hash.match(/profile-([0-9]+)-/);
   const personId = personMatches[1];
-  run(emit, treeId, personId);
+  run(extraction, treeId, personId);
 }
 
-function run(emit, treeId, personId) {
+function run(extraction, treeId, personId) {
   extraction.start();
-  extract(emit, treeId, personId)
+  extract(extraction, treeId, personId)
     .then(() => extraction.end())
     .catch((error) => {
       console.error(error);
@@ -51,7 +49,7 @@ function run(emit, treeId, personId) {
     });
 }
 
-async function extract(emit, treeId, personId) {
+async function extract(extraction, treeId, personId) {
 
   const pageUrl = `/FP/API/Profile/get-profile-tab-content.php?s=${treeId}&siteID=${treeId}&indID=${personId}&show=info&inCanvas=1&getPart=main`;
   const eventUrl = `/FP/API/Profile/get-profile-tab-content.php?s=${treeId}&siteID=${treeId}&indID=${personId}&show=events&inCanvas=0&getPart=tab`;
@@ -59,29 +57,29 @@ async function extract(emit, treeId, personId) {
   const pageHtml = await getHtml(pageUrl);
   const eventHtml = await getHtml(eventUrl);
 
-  process(emit, treeId, personId, pageHtml, eventHtml);
+  process(extraction, treeId, personId, pageHtml, eventHtml);
 }
 
-function process(emit, treeId, personId, pageHtml, eventHtml) {
+function process(extraction, treeId, personId, pageHtml, eventHtml) {
   
   personId = `${treeId}-${personId}`;
 
-  emit.Person({
+  extraction.Person({
     id: personId,
     primary: true,
   });
-  emitNames(emit, personId, pageHtml.querySelector('#BreadcrumbsFinalText').textContent);
+  emitNames(extraction, personId, pageHtml.querySelector('#BreadcrumbsFinalText').textContent);
   
   // There is no identifying text for the gender. The best we can see
   // is to examine the profile silhouette which is determined by a CSS class
   const silhouette = pageHtml.querySelector('#profileSilhouetteContainer .PK_Silhouette');
   if(silhouette.classList.contains('PK_Silhouette_S_192_M_A_LTR')) {
-    emit.Gender({
+    extraction.Gender({
       person: personId,
       gender: 'Male',
     });
   } else if(silhouette.classList.contains('PK_Silhouette_S_192_F_A_LTR')) {
-    emit.Gender({
+    extraction.Gender({
       person: personId,
       gender: 'Female',
     });
@@ -109,7 +107,7 @@ function process(emit, treeId, personId, pageHtml, eventHtml) {
     // Handle basic event types
     eventMappings.forEach((mapping) => {
       if (typeText.match(mapping.regex)) {
-        emit[mapping.type]({
+        extraction[mapping.type]({
           person: personId,
           date: date,
           place: place,
@@ -119,7 +117,7 @@ function process(emit, treeId, personId, pageHtml, eventHtml) {
 
     // Handle Birth
     if (typeText.match(/^birth$/)) {
-      emit.Birth({
+      extraction.Birth({
         person: personId,
         date: date,
         place: place,
@@ -131,11 +129,11 @@ function process(emit, treeId, personId, pageHtml, eventHtml) {
     if (typeText.match(/^marriage to/)) {
       const aTag = type.querySelector('a');
       const spouseId = getRecordId(aTag.href);
-      emit.Person({
+      extraction.Person({
         id: spouseId,
       });
-      emitNames(emit, spouseId, aTag.textContent.trim());
-      emit.Marriage({
+      emitNames(extraction, spouseId, aTag.textContent.trim());
+      extraction.Marriage({
         spouses: [personId, spouseId],
       });
     }
@@ -147,15 +145,15 @@ function process(emit, treeId, personId, pageHtml, eventHtml) {
     if (typeText.match(/^birth of daughter/)) {
       const aTag = type.querySelector('a');
       const daughterId = getRecordId(aTag.href);
-      emit.Person({
+      extraction.Person({
         id: daughterId,
       });
-      emitNames(emit, daughterId, aTag.textContent.trim());
-      emit.Gender({
+      emitNames(extraction, daughterId, aTag.textContent.trim());
+      extraction.Gender({
         person: daughterId,
         gender: 'Female',
       });
-      emit.Birth({
+      extraction.Birth({
         person: daughterId,
         date: date,
         place: place,
@@ -167,18 +165,18 @@ function process(emit, treeId, personId, pageHtml, eventHtml) {
     if (typeText.match(/^birth of son/)) {
       const aTag = type.querySelector('a');
       const sonId = getRecordId(aTag.href);
-      emit.Person({
+      extraction.Person({
         id: sonId,
       });
-      emit.Name({
+      extraction.Name({
         person: sonId,
         name: aTag.textContent.trim(),
       });
-      emit.Gender({
+      extraction.Gender({
         person: sonId,
         gender: 'Male',
       });
-      emit.Birth({
+      extraction.Birth({
         person: sonId,
         date: date,
         place: place,
@@ -207,15 +205,15 @@ function process(emit, treeId, personId, pageHtml, eventHtml) {
         // Mother
         if (/^(his|her) mother/.test(rel)) {
           const motherId = getRecordId(aTag.href);
-          emit.Person({
+          extraction.Person({
             id: motherId,
           });
-          emitNames(emit, motherId, aTag.textContent.trim());
-          emit.Gender({
+          emitNames(extraction, motherId, aTag.textContent.trim());
+          extraction.Gender({
             person: motherId,
             gender: 'Female',
           });
-          emit.Birth({
+          extraction.Birth({
             person: personId,
             parents: [motherId],
           });
@@ -224,18 +222,18 @@ function process(emit, treeId, personId, pageHtml, eventHtml) {
         // Father
         if (/^(his|her) father/.test(rel)) {
           const fatherId = getRecordId(aTag.href);
-          emit.Person({
+          extraction.Person({
             id: fatherId,
           });
-          emit.Name({
+          extraction.Name({
             person: fatherId,
             name: aTag.textContent.trim(),
           });
-          emit.Gender({
+          extraction.Gender({
             person: fatherId,
             gender: 'Male',
           });
-          emit.Birth({
+          extraction.Birth({
             person: personId,
             parents: [fatherId],
           });
@@ -244,7 +242,7 @@ function process(emit, treeId, personId, pageHtml, eventHtml) {
     }
   }
 
-  emit.Citation({
+  extraction.Citation({
     title: document.title,
     url: window.location.href,
     accessed: Date.now(),
@@ -270,16 +268,16 @@ async function getHtml(url) {
  * The purpose of this function is to handle the parsing of femail names
  * which may have their maiden name specified in () such as "Sarah Smith (born Thompson)"
  * 
- * @param {Object} emit 
+ * @param {Object} extraction 
  * @param {string} person 
  * @param {string} name 
  */
-function emitNames(emit, person, name) {
+function emitNames(extraction, person, name) {
   const pieces = name.split(/ \((born )?/);
   
   // Single name
   if(pieces.length === 1) {
-    emit.Name({
+    extraction.Name({
       person,
       name,
     });
@@ -294,13 +292,13 @@ function emitNames(emit, person, name) {
     const marriedSurname = nameParts.pop();
     const given = nameParts.join(' ');
 
-    emit.Name({
+    extraction.Name({
       person,
       name: marriedName,
       given,
       surname: marriedSurname,
     });
-    emit.Name({
+    extraction.Name({
       person,
       name: `${given} ${maidenName}`,
       given,
