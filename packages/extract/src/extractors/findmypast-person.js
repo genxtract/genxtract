@@ -1,8 +1,6 @@
 import Extraction from '../Extraction.js';
-import Emit from '../Emit.js';
 
 const extraction = new Extraction('findmypast-person');
-const emit = new Emit(extraction);
 
 const urlParts = window.location.hash.split('/');
 const treeId = urlParts[2];
@@ -33,11 +31,11 @@ if(personId) {
  */
 function processData(treeId, personId, data) {
 
-  emit.Person({
+  extraction.Person({
     id: personId,
     primary: true,
   });
-  emit.ExternalId({
+  extraction.ExternalId({
     person: personId,
     url: window.location.href,
     id: personId,
@@ -48,20 +46,20 @@ function processData(treeId, personId, data) {
   // Emit persons
   relations.getPersons().forEach((person) => {
     const personId = person.Id;
-    emit.Name({
+    extraction.Name({
       person: personId,
       given: person.GivenNames,
       surname: person.Surnames,
     });
     if(person.BirthDate || person.BirthPlace) {
-      emit.Birth({
+      extraction.Birth({
         person: personId,
         date: convertDate(person.BirthDate),
         place: person.BirthPlace,
       });
     }
     if(person.DeathDate || person.DeathPlace) {
-      emit.Death({
+      extraction.Death({
         person: personId,
         date: convertDate(person.DeathDate),
         place: person.DeathPlace,
@@ -82,9 +80,9 @@ function processData(treeId, personId, data) {
     if(family.MarriagePlace) {
       marriage.place = family.MarriagePlace;
     }
-    emit.Marriage(marriage);
+    extraction.Marriage(marriage);
     relations.getChildren(family.Id).forEach((child) => {
-      emit.Birth({
+      extraction.Birth({
         person: child.ChildId,
         parents: spouses,
       });
@@ -103,23 +101,23 @@ function processData(treeId, personId, data) {
       parents.push(family.MotherId);
     }
     if(parents.length === 2) {
-      emit.Marriage({
+      extraction.Marriage({
         spouses: parents,
       });
     }
-    emit.Birth({
+    extraction.Birth({
       person: personId,
       parents,
     });
     relations.getChildren(family.Id).forEach((child) => {
-      emit.Birth({
+      extraction.Birth({
         person: child.ChildId,
         parents,
       });
     });
   });
 
-  emit.Citation({
+  extraction.Citation({
     title: document.title,
     url: window.location.href,
     accessed: Date.now(),

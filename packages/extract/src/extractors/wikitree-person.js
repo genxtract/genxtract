@@ -1,5 +1,4 @@
 import Extraction from '../Extraction.js';
-import Emit from '../Emit.js';
 import { maybe } from '../lib/utils.js';
 import schema from '../lib/schema.js';
 
@@ -19,8 +18,6 @@ const suffixes = [
 ];
 
 const extraction = new Extraction('wikitree-person');
-const emit = new Emit(extraction);
-
 extraction.start();
 
 const $schemaPersons = Array.from(schema.queryItemAll(document, 'https://schema.org/Person'));
@@ -31,12 +28,12 @@ if($schemaPersons.length) {
 
   const $primaryPerson = $schemaPersons.shift();
   const personId = getRecordId(document.location.href);
-  emit.Person({
+  extraction.Person({
     id: personId,
     primary: true,
   });
 
-  emit.Name({
+  extraction.Name({
     person: personId,
     prefix: maybe(schema.queryProp($primaryPerson, 'honorificPrefix')).textContent,
     given: maybe(schema.queryProp($primaryPerson, 'givenName')).textContent,
@@ -46,28 +43,28 @@ if($schemaPersons.length) {
 
   switch(schema.queryPropContent($primaryPerson, 'gender')) {
     case 'male':
-      emit.Gender({
+      extraction.Gender({
         person: personId,
         gender: 'Male',
       });
       break;
     case 'female':
-      emit.Gender({
+      extraction.Gender({
         person: personId,
         gender: 'Female',
       });
       break;
   }
 
-  processEvent(emit, personId, $primaryPerson, 'birth', 'Birth');
-  processEvent(emit, personId, $primaryPerson, 'death', 'Death');
+  processEvent(extraction, personId, $primaryPerson, 'birth', 'Birth');
+  processEvent(extraction, personId, $primaryPerson, 'death', 'Death');
 
   // Process all other persons
   $schemaPersons.forEach(($relative) => {
     
     const url = $relative.querySelector('a').href;
     const relativeId = getRecordId(url);
-    emit.Person({
+    extraction.Person({
       id: relativeId,
     });
     
@@ -76,28 +73,28 @@ if($schemaPersons.length) {
     if(name) {
       processNames(name).forEach((name) => {
         name.person = relativeId;
-        emit.Name(name);
+        extraction.Name(name);
       });
     }
 
     switch($relative.getAttribute('itemprop')) {
       
       case 'parent':
-        emit.Birth({
+        extraction.Birth({
           person: personId,
           parents: [relativeId],
         });
         break;
         
       case 'spouse':
-        emit.Marriage({
+        extraction.Marriage({
           spouses: [personId, relativeId],
         });
         // TODO: get marriage date and place
         break;
         
       case 'children':
-        emit.Birth({
+        extraction.Birth({
           person: relativeId,
           parents: [personId],
         });
@@ -108,7 +105,7 @@ if($schemaPersons.length) {
 
 }
 
-emit.Citation({
+extraction.Citation({
   title: document.title,
   url: window.location.href,
   accessed: Date.now(),
@@ -122,13 +119,13 @@ extraction.end();
 /**
  * Get the specified event data, if it exists
  * 
- * @param {Emitter} emit
+ * @param {Extraction} extraction
  * @param {String} personId
  * @param {Element} $element DOM Element to search inside of
  * @param {String} event Event name
  * @param {String} type GedcomX fact type
  */
-function processEvent(emit, personId, $element, event, type) {
+function processEvent(extraction, personId, $element, event, type) {
   const $place = schema.queryProp($element, event + 'Place');
   const $address = $place ? schema.queryProp($place, 'address') : null;
   const $date = schema.queryProp($element, event + 'Date');
@@ -143,7 +140,7 @@ function processEvent(emit, personId, $element, event, type) {
     if($date) {
       event.date = $date.textContent;
     }
-    emit[type](event);
+    extraction[type](event);
   }
 }
 

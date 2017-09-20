@@ -1,0 +1,48 @@
+[
+  {
+    "id": "findmypast-record",
+    "type": "START"
+  },
+  {
+    "id": "findmypast-record",
+    "type": "DATA",
+    "data": {
+      "type": "Person",
+      "data": {
+        "id": "null",
+        "primary": true
+      }
+    }
+  },
+  {
+    "id": "findmypast-record",
+    "type": "DATA",
+    "data": {
+      "type": "ExternalId",
+      "data": {
+        "person": "null",
+        "url": "https://www.findmypast.com/register?nextPage=https%3A%2F%2Fsearch.findmypast.com%2Frecord%3Fid%3Dusc%252f1840%252f005154562%252f01062%252f026&fulfillmentTypeKey=11",
+        "id": "null"
+      }
+    }
+  },
+  {
+    "id": "findmypast-record",
+    "type": "DATA",
+    "data": {
+      "type": "Citation",
+      "data": {
+        "title": "Register today - Sign up | findmypast.com",
+        "url": "https://www.findmypast.com/register?nextPage=https%3A%2F%2Fsearch.findmypast.com%2Frecord%3Fid%3Dusc%252f1840%252f005154562%252f01062%252f026&fulfillmentTypeKey=11",
+        "accessed": 1483228800000,
+        "repository_name": "findmypast",
+        "repository_website": "www.findmypast.com",
+        "repository_url": "https://www.findmypast.com"
+      }
+    }
+  },
+  {
+    "id": "findmypast-record",
+    "type": "END"
+  }
+]

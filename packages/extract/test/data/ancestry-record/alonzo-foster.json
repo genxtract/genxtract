@@ -1,0 +1,196 @@
+[
+  {
+    "id": "ancestry-record",
+    "type": "START"
+  },
+  {
+    "id": "ancestry-record",
+    "type": "DATA",
+    "data": {
+      "type": "Person",
+      "data": {
+        "id": "1940usfedcen-34642399",
+        "primary": true
+      }
+    }
+  },
+  {
+    "id": "ancestry-record",
+    "type": "DATA",
+    "data": {
+      "type": "Name",
+      "data": {
+        "person": "1940usfedcen-34642399",
+        "name": "Alonzo Foster",
+        "given": null,
+        "surname": null,
+        "prefix": null,
+        "suffix": null
+      }
+    }
+  },
+  {
+    "id": "ancestry-record",
+    "type": "DATA",
+    "data": {
+      "type": "Gender",
+      "data": {
+        "person": "1940usfedcen-34642399",
+        "gender": "Male"
+      }
+    }
+  },
+  {
+    "id": "ancestry-record",
+    "type": "DATA",
+    "data": {
+      "type": "Birth",
+      "data": {
+        "person": "1940usfedcen-34642399",
+        "place": "Ohio",
+        "date": "",
+        "parents": null
+      }
+    }
+  },
+  {
+    "id": "ancestry-record",
+    "type": "DATA",
+    "data": {
+      "type": "Residence",
+      "data": {
+        "person": "1940usfedcen-34642399",
+        "place": "Coshocton, Coshocton, Ohio",
+        "date": "1940"
+      }
+    }
+  },
+  {
+    "id": "ancestry-record",
+    "type": "DATA",
+    "data": {
+      "type": "Residence",
+      "data": {
+        "person": "1940usfedcen-34642399",
+        "place": "Coshocton, Ohio",
+        "date": "1935"
+      }
+    }
+  },
+  {
+    "id": "ancestry-record",
+    "type": "DATA",
+    "data": {
+      "type": "Race",
+      "data": {
+        "person": "1940usfedcen-34642399",
+        "place": null,
+        "date": null,
+        "value": "White"
+      }
+    }
+  },
+  {
+    "id": "ancestry-record",
+    "type": "DATA",
+    "data": {
+      "type": "MaritalStatus",
+      "data": {
+        "person": "1940usfedcen-34642399",
+        "place": null,
+        "date": null,
+        "value": "Single"
+      }
+    }
+  },
+  {
+    "id": "ancestry-record",
+    "type": "DATA",
+    "data": {
+      "type": "Name",
+      "data": {
+        "person": "1940usfedcen-34642393",
+        "name": "Louise Foster",
+        "given": null,
+        "surname": null,
+        "prefix": null,
+        "suffix": null
+      }
+    }
+  },
+  {
+    "id": "ancestry-record",
+    "type": "DATA",
+    "data": {
+      "type": "Birth",
+      "data": {
+        "person": "1940usfedcen-34642393",
+        "place": null,
+        "date": "about 1859",
+        "parents": null
+      }
+    }
+  },
+  {
+    "id": "ancestry-record",
+    "type": "DATA",
+    "data": {
+      "type": "Name",
+      "data": {
+        "person": "1940usfedcen-34642399",
+        "name": "Alonzo Foster",
+        "given": null,
+        "surname": null,
+        "prefix": null,
+        "suffix": null
+      }
+    }
+  },
+  {
+    "id": "ancestry-record",
+    "type": "DATA",
+    "data": {
+      "type": "Name",
+      "data": {
+        "person": "1940usfedcen-34642407",
+        "name": "Icy Wollon",
+        "given": null,
+        "surname": null,
+        "prefix": null,
+        "suffix": null
+      }
+    }
+  },
+  {
+    "id": "ancestry-record",
+    "type": "DATA",
+    "data": {
+      "type": "Birth",
+      "data": {
+        "person": "1940usfedcen-34642407",
+        "place": null,
+        "date": "about 1922",
+        "parents": null
+      }
+    }
+  },
+  {
+    "id": "ancestry-record",
+    "type": "DATA",
+    "data": {
+      "type": "Citation",
+      "data": {
+        "title": "Alonzo Foster in the 1940 United States Federal Census",
+        "url": "http://search.ancestry.com/cgi-bin/sse.dll?indiv=1&db=1940usfedcen&h=34642399",
+        "accessed": 1483228800000,
+        "repository_name": "Ancestry",
+        "repository_website": "ancestry.com",
+        "repository_url": "http://www.ancestry.com"
+      }
+    }
+  },
+  {
+    "id": "ancestry-record",
+    "type": "END"
+  }
+]

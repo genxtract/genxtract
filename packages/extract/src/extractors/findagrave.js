@@ -1,18 +1,15 @@
 import Extraction from '../Extraction.js';
-import Emit from '../Emit.js';
 
 const extraction = new Extraction('findagrave');
-const emit = new Emit(extraction);
-
 extraction.start();
 
 // Person
 const person = window.location.search.match(/id=(\d+)/)[1];
-emit.Person({
+extraction.Person({
   id: person,
   primary: true,
 });
-emit.ExternalId({
+extraction.ExternalId({
   person,
   url: window.location.href,
   id: person,
@@ -24,7 +21,7 @@ let name = xpath([
   '/html/body/table/tbody/tr/td[2]/table/tbody/tr[1]/td/font',
 ]);
 if (name) {
-  emit.Name({person, name: name.textContent.replace('[Edit]')});
+  extraction.Name({person, name: name.textContent.replace('[Edit]')});
 }
 
 // Birth
@@ -32,7 +29,7 @@ const birth = extractDateOrPlace(bodyXpath(1, 2));
 if (birth.place || birth.date) {
   birth.person = person;
   birth.parents = [];
-  emit.Birth(birth);
+  extraction.Birth(birth);
 }
 
 // Death
@@ -40,7 +37,7 @@ const death = extractDateOrPlace(bodyXpath(2, 2));
 if (death.place || death.date) {
   death.person = person;
   death.parents = [];
-  emit.Death(death);
+  extraction.Death(death);
 }
 
 // Burial
@@ -57,7 +54,7 @@ if (burial) {
   }
 
   if (burialPlace.length > 0) {
-    emit.Burial({person, place: burialPlace.join(', ')});
+    extraction.Burial({person, place: burialPlace.join(', ')});
   }
 }
 
@@ -110,33 +107,33 @@ for (let i = 0; i < bioCell.childNodes.length; i++) {
       if (!parts) {
         break;
       }
-      emit.Person({id});
-      emit.Name({person: id, name: parts[1]});
+      extraction.Person({id});
+      extraction.Name({person: id, name: parts[1]});
       if (parts[4]) {
-        emit.Death({person: id, date: parts[4]});
+        extraction.Death({person: id, date: parts[4]});
       }
 
       // Birth and/or marriage depending on Relationship
       switch(relationType) {
         case 'Parent':
-          emit.Birth({person: id, date: parts[3], parents: []});
-          emit.Birth({person, parents: [id]});
+          extraction.Birth({person: id, date: parts[3], parents: []});
+          extraction.Birth({person, parents: [id]});
           break;
         case 'Spouse':
-          emit.Birth({person: id, date: parts[3], parents: []});
-          emit.Marriage({spouses: [person, id]});
+          extraction.Birth({person: id, date: parts[3], parents: []});
+          extraction.Marriage({spouses: [person, id]});
           break;
         case 'Sibling':
-          emit.Birth({person: id, date: parts[3], parents: []});
+          extraction.Birth({person: id, date: parts[3], parents: []});
           break;
         case 'Child':
-          emit.Birth({person: id, date: parts[3], parents: [person]});
+          extraction.Birth({person: id, date: parts[3], parents: [person]});
           break;
       }
   }
 }
 
-emit.Citation({
+extraction.Citation({
   title: document.title,
   url: window.location.href,
   accessed: Date.now(),
