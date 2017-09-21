@@ -1,0 +1,183 @@
+[
+  {
+    "id": "openarchives",
+    "type": "START"
+  },
+  {
+    "id": "openarchives",
+    "type": "DATA",
+    "data": {
+      "type": "Person",
+      "data": {
+        "id": "Person:ef395cab-46cd-318f-c704-b29e0fd6e890",
+        "primary": null
+      }
+    }
+  },
+  {
+    "id": "openarchives",
+    "type": "DATA",
+    "data": {
+      "type": "Name",
+      "data": {
+        "person": "Person:ef395cab-46cd-318f-c704-b29e0fd6e890",
+        "name": "Job Buijteweg",
+        "given": null,
+        "surname": null,
+        "prefix": null,
+        "suffix": null
+      }
+    }
+  },
+  {
+    "id": "openarchives",
+    "type": "DATA",
+    "data": {
+      "type": "Person",
+      "data": {
+        "id": "Person:ef3df89c-5add-9cce-524a-f5f8a81d3bbd",
+        "primary": null
+      }
+    }
+  },
+  {
+    "id": "openarchives",
+    "type": "DATA",
+    "data": {
+      "type": "Name",
+      "data": {
+        "person": "Person:ef3df89c-5add-9cce-524a-f5f8a81d3bbd",
+        "name": "Aaltie Nierman",
+        "given": null,
+        "surname": null,
+        "prefix": null,
+        "suffix": null
+      }
+    }
+  },
+  {
+    "id": "openarchives",
+    "type": "DATA",
+    "data": {
+      "type": "Person",
+      "data": {
+        "id": "Person:a4bdf197-5cd2-288d-03dc-5a5be0a0efa2",
+        "primary": null
+      }
+    }
+  },
+  {
+    "id": "openarchives",
+    "type": "DATA",
+    "data": {
+      "type": "Name",
+      "data": {
+        "person": "Person:a4bdf197-5cd2-288d-03dc-5a5be0a0efa2",
+        "name": "Cornlis Immerzeel",
+        "given": null,
+        "surname": null,
+        "prefix": null,
+        "suffix": null
+      }
+    }
+  },
+  {
+    "id": "openarchives",
+    "type": "DATA",
+    "data": {
+      "type": "Person",
+      "data": {
+        "id": "Person:95c2d842-7eff-04a5-619c-ff3576a3e51d",
+        "primary": null
+      }
+    }
+  },
+  {
+    "id": "openarchives",
+    "type": "DATA",
+    "data": {
+      "type": "Name",
+      "data": {
+        "person": "Person:95c2d842-7eff-04a5-619c-ff3576a3e51d",
+        "name": "Johannes",
+        "given": null,
+        "surname": null,
+        "prefix": null,
+        "suffix": null
+      }
+    }
+  },
+  {
+    "id": "openarchives",
+    "type": "DATA",
+    "data": {
+      "type": "Person",
+      "data": {
+        "id": "Person:eb300029-4998-182e-1cb7-8ec9878937ac",
+        "primary": null
+      }
+    }
+  },
+  {
+    "id": "openarchives",
+    "type": "DATA",
+    "data": {
+      "type": "Name",
+      "data": {
+        "person": "Person:eb300029-4998-182e-1cb7-8ec9878937ac",
+        "name": "Geertruij Hassel",
+        "given": null,
+        "surname": null,
+        "prefix": null,
+        "suffix": null
+      }
+    }
+  },
+  {
+    "id": "openarchives",
+    "type": "DATA",
+    "data": {
+      "type": "Baptism",
+      "data": {
+        "person": "Person:95c2d842-7eff-04a5-619c-ff3576a3e51d",
+        "place": "Leiderdorp",
+        "date": "1707-5-29"
+      }
+    }
+  },
+  {
+    "id": "openarchives",
+    "type": "DATA",
+    "data": {
+      "type": "Birth",
+      "data": {
+        "person": "Person:95c2d842-7eff-04a5-619c-ff3576a3e51d",
+        "place": null,
+        "date": null,
+        "parents": [
+          "Person:eb300029-4998-182e-1cb7-8ec9878937ac",
+          "Person:a4bdf197-5cd2-288d-03dc-5a5be0a0efa2"
+        ]
+      }
+    }
+  },
+  {
+    "id": "openarchives",
+    "type": "DATA",
+    "data": {
+      "type": "Citation",
+      "data": {
+        "title": "Baptism Johannes on May 29, 1707 in Leiderdorp (Netherlands) » Open Archives",
+        "url": "https://www.openarch.nl/show.php?archive=elo&identifier=f0b964b5-2d86-b61e-66b1-fcbd25b9c47c&lang=en",
+        "accessed": 1483228800000,
+        "repository_name": "openarchives",
+        "repository_website": "openarch.nl",
+        "repository_url": "https://www.openarch.nl"
+      }
+    }
+  },
+  {
+    "id": "openarchives",
+    "type": "END"
+  }
+]
