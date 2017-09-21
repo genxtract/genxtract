@@ -148,7 +148,9 @@ class Extraction {
    */
   _dispatch(obj) {
     window.dispatchEvent(new window.CustomEvent('genxtract', {detail: obj}));
-  }/**
+  }
+  
+  /**
    * Used to show that two people are the same person in the extraction.
    * 
    * @param {Object} data

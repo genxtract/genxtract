@@ -1,7 +1,6 @@
 # extract
 
-* `Emit` contains helper methods and validation for emitting data.
-* `Extraction` sets up and manages the state of an extraction.
+* `Extraction` sets up and manages the state of an extraction and caontains helpers methods for emitting data.
 * `Extractors` manages available extractors and matches a URL against their registered regexes.
 
 ## Developing extractors
