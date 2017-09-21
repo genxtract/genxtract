@@ -1,0 +1,228 @@
+[
+  {
+    "id": "openarchives",
+    "type": "START"
+  },
+  {
+    "id": "openarchives",
+    "type": "DATA",
+    "data": {
+      "type": "Person",
+      "data": {
+        "id": "Person1",
+        "primary": null
+      }
+    }
+  },
+  {
+    "id": "openarchives",
+    "type": "DATA",
+    "data": {
+      "type": "Name",
+      "data": {
+        "person": "Person1",
+        "name": "Albertus Henderikus Kleinenberg",
+        "given": null,
+        "surname": null,
+        "prefix": null,
+        "suffix": null
+      }
+    }
+  },
+  {
+    "id": "openarchives",
+    "type": "DATA",
+    "data": {
+      "type": "Person",
+      "data": {
+        "id": "Person2",
+        "primary": null
+      }
+    }
+  },
+  {
+    "id": "openarchives",
+    "type": "DATA",
+    "data": {
+      "type": "Name",
+      "data": {
+        "person": "Person2",
+        "name": "Janna Moes",
+        "given": null,
+        "surname": null,
+        "prefix": null,
+        "suffix": null
+      }
+    }
+  },
+  {
+    "id": "openarchives",
+    "type": "DATA",
+    "data": {
+      "type": "Person",
+      "data": {
+        "id": "Person3",
+        "primary": null
+      }
+    }
+  },
+  {
+    "id": "openarchives",
+    "type": "DATA",
+    "data": {
+      "type": "Name",
+      "data": {
+        "person": "Person3",
+        "name": "Albert Kasper Kleinenberg",
+        "given": null,
+        "surname": null,
+        "prefix": null,
+        "suffix": null
+      }
+    }
+  },
+  {
+    "id": "openarchives",
+    "type": "DATA",
+    "data": {
+      "type": "Person",
+      "data": {
+        "id": "Person4",
+        "primary": null
+      }
+    }
+  },
+  {
+    "id": "openarchives",
+    "type": "DATA",
+    "data": {
+      "type": "Name",
+      "data": {
+        "person": "Person4",
+        "name": "Dieuwkje Bosma",
+        "given": null,
+        "surname": null,
+        "prefix": null,
+        "suffix": null
+      }
+    }
+  },
+  {
+    "id": "openarchives",
+    "type": "DATA",
+    "data": {
+      "type": "Person",
+      "data": {
+        "id": "Person5",
+        "primary": null
+      }
+    }
+  },
+  {
+    "id": "openarchives",
+    "type": "DATA",
+    "data": {
+      "type": "Name",
+      "data": {
+        "person": "Person5",
+        "name": "Hendrikus Moes",
+        "given": null,
+        "surname": null,
+        "prefix": null,
+        "suffix": null
+      }
+    }
+  },
+  {
+    "id": "openarchives",
+    "type": "DATA",
+    "data": {
+      "type": "Person",
+      "data": {
+        "id": "Person6",
+        "primary": null
+      }
+    }
+  },
+  {
+    "id": "openarchives",
+    "type": "DATA",
+    "data": {
+      "type": "Name",
+      "data": {
+        "person": "Person6",
+        "name": "Geertje Hilberts",
+        "given": null,
+        "surname": null,
+        "prefix": null,
+        "suffix": null
+      }
+    }
+  },
+  {
+    "id": "openarchives",
+    "type": "DATA",
+    "data": {
+      "type": "Marriage",
+      "data": {
+        "spouses": [
+          "Person2",
+          "Person1"
+        ],
+        "place": "Lonneker",
+        "date": "1931-05-22"
+      }
+    }
+  },
+  {
+    "id": "openarchives",
+    "type": "DATA",
+    "data": {
+      "type": "Birth",
+      "data": {
+        "person": "Person2",
+        "place": null,
+        "date": null,
+        "parents": [
+          "Person6",
+          "Person5"
+        ]
+      }
+    }
+  },
+  {
+    "id": "openarchives",
+    "type": "DATA",
+    "data": {
+      "type": "Birth",
+      "data": {
+        "person": "Person1",
+        "place": null,
+        "date": null,
+        "parents": [
+          "Person4",
+          "Person3"
+        ]
+      }
+    }
+  },
+  {
+    "id": "openarchives",
+    "type": "DATA",
+    "data": {
+      "type": "Citation",
+      "data": {
+        "title": "Huwelijk Albertus Henderikus Kleinenberg & Janna Moes op 22 mei 1931 te Lonneker » Open Archieven",
+        "url": "https://www.openarch.nl/show.php?archive=ens&identifier=4319e58e-3894-3f18-7a44-dacc65dcf90a",
+        "accessed": 1483228800000,
+        "repository_name": "openarchives",
+        "repository_website": "openarch.nl",
+        "repository_url": "https://www.openarch.nl"
+      }
+    }
+  },
+  {
+    "id": "openarchives",
+    "type": "END"
+  }
+]

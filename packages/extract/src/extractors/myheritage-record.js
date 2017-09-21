@@ -1,10 +1,8 @@
 import Extraction from '../Extraction.js';
-import Emit from '../Emit.js';
 import VerticalTable from '../lib/VerticalTable.js';
 import HorizontalTable from '../lib/HorizontalTable.js';
 
 const extraction = new Extraction('myheritage-record');
-const emit = new Emit(extraction);
 
 const map = {
   'birth': 'Birth',
@@ -24,16 +22,16 @@ const person = getRecordId(window.location.href);
 let spouse = null;
 let censusDate = null;
 
-emit.Person({id: person, primary: true});
+extraction.Person({id: person, primary: true});
 
 const names = document.querySelector('.recordTitle').textContent.split('&').map((val) => val.trim());
-emit.Name({person, name: names[0]});
+extraction.Name({person, name: names[0]});
 
 // If we have more than one name, this is a marriage, so create the spouse
 if (names.length > 1) {
   spouse = `${person}-spouse`;
-  emit.Person({id: spouse});
-  emit.Name({person: spouse, name: names[1]});
+  extraction.Person({id: spouse});
+  extraction.Name({person: spouse, name: names[1]});
 }
 
 // Loop through the record rows
@@ -59,10 +57,10 @@ for (let i= 0; i < rows.length; i++) {
       inScopePerson = (value.textContent.trim() === names[0]) ? person : spouse;
     } else {
       const id = getDataItemId(value.querySelector('span'));
-      emit.Person({id});
-      emit.Name({person: id, name: value.textContent.trim()});
-      emit.Marriage({spouses: [person, id]});
-      emit.Gender({person: id, gender: 'Male'});
+      extraction.Person({id});
+      extraction.Name({person: id, name: value.textContent.trim()});
+      extraction.Marriage({spouses: [person, id]});
+      extraction.Gender({person: id, gender: 'Male'});
       if (!indented) {
         inScopePerson = id;
       }
@@ -74,10 +72,10 @@ for (let i= 0; i < rows.length; i++) {
       inScopePerson = (value.textContent.trim() === names[0]) ? person : spouse;
     } else {
       const id = getDataItemId(value.querySelector('span'));
-      emit.Person({id});
-      emit.Name({person: id, name: value.textContent.trim()});
-      emit.Marriage({spouses: [person, id]});
-      emit.Gender({person: id, gender: 'Female'});
+      extraction.Person({id});
+      extraction.Name({person: id, name: value.textContent.trim()});
+      extraction.Marriage({spouses: [person, id]});
+      extraction.Gender({person: id, gender: 'Female'});
       if (!indented) {
         inScopePerson = id;
       }
@@ -86,10 +84,10 @@ for (let i= 0; i < rows.length; i++) {
 
   if (label === 'mother') {
     const id = getDataItemId(value.querySelector('span'));
-    emit.Person({id});
-    emit.Name({person: id, name: value.textContent.trim()});
-    emit.Birth({person, parents: [id]});
-    emit.Gender({person: id, gender: 'Female'});
+    extraction.Person({id});
+    extraction.Name({person: id, name: value.textContent.trim()});
+    extraction.Birth({person, parents: [id]});
+    extraction.Gender({person: id, gender: 'Female'});
     if (!indented) {
       inScopePerson = id;
     }
@@ -97,10 +95,10 @@ for (let i= 0; i < rows.length; i++) {
 
   if (label === 'father') {
     const id = getDataItemId(value.querySelector('span'));
-    emit.Person({id});
-    emit.Name({person: id, name: value.textContent.trim()});
-    emit.Birth({person, parents: [id]});
-    emit.Gender({person: id, gender: 'Male'});
+    extraction.Person({id});
+    extraction.Name({person: id, name: value.textContent.trim()});
+    extraction.Birth({person, parents: [id]});
+    extraction.Gender({person: id, gender: 'Male'});
     if (!indented) {
       inScopePerson = id;
     }
@@ -108,10 +106,10 @@ for (let i= 0; i < rows.length; i++) {
 
   if (label === 'daughter' || label === 'daughter (implied)') {
     const id = getDataItemId(value.querySelector('span'));
-    emit.Person({id});
-    emit.Name({person: id, name: value.textContent.trim()});
-    emit.Birth({person: id, parents: [person]});
-    emit.Gender({person: id, gender: 'Female'});
+    extraction.Person({id});
+    extraction.Name({person: id, name: value.textContent.trim()});
+    extraction.Birth({person: id, parents: [person]});
+    extraction.Gender({person: id, gender: 'Female'});
     if (!indented) {
       inScopePerson = id;
     }
@@ -119,10 +117,10 @@ for (let i= 0; i < rows.length; i++) {
 
   if (label === 'son' || label === 'son (implied)') {
     const id = getDataItemId(value.querySelector('span'));
-    emit.Person({id});
-    emit.Name({person: id, name: value.textContent.trim()});
-    emit.Birth({person: id, parents: [person]});
-    emit.Gender({person: id, gender: 'Male'});
+    extraction.Person({id});
+    extraction.Name({person: id, name: value.textContent.trim()});
+    extraction.Birth({person: id, parents: [person]});
+    extraction.Gender({person: id, gender: 'Male'});
     if (!indented) {
       inScopePerson = id;
     }
@@ -132,9 +130,9 @@ for (let i= 0; i < rows.length; i++) {
     const children = value.querySelectorAll('span');
     for (let j = 0; j < children.length; j++) {
       const id = getDataItemId(children[j]);
-      emit.Person({id});
-      emit.Name({person: id, name: children[j].textContent});
-      emit.Birth({person: id, parents: [person]});
+      extraction.Person({id});
+      extraction.Name({person: id, name: children[j].textContent});
+      extraction.Birth({person: id, parents: [person]});
     }
   }
 
@@ -142,14 +140,14 @@ for (let i= 0; i < rows.length; i++) {
     const siblings = value.querySelectorAll('span');
     for (let j = 0; j < siblings.length; j++) {
       const id = getDataItemId(siblings[j]);
-      emit.Person({id});
-      emit.Name({person: id, name: siblings[j].textContent});
+      extraction.Person({id});
+      extraction.Name({person: id, name: siblings[j].textContent});
     }
   }
 
   if (label === 'gender') {
     const gender = (value.textContent.toLowerCase()[0] === 'f') ? 'Female' : 'Male';
-    emit.Gender({person: inScopePerson, gender});
+    extraction.Gender({person: inScopePerson, gender});
   }
 
   // Other names
@@ -157,7 +155,7 @@ for (let i= 0; i < rows.length; i++) {
     const rawNames = value.innerHTML;
     const names = rawNames.split(/<br ?\/?>/);
     for (const name of names) {
-      emit.Name({person: inScopePerson, name});
+      extraction.Name({person: inScopePerson, name});
     }
   }
 
@@ -180,18 +178,18 @@ for (let i= 0; i < rows.length; i++) {
     case 'Residence':
     case 'Death':
     case 'Burial':
-      emit[type]({person: inScopePerson, date, place});
+      extraction[type]({person: inScopePerson, date, place});
       break;
     case 'Occupation':
     case 'Immigration':
-      emit[type]({person: inScopePerson, date, place, value: value.textContent.trim()});
+      extraction[type]({person: inScopePerson, date, place, value: value.textContent.trim()});
       break;
     case 'Birth':
-      emit[type]({person: inScopePerson, date, place, parents: []});
+      extraction[type]({person: inScopePerson, date, place, parents: []});
       break;
     case 'Marriage':
       if (spouse) {
-        emit[type]({date, place, spouses: [person, spouse]});
+        extraction[type]({date, place, spouses: [person, spouse]});
       }
       break;
   }
@@ -229,22 +227,22 @@ for(let i = 0; i < tables.length; i++) {
       const relativeId = getRecordId(row.name.href);
       const relation = row.relation.text.toLowerCase();
 
-      emit.Person({id: relativeId});
-      emit.Name({
+      extraction.Person({id: relativeId});
+      extraction.Name({
         person: relativeId,
         name: row.name.text,
       });
 
       // Update their birth/death information
       if (row.birth && row.birth.text) {
-        emit.Birth({
+        extraction.Birth({
           person: relativeId,
           parents: [],
           date: row.birth.text.trim(),
         });
       }
       if (row.death && row.death.text) {
-        emit.Death({
+        extraction.Death({
           person: relativeId,
           date: row.death.text.trim(),
         });
@@ -252,16 +250,16 @@ for(let i = 0; i < tables.length; i++) {
 
       // Add relationships
       if(/^(husband|wife)/.test(relation)) {
-        emit.Marriage({
+        extraction.Marriage({
           spouses: [person, relativeId],
         });
       } else if(/^(son|daughter)/.test(relation)) {
-        emit.Birth({
+        extraction.Birth({
           parents: [person],
           person: relativeId,
         });
       } else if(/^(mother|father)/.test(relation)) {
-        emit.Birth({
+        extraction.Birth({
           parents: [relativeId],
           person: person,
         });
@@ -269,12 +267,12 @@ for(let i = 0; i < tables.length; i++) {
 
       // Gender
       if(/^(husband|son|father)/.test(relation)) {
-        emit.Gender({
+        extraction.Gender({
           person: relativeId,
           gender: 'Male',
         });
       } else if(/^(wife|daughter|mother)/.test(relation)) {
-        emit.Gender({
+        extraction.Gender({
           person: relativeId,
           gender: 'Female',
         });
@@ -315,8 +313,8 @@ if (household !== null) {
   householdMembers.getRows().forEach(function(row) {
     const relativeId = getRecordId(row.name.href);
     
-    emit.Person({id: relativeId});
-    emit.Name({
+    extraction.Person({id: relativeId});
+    extraction.Name({
       person: relativeId,
       name: row.name.text,
     });
@@ -326,7 +324,7 @@ if (household !== null) {
       const rawAge = row.age.text.trim();
       const year = rawAge.split(/ +/)[0];
       const age = censusDate - year;
-      emit.Birth({
+      extraction.Birth({
         person: relativeId,
         parents: [],
         date: 'About ' + age,
@@ -340,12 +338,12 @@ if (household !== null) {
     const relation = row['relation to head'].text.toLowerCase();
 
     if (/^(wife|daughter|mother|aunt)/.test(relation)) {
-      emit.Gender({
+      extraction.Gender({
         person: relativeId,
         gender: 'Female',
       });
     } else if (/^(husband|son|father|uncle)/.test(relation)) {
-      emit.Gender({
+      extraction.Gender({
         person: relativeId,
         gender: 'Male',
       });
@@ -355,7 +353,7 @@ if (household !== null) {
   });
 }
 
-emit.Citation({
+extraction.Citation({
   title: document.title,
   url: window.location.href,
   accessed: Date.now(),

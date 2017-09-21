@@ -1,9 +1,6 @@
 import Extraction from '../Extraction.js';
-import Emit from '../Emit.js';
 
 const extraction = new Extraction('genealogieonline');
-const emit = new Emit(extraction);
-
 extraction.start();
 
 const persons = Array.from(document.querySelectorAll('[itemtype="http://schema.org/Person"]'));
@@ -14,23 +11,23 @@ const mainFacts = mainPerson.querySelector('.nicelist');
 
 
 const person = getId(window.location.href);
-emit.Person({id: person, primary: true});
+extraction.Person({id: person, primary: true});
 const name = getContent('name', mainName);
 
 if (name) {
-  emit.Name({person, name});
+  extraction.Name({person, name});
 }
 
 const birthPlace = getContent(['birthPlace', 'address', 'addressLocality'], mainFacts);
 const birthDate = getContent('birthDate', mainFacts);
 if (birthPlace || birthDate) {
-  emit.Birth({person, place: birthPlace, date: birthDate, parents: []});
+  extraction.Birth({person, place: birthPlace, date: birthDate, parents: []});
 }
 
 const deathPlace = getContent(['deathPlace', 'address', 'addressLocality'], mainFacts);
 const deathDate = getContent('deathDate', mainFacts);
 if (deathPlace || deathDate) {
-  emit.Death({person, place: deathPlace, date: deathDate});
+  extraction.Death({person, place: deathPlace, date: deathDate});
 }
 
 const parents = [];
@@ -42,35 +39,35 @@ for (const rawPerson of persons) {
   const deathPlace = getContent(['deathPlace', 'address', 'addressLocality'], rawPerson);
   const deathDate = getContent('deathDate', rawPerson);
 
-  emit.Person({id});
+  extraction.Person({id});
   if (name) {
-    emit.Name({person: id, name});
+    extraction.Name({person: id, name});
   }
   if (deathPlace || deathDate) {
-    emit.Death({person: id, place: deathPlace, date: deathDate});
+    extraction.Death({person: id, place: deathPlace, date: deathDate});
   }
 
   switch(rawPerson.getAttribute('itemprop')) {
     case 'parent':
       parents.push(id);
       if (birthPlace || birthDate) {
-        emit.Birth({person: id, place: birthPlace, date: birthDate, parents: []});
+        extraction.Birth({person: id, place: birthPlace, date: birthDate, parents: []});
       }
       break;
     case 'spouse':
-      emit.Marriage({spouses: [person, id]});
+      extraction.Marriage({spouses: [person, id]});
       break;
     case 'children':
-      emit.Birth({person: id, place: birthPlace, date: birthDate, parents: [person]});
+      extraction.Birth({person: id, place: birthPlace, date: birthDate, parents: [person]});
       break;
   }
 }
 
 if (parents.length > 0) {
-  emit.Birth({person, parents});
+  extraction.Birth({person, parents});
 }
 
-emit.Citation({
+extraction.Citation({
   title: document.title,
   url: window.location.href,
   accessed: Date.now(),

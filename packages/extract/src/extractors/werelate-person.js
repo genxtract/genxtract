@@ -1,8 +1,6 @@
 import Extraction from '../Extraction.js';
-import Emit from '../Emit.js';
 
 const extraction = new Extraction('werelate-person');
-const emit = new Emit(extraction);
 
 const basicEvents = {
   'alt burial': 'Burial',
@@ -45,11 +43,11 @@ extraction.start();
 
 const person = getId(window.location.href);
 
-emit.Person({
+extraction.Person({
   id: person,
   primary: true,
 });
-emit.ExternalId({
+extraction.ExternalId({
   person,
   url: window.location.href,
   id: person,
@@ -71,13 +69,13 @@ for (let i = 0; i < facts.length; i++) {
 
   switch(type) {
     case 'name':
-      emit.Name({
+      extraction.Name({
         person,
         name: fact.querySelector('span.wr-infotable-fullname').textContent.trim(),
       });
       break;
     case 'gender':
-      emit.Gender({
+      extraction.Gender({
         person,
         gender: fact.querySelector('span.wr-infotable-gender').textContent.trim(),
       });
@@ -96,7 +94,7 @@ for (let i = 0; i < facts.length; i++) {
         });
         spouses.push(getId(a.href));
       }
-      emit.Marriage({
+      extraction.Marriage({
         spouses,
         date: getDate(fact),
         place: getPlace(fact),
@@ -104,14 +102,14 @@ for (let i = 0; i < facts.length; i++) {
       break;
     default:
       if (basicEvents[type]) {
-        emit[basicEvents[type]]({
+        extraction[basicEvents[type]]({
           person,
           date: getDate(fact),
           place: getPlace(fact),
         });
       }
       if (basicFacts[type]) {
-        emit[basicFacts[type]]({
+        extraction[basicFacts[type]]({
           person,
           date: getDate(fact),
           place: getPlace(fact),
@@ -119,7 +117,7 @@ for (let i = 0; i < facts.length; i++) {
         });
       }
       if (parentEvents[type]) {
-        emit[parentEvents[type]]({
+        extraction[parentEvents[type]]({
           person,
           date: getDate(fact),
           place: getPlace(fact),
@@ -156,14 +154,14 @@ for (let i = 0; i < parents.length; i++) {
 // Emit marriage
 const parentMarriageDate = parentsAndSiblings.querySelector('.wr-infobox-event .wr-infobox-date');
 if (parentMarriageDate) {
-  emit.Marriage({
+  extraction.Marriage({
     spouses: parentIds,
     date: parentMarriageDate.textContent.trim(),
   });
 }
 // Emit a birth event if we have parents
 if (parentIds.length > 0) {
-  emit.Birth({
+  extraction.Birth({
     person,
     parents: parentIds,
   });
@@ -188,7 +186,7 @@ for (let i = 0; i < siblings.length; i++) {
     url: url.href,
     death: (years.length === 2) ? years[1].trim() : undefined,
   });
-  emit.Birth({
+  extraction.Birth({
     person: id,
     parents: parentIds,
     date: (years.length === 2) ? years[0].trim() : undefined,
@@ -226,7 +224,7 @@ for (let i = 0; i < spouses.length; i++) {
 // Emit marriage
 const marriageDate = spouseAndChildren.querySelector('.wr-infobox-event .wr-infobox-date');
 if (marriageDate) {
-  emit.Marriage({
+  extraction.Marriage({
     spouses: spouseIds,
     date: marriageDate.textContent.trim(),
   });
@@ -248,14 +246,14 @@ for (let i = 0; i < children.length; i++) {
     url: url.href,
     death: (years.length === 2) ? years[1].trim() : undefined,
   });
-  emit.Birth({
+  extraction.Birth({
     person: id,
     parents: spouseIds,
     date: (years.length === 2) ? years[0].trim() : undefined,
   });
 }
 
-emit.Citation({
+extraction.Citation({
   title: document.title,
   url: window.location.href,
   accessed: Date.now(),
@@ -298,33 +296,33 @@ function getDesc(elem) {
 }
 
 function emitPerson({id, name, url, gender, birth, death}) {
-  emit.Person({
+  extraction.Person({
     id,
   });
-  emit.Name({
+  extraction.Name({
     person: id,
     name,
   });
-  emit.ExternalId({
+  extraction.ExternalId({
     person: id,
     url: url,
     id,
   });
   if (gender) {
-    emit.Gender({
+    extraction.Gender({
       person: id,
       gender,
     });
   }
   if (birth && birth.trim()) {
-    emit.Birth({
+    extraction.Birth({
       person: id,
       date: birth.trim(),
       parents: [],
     });
   }
   if (death && death.trim()) {
-    emit.Death({
+    extraction.Death({
       person: id,
       date: death.trim(),
       parents: [],

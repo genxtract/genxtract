@@ -1,21 +1,18 @@
 import Extraction from '../Extraction.js';
-import Emit from '../Emit.js';
 import HorizontalTable from '../lib/HorizontalTable.js';
 import VerticalTable from '../lib/VerticalTable.js';
 import {toTitleCase} from '../lib/utils.js';
 
 const extraction = new Extraction('findmypast-record');
-const emit = new Emit(extraction);
-
 extraction.start();
 
 const personId = getRecordId(document.location.href);
 
-emit.Person({
+extraction.Person({
   id: personId,
   primary: true,
 });
-emit.ExternalId({
+extraction.ExternalId({
   person: personId,
   url: window.location.href,
   id: personId,
@@ -30,14 +27,14 @@ if(transcriptionDisplayTable) {
     },
   });
 
-  emit.Name({
+  extraction.Name({
     person: personId,
     given: processName(dataFields.getText('first name(s)')),
     surname: processName(dataFields.getText('last name')),
   });
 
   if(dataFields.hasLabel('sex') || dataFields.hasLabel('gender')) {
-    emit.Gender({
+    extraction.Gender({
       person: personId,
       gender: dataFields.getFirstText(['sex', 'gender']),
     });
@@ -64,7 +61,7 @@ if(transcriptionDisplayTable) {
   ].forEach(function(config) {
     const text = dataFields.getText(config.label);
     if(text && text !== '-') {
-      emit[config.type]({
+      extraction[config.type]({
         person: personId,
         value: dataFields.getText(config.label),
       });
@@ -123,13 +120,13 @@ if(transcriptionDisplayTable) {
       switch(primaryRelationship + ':' + row['relationship']) {
         case 'Head:Wife':
         case 'Wife:Head':
-          emit.Marriage({
+          extraction.Marriage({
             spouses: [personId, householdPersonId],
           });
           break;
         case 'Head:Daughter':
         case 'Head:Son':
-          emit.Birth({
+          extraction.Birth({
             person: householdPersonId,
             parents: [personId],
           });
@@ -137,7 +134,7 @@ if(transcriptionDisplayTable) {
         case 'Daughter:Head':
         case 'Son:Head':
           headId = householdPersonId;
-          emit.Birth({
+          extraction.Birth({
             person: personId,
             parents: [householdPersonId],
           });
@@ -156,14 +153,14 @@ if(transcriptionDisplayTable) {
     });
     if(headId) {
       siblings.forEach(function(siblingId) {
-        emit.Birth({
+        extraction.Birth({
           person: siblingId,
           parents: [headId],
         });
       });
     }
     if(headId && headsWifeId) {
-      emit.Marriage({
+      extraction.Marriage({
         spouses: [headId, headsWifeId],
       });
     }
@@ -182,7 +179,7 @@ if(transcriptionDisplayTable) {
                        getName(dataFields, 'groom\'s father\'s first name(s)', 'groom\'s father\'s last name');
     if(fatherName) {
       fatherName.person = fatherId;
-      emit.Name(fatherName);
+      extraction.Name(fatherName);
       parents.push(fatherId);
     }
     
@@ -191,18 +188,18 @@ if(transcriptionDisplayTable) {
     const motherName = getName(dataFields, 'mother\'s first name(s)', 'mother\'s last name');
     if(motherName) {
       motherName.person = motherId;
-      emit.Name(motherName);
+      extraction.Name(motherName);
       parents.push(motherId);
     }
 
     if(parents.length > 0) {
-      emit.Birth({
+      extraction.Birth({
         person: personId,
         parents,
       });
     }
     if(parents.length === 2) {
-      emit.Marriage({
+      extraction.Marriage({
         spouses: parents,
       });
     }
@@ -212,11 +209,11 @@ if(transcriptionDisplayTable) {
     const spouseName = getName(dataFields, 'spouse\'s first name(s)', 'spouse\'s last name');
     if(spouseName) {
       spouseName.person = spouseId;
-      emit.Name(spouseName);
+      extraction.Name(spouseName);
       spouses.push(spouseId);
       
       if(dataFields.hasLabel('spouse\'s sex')) {
-        emit.Gender({
+        extraction.Gender({
           person: spouseId,
           gender: dataFields.getText('spouse\'s sex'),
         });
@@ -229,24 +226,24 @@ if(transcriptionDisplayTable) {
                                 getName(dataFields, 'bride\'s father\'s first name(s)', 'bride\'s father\'s last name');
       if(spousesFatherName) {
         spousesFatherName.person = spousesFatherId;
-        emit.Name(spousesFatherName);
+        extraction.Name(spousesFatherName);
         spousesParents.push(spousesFatherId);
       }
       const spousesMotherId = `${spouseId}-m`;
       const spousesMotherName = getName(dataFields, 'spouse\'s mother\'s first name(s)', 'spouse\'s mother\'s last name');
       if(spousesMotherName) {
         spousesMotherName.person = spousesMotherId;
-        emit.Name(spousesMotherName);
+        extraction.Name(spousesMotherName);
         spousesParents.push(spousesMotherId);
       }
       if(spousesParents.length > 0) {
-        emit.Birth({
+        extraction.Birth({
           person: spouseId,
           parents: spousesParents,
         });
       }
       if(spousesParents.length === 2) {
-        emit.Marriage({
+        extraction.Marriage({
           spouses: spousesParents,
         });
       }
@@ -268,12 +265,12 @@ if(transcriptionDisplayTable) {
     marriage.place = marriagePlace;
   }
   if(marriage.spouses.length === 2 || marriage.date || marriage.place) {
-    emit.Marriage(marriage);
+    extraction.Marriage(marriage);
   }
 
 }
 
-emit.Citation({
+extraction.Citation({
   title: document.title,
   url: window.location.href,
   accessed: Date.now(),
@@ -427,7 +424,7 @@ function emitFact(personId, data, type, dateFunc, placeFunc, validate) {
     if(validate && !validate(fact)) {
       return;
     }
-    emit[type](fact);
+    extraction[type](fact);
   }
 }
 
@@ -537,12 +534,12 @@ function getImmigrationPlace(data) {
 
 function processHouseholdPerson(data) {
   const personId = getRecordId(data['']);
-  emit.Name({
+  extraction.Name({
     person: personId,
     given: data['first name(s)'],
     surname: data['last name'],
   });
-  emit.Gender({
+  extraction.Gender({
     person: personId,
     gender: data['sex'] || data['gender'],
   });
@@ -556,16 +553,16 @@ function processHouseholdPerson(data) {
     if(data['birth place']) {
       birth.place = data['birth place'];
     }
-    emit.Birth(birth);
+    extraction.Birth(birth);
   }
   if(data['occupation']) {
-    emit.Occupation({
+    extraction.Occupation({
       person: personId,
       value: data['occupation'],
     });
   }
   if(data['marital status']) {
-    emit.MaritalStatus({
+    extraction.MaritalStatus({
       person: personId,
       value: data['marital status'],
     });

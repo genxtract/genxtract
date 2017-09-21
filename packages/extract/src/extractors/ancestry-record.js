@@ -1,5 +1,4 @@
 import Extraction from '../Extraction.js';
-import Emit from '../Emit.js';
 import HorizontalTable from '../lib/HorizontalTable.js';
 import VerticalTable from '../lib/VerticalTable.js';
 import {maybe} from '../lib/utils.js';
@@ -57,7 +56,6 @@ const factsConfig = [
 ];
 
 const extraction = new Extraction('ancestry-record');
-const emit = new Emit(extraction);
 
 const dataTable = new HorizontalTable(document.getElementById('recordData'), {
   rowSelector: '.tableHorizontal > tbody > tr',
@@ -82,14 +80,14 @@ extraction.start();
 if(dataTable.hasData()) {
 
   const personId = getRecordId(window.location.href);
-  emit.Person({
+  extraction.Person({
     id: personId,
     primary: true,
   });
 
   // Name
   dataTable.getText('name').trim().split(/\[|\]/g).forEach(function(name) {
-    emit.Name({
+    extraction.Name({
       person: personId,
       name,
     });
@@ -99,7 +97,7 @@ if(dataTable.hasData()) {
   const given = dataTable.getText('given name');
   const surname = dataTable.getText('surname');
   if(given || surname) {
-    emit.Name({
+    extraction.Name({
       person: personId,
       given,
       surname,
@@ -110,7 +108,7 @@ if(dataTable.hasData()) {
   if(dataTable.hasMatch(/gender|sex/)) {
     const gender = getGender(dataTable.getMatchText(/gender|sex/));
     if(gender) {
-      emit.Gender({
+      extraction.Gender({
         person: personId,
         gender,
       });
@@ -122,7 +120,7 @@ if(dataTable.hasData()) {
     const date = dataTable.getMatchText(config.date);
     const place = dataTable.getMatchText(config.place);
     if(date || place) {
-      emit[config.type]({
+      extraction[config.type]({
         person: personId,
         date, 
         place,
@@ -133,7 +131,7 @@ if(dataTable.hasData()) {
   // Residence
   dataTable.getLabelsMatch(/^(home|residence) in \d{4}$/).forEach(function(homeLabel) {
     const year = homeLabel.replace(/^(home|residence) in /, '');
-    emit.Residence({
+    extraction.Residence({
       person: personId,
       date: year,
       place: dataTable.getText(homeLabel),
@@ -143,14 +141,14 @@ if(dataTable.hasData()) {
   // Simple Facts
   factsConfig.forEach(function(config) {
     if(config.label && dataTable.hasLabel(config.label)) {
-      emit[config.type]({
+      extraction[config.type]({
         person: personId,
         value: dataTable.getText(config.label),
       });
     }
     
     else if(config.regex && dataTable.hasMatch(config.regex)) {
-      emit[config.type]({
+      extraction[config.type]({
         person: personId,
         value: dataTable.getMatchText(config.regex),
       });
@@ -170,12 +168,12 @@ if(dataTable.hasData()) {
     const fatherId = getRelativesRecordId($father, `${personId}-father`);
     const fatherName = $father.textContent.trim();
     parents.push(fatherId);
-    emit.Name({
+    extraction.Name({
       person: fatherId,
       name: fatherName,
     });
     if(dataTable.hasMatch(/^father('s)? (birthplace|place of birth)$/)) {
-      emit.Birth({
+      extraction.Birth({
         person: fatherId,
         place: dataTable.getMatchText(/^father('s)? (birthplace|place of birth)$/),
       });
@@ -189,12 +187,12 @@ if(dataTable.hasData()) {
     const motherId = getRelativesRecordId($mother, `${personId}-mother`);
     const motherName = $mother.textContent.trim();
     parents.push(motherId);
-    emit.Name({
+    extraction.Name({
       person: motherId,
       name: motherName,
     });
     if(dataTable.hasMatch(/^mother('s)? (birthplace|place of birth)$/)) {
-      emit.Birth({
+      extraction.Birth({
         person: motherId,
         place: dataTable.getMatchText(/^mother('s)? (birthplace|place of birth)$/),
       });
@@ -203,7 +201,7 @@ if(dataTable.hasData()) {
   }
 
   if(parents.length) {
-    emit.Birth({
+    extraction.Birth({
       person: personId,
       parents,
     });
@@ -215,13 +213,13 @@ if(dataTable.hasData()) {
     const spouseId = getRelativesRecordId($spouse, `${personId}-spouse`);
     const spouseName = $spouse.textContent.trim();
     
-    emit.Name({
+    extraction.Name({
       person: spouseId,
       name: spouseName,
     });
     
     if(dataTable.hasLabel('spouse gender')) {
-      emit.Gender({
+      extraction.Gender({
         person: spouseId,
         gender: getGender(dataTable.getText('spouse gender')),
       });
@@ -243,7 +241,7 @@ if(dataTable.hasData()) {
       marriage.place = marriagePlace;
     }
 
-    emit.Marriage(marriage);
+    extraction.Marriage(marriage);
     childrensParents.push(spouseId);
 
     relativesIndex[spouseName] = spouseId;
@@ -255,11 +253,11 @@ if(dataTable.hasData()) {
     // Here we are assuming they are always just text.
     dataTable.getText('children').split('; ').forEach(function(name, i) {
       const childId = `${personId}-child-${i+1}`;
-      emit.Name({
+      extraction.Name({
         person: childId,
         name,
       });
-      emit.Birth({
+      extraction.Birth({
         person: childId,
         parents: childrensParents,
       });
@@ -299,7 +297,7 @@ if(dataTable.hasData()) {
         
         // Update an existing person's IDs
         if(existingPerson) {
-          emit.AlternateId({
+          extraction.AlternateId({
             person: existingPerson,
             id: relativeId,
             preferred: true,
@@ -308,7 +306,7 @@ if(dataTable.hasData()) {
         
         // Create a new person
         else {
-          emit.Name({
+          extraction.Name({
             person: relativeId,
             name,
           });
@@ -322,7 +320,7 @@ if(dataTable.hasData()) {
           const age = parseInt(rowData.age.text, 10);
           if(!isNaN(age) && recordYear) {
             const estimatedBirthYear = recordYear - age;
-            emit.Birth({
+            extraction.Birth({
               person: relativeId,
               date: `about ${estimatedBirthYear}`,
             });
@@ -338,7 +336,7 @@ if(dataTable.hasData()) {
     const otherEventType = dataTable.getText('event type');
     const otherEventDate = dataTable.getText('event date');
     const otherEventPlace = dataTable.getText('event place');
-    if(otherEventType && emit[otherEventType] && (otherEventDate || otherEventPlace)) {
+    if(otherEventType && extraction[otherEventType] && (otherEventDate || otherEventPlace)) {
       const otherEvent = {};
       if(otherEventDate) {
         otherEvent.date = otherEventDate;
@@ -348,16 +346,16 @@ if(dataTable.hasData()) {
       }
       if(otherEventType === 'Marriage') {
         otherEvent.spouses = childrensParents;
-        emit.Marriage(otherEvent);
+        extraction.Marriage(otherEvent);
       } else {
-        emit[otherEventType](otherEvent);
+        extraction[otherEventType](otherEvent);
       }
     }
   }
 
 }
 
-emit.Citation({
+extraction.Citation({
   title: getTitle(),
   url: window.location.href,
   accessed: Date.now(),

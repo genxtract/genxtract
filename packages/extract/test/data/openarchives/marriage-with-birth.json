@@ -1,0 +1,254 @@
+[
+  {
+    "id": "openarchives",
+    "type": "START"
+  },
+  {
+    "id": "openarchives",
+    "type": "DATA",
+    "data": {
+      "type": "Person",
+      "data": {
+        "id": "Person1",
+        "primary": null
+      }
+    }
+  },
+  {
+    "id": "openarchives",
+    "type": "DATA",
+    "data": {
+      "type": "Name",
+      "data": {
+        "person": "Person1",
+        "name": "Pieter Abraham Kropff",
+        "given": null,
+        "surname": null,
+        "prefix": null,
+        "suffix": null
+      }
+    }
+  },
+  {
+    "id": "openarchives",
+    "type": "DATA",
+    "data": {
+      "type": "Birth",
+      "data": {
+        "person": "Person1",
+        "place": "Leiden",
+        "date": "1791-08-30",
+        "parents": []
+      }
+    }
+  },
+  {
+    "id": "openarchives",
+    "type": "DATA",
+    "data": {
+      "type": "Person",
+      "data": {
+        "id": "Person2",
+        "primary": null
+      }
+    }
+  },
+  {
+    "id": "openarchives",
+    "type": "DATA",
+    "data": {
+      "type": "Name",
+      "data": {
+        "person": "Person2",
+        "name": "Johan Nicolaas Kropf",
+        "given": null,
+        "surname": null,
+        "prefix": null,
+        "suffix": null
+      }
+    }
+  },
+  {
+    "id": "openarchives",
+    "type": "DATA",
+    "data": {
+      "type": "Person",
+      "data": {
+        "id": "Person3",
+        "primary": null
+      }
+    }
+  },
+  {
+    "id": "openarchives",
+    "type": "DATA",
+    "data": {
+      "type": "Name",
+      "data": {
+        "person": "Person3",
+        "name": "Catharina Elsen",
+        "given": null,
+        "surname": null,
+        "prefix": null,
+        "suffix": null
+      }
+    }
+  },
+  {
+    "id": "openarchives",
+    "type": "DATA",
+    "data": {
+      "type": "Person",
+      "data": {
+        "id": "Person4",
+        "primary": null
+      }
+    }
+  },
+  {
+    "id": "openarchives",
+    "type": "DATA",
+    "data": {
+      "type": "Name",
+      "data": {
+        "person": "Person4",
+        "name": "Lisabeth Engelhard",
+        "given": null,
+        "surname": null,
+        "prefix": null,
+        "suffix": null
+      }
+    }
+  },
+  {
+    "id": "openarchives",
+    "type": "DATA",
+    "data": {
+      "type": "Birth",
+      "data": {
+        "person": "Person4",
+        "place": "Leeuwarden",
+        "date": "1792-03-01",
+        "parents": []
+      }
+    }
+  },
+  {
+    "id": "openarchives",
+    "type": "DATA",
+    "data": {
+      "type": "Person",
+      "data": {
+        "id": "Person5",
+        "primary": null
+      }
+    }
+  },
+  {
+    "id": "openarchives",
+    "type": "DATA",
+    "data": {
+      "type": "Name",
+      "data": {
+        "person": "Person5",
+        "name": "Hendrik Engelhard",
+        "given": null,
+        "surname": null,
+        "prefix": null,
+        "suffix": null
+      }
+    }
+  },
+  {
+    "id": "openarchives",
+    "type": "DATA",
+    "data": {
+      "type": "Person",
+      "data": {
+        "id": "Person6",
+        "primary": null
+      }
+    }
+  },
+  {
+    "id": "openarchives",
+    "type": "DATA",
+    "data": {
+      "type": "Name",
+      "data": {
+        "person": "Person6",
+        "name": "Anna Catharina Meerhooff",
+        "given": null,
+        "surname": null,
+        "prefix": null,
+        "suffix": null
+      }
+    }
+  },
+  {
+    "id": "openarchives",
+    "type": "DATA",
+    "data": {
+      "type": "Marriage",
+      "data": {
+        "spouses": [
+          "Person4",
+          "Person1"
+        ],
+        "place": "Leiden",
+        "date": "1822-03-14"
+      }
+    }
+  },
+  {
+    "id": "openarchives",
+    "type": "DATA",
+    "data": {
+      "type": "Birth",
+      "data": {
+        "person": "Person4",
+        "place": null,
+        "date": null,
+        "parents": [
+          "Person6",
+          "Person5"
+        ]
+      }
+    }
+  },
+  {
+    "id": "openarchives",
+    "type": "DATA",
+    "data": {
+      "type": "Birth",
+      "data": {
+        "person": "Person1",
+        "place": null,
+        "date": null,
+        "parents": [
+          "Person3",
+          "Person2"
+        ]
+      }
+    }
+  },
+  {
+    "id": "openarchives",
+    "type": "DATA",
+    "data": {
+      "type": "Citation",
+      "data": {
+        "title": "Marriage Pieter Abraham Kropff & Lisabeth Engelhard on March 14, 1822 in Leiden (Netherlands) » Open Archives",
+        "url": "https://www.openarch.nl/show.php?archive=rzh&identifier=7a9488e8-91bf-4961-b328-bb30915b9069&lang=en",
+        "accessed": 1483228800000,
+        "repository_name": "openarchives",
+        "repository_website": "openarch.nl",
+        "repository_url": "https://www.openarch.nl"
+      }
+    }
+  },
+  {
+    "id": "openarchives",
+    "type": "END"
+  }
+]

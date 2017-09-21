@@ -2,7 +2,7 @@ function getType(type) {
   return type.split('/').pop();
 }
 
-function process({id, data, emit}) {
+function process({id, data, extraction}) {
   // Persons
   if (!Array.isArray(data.persons)) {
     data.persons = [];
@@ -10,13 +10,13 @@ function process({id, data, emit}) {
   for (const gedcomPerson of data.persons) {
     const person = gedcomPerson.id;
     if (person === id) {
-      emit.Person({id: person, primary: true});
+      extraction.Person({id: person, primary: true});
     } else {
-      emit.Person({id: person});
+      extraction.Person({id: person});
     }
 
     if (gedcomPerson.gender && gedcomPerson.gender.type) {
-      emit.Gender({person, gender: getType(gedcomPerson.gender.type)});
+      extraction.Gender({person, gender: getType(gedcomPerson.gender.type)});
     }
 
     if (gedcomPerson.names) {
@@ -24,7 +24,7 @@ function process({id, data, emit}) {
         if (name.nameForms && name.nameForms.length > 0) {
           // Just grab the first one
           const nameForm = name.nameForms[0];
-          emit.Name({person, name: nameForm.fullText});
+          extraction.Name({person, name: nameForm.fullText});
         }
       }
     }
@@ -33,8 +33,8 @@ function process({id, data, emit}) {
       for (const fact of gedcomPerson.facts) {
         const type = getType(fact.type);
 
-        // Only emit types we have
-        if (typeof emit[type] === 'function') {
+        // Only extraction types we have
+        if (typeof extraction[type] === 'function') {
           const obj = {person};
           if (fact.date && fact.date.original) {
             obj.date = fact.date.original;
@@ -49,7 +49,7 @@ function process({id, data, emit}) {
           if (['Adoption', 'Birth'].includes(type)) {
             obj.parents = [];
           }
-          emit[type](obj);
+          extraction[type](obj);
         }
       }
     }
@@ -98,13 +98,13 @@ function process({id, data, emit}) {
         obj.spouses.push(relationship.person2.resourceId);
       }
 
-      if (typeof emit[type] === 'function') {
-        emit[type](obj);
+      if (typeof extraction[type] === 'function') {
+        extraction[type](obj);
       }
     }
   }
   for (const child of Object.keys(births)) {
-    emit.Birth({person: child, parents: births[child]});
+    extraction.Birth({person: child, parents: births[child]});
   }
 }
 

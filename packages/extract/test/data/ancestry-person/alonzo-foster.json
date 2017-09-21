@@ -1,0 +1,279 @@
+[
+  {
+    "id": "ancestry-person",
+    "type": "START"
+  },
+  {
+    "id": "ancestry-person",
+    "type": "DATA",
+    "data": {
+      "type": "Person",
+      "data": {
+        "id": "115498258-300141310390",
+        "primary": true
+      }
+    }
+  },
+  {
+    "id": "ancestry-person",
+    "type": "DATA",
+    "data": {
+      "type": "Gender",
+      "data": {
+        "person": "115498258-300141310390",
+        "gender": "Male"
+      }
+    }
+  },
+  {
+    "id": "ancestry-person",
+    "type": "DATA",
+    "data": {
+      "type": "Name",
+      "data": {
+        "person": "115498258-300141310390",
+        "name": "Alonzo Foster",
+        "given": null,
+        "surname": null,
+        "prefix": null,
+        "suffix": null
+      }
+    }
+  },
+  {
+    "id": "ancestry-person",
+    "type": "DATA",
+    "data": {
+      "type": "Birth",
+      "data": {
+        "person": "115498258-300141310390",
+        "place": "Portland, Multnomah, Oregon, USA",
+        "date": "1951",
+        "parents": null
+      }
+    }
+  },
+  {
+    "id": "ancestry-person",
+    "type": "DATA",
+    "data": {
+      "type": "Death",
+      "data": {
+        "person": "115498258-300141310390",
+        "place": "Seattle, King, Washington, USA",
+        "date": "21 Feb 2011"
+      }
+    }
+  },
+  {
+    "id": "ancestry-person",
+    "type": "DATA",
+    "data": {
+      "type": "Person",
+      "data": {
+        "id": "115498258-300141310725",
+        "primary": null
+      }
+    }
+  },
+  {
+    "id": "ancestry-person",
+    "type": "DATA",
+    "data": {
+      "type": "Name",
+      "data": {
+        "person": "115498258-300141310725",
+        "name": "Grandpa Foster",
+        "given": null,
+        "surname": null,
+        "prefix": null,
+        "suffix": null
+      }
+    }
+  },
+  {
+    "id": "ancestry-person",
+    "type": "DATA",
+    "data": {
+      "type": "Person",
+      "data": {
+        "id": "115498258-300141310733",
+        "primary": null
+      }
+    }
+  },
+  {
+    "id": "ancestry-person",
+    "type": "DATA",
+    "data": {
+      "type": "Name",
+      "data": {
+        "person": "115498258-300141310733",
+        "name": "Grandma Foster",
+        "given": null,
+        "surname": null,
+        "prefix": null,
+        "suffix": null
+      }
+    }
+  },
+  {
+    "id": "ancestry-person",
+    "type": "DATA",
+    "data": {
+      "type": "Marriage",
+      "data": {
+        "spouses": [
+          "115498258-300141310725",
+          "115498258-300141310733"
+        ],
+        "place": null,
+        "date": null
+      }
+    }
+  },
+  {
+    "id": "ancestry-person",
+    "type": "DATA",
+    "data": {
+      "type": "Birth",
+      "data": {
+        "person": "115498258-300141310390",
+        "place": null,
+        "date": null,
+        "parents": [
+          "115498258-300141310725",
+          "115498258-300141310733"
+        ]
+      }
+    }
+  },
+  {
+    "id": "ancestry-person",
+    "type": "DATA",
+    "data": {
+      "type": "Person",
+      "data": {
+        "id": "115498258-300141310420",
+        "primary": null
+      }
+    }
+  },
+  {
+    "id": "ancestry-person",
+    "type": "DATA",
+    "data": {
+      "type": "Name",
+      "data": {
+        "person": "115498258-300141310420",
+        "name": "Maria Hamblin",
+        "given": null,
+        "surname": null,
+        "prefix": null,
+        "suffix": null
+      }
+    }
+  },
+  {
+    "id": "ancestry-person",
+    "type": "DATA",
+    "data": {
+      "type": "Birth",
+      "data": {
+        "person": "115498258-300141310420",
+        "place": null,
+        "date": "1954",
+        "parents": null
+      }
+    }
+  },
+  {
+    "id": "ancestry-person",
+    "type": "DATA",
+    "data": {
+      "type": "Marriage",
+      "data": {
+        "spouses": [
+          "115498258-300141310390",
+          "115498258-300141310420"
+        ],
+        "place": null,
+        "date": null
+      }
+    }
+  },
+  {
+    "id": "ancestry-person",
+    "type": "DATA",
+    "data": {
+      "type": "Person",
+      "data": {
+        "id": "115498258-300141310360",
+        "primary": null
+      }
+    }
+  },
+  {
+    "id": "ancestry-person",
+    "type": "DATA",
+    "data": {
+      "type": "Name",
+      "data": {
+        "person": "115498258-300141310360",
+        "name": "genxtract genxtract",
+        "given": null,
+        "surname": null,
+        "prefix": null,
+        "suffix": null
+      }
+    }
+  },
+  {
+    "id": "ancestry-person",
+    "type": "DATA",
+    "data": {
+      "type": "Birth",
+      "data": {
+        "person": "115498258-300141310360",
+        "place": null,
+        "date": "1973",
+        "parents": null
+      }
+    }
+  },
+  {
+    "id": "ancestry-person",
+    "type": "DATA",
+    "data": {
+      "type": "Birth",
+      "data": {
+        "person": "115498258-300141310360",
+        "place": null,
+        "date": null,
+        "parents": [
+          "115498258-300141310390",
+          "115498258-300141310420"
+        ]
+      }
+    }
+  },
+  {
+    "id": "ancestry-person",
+    "type": "DATA",
+    "data": {
+      "type": "Citation",
+      "data": {
+        "title": "Alonzo Foster - Facts",
+        "url": "https://www.ancestry.com/family-tree/person/tree/115498258/person/300141310390/facts",
+        "accessed": 1483228800000,
+        "repository_name": "Ancestry Public Trees",
+        "repository_website": "www.ancestry.com",
+        "repository_url": "https://www.ancestry.com"
+      }
+    }
+  },
+  {
+    "id": "ancestry-person",
+    "type": "END"
+  }
+]

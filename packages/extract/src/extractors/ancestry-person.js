@@ -1,5 +1,4 @@
 import Extraction from '../Extraction.js';
-import Emit from '../Emit.js';
 import {parseHtml, toTitleCase} from '../lib/utils.js';
 
 const eventConfig = [
@@ -30,9 +29,8 @@ const eventConfig = [
 ];
 
 const extraction = new Extraction('ancestry-person');
-const emit = new Emit(extraction);
-
 extraction.start();
+
 run()
   .then(() => extraction.end())
   .catch((error) => {
@@ -63,7 +61,7 @@ async function run() {
 
   process(parseHtml(json.html.body));
 
-  emit.Citation({
+  extraction.Citation({
     title: document.title,
     url: window.location.href,
     accessed: Date.now(),
@@ -82,7 +80,7 @@ async function run() {
 function process($html) {
   
   const personId = getRecordId(window.location.href);
-  emit.Person({
+  extraction.Person({
     id: personId,
     primary: true,
   });
@@ -96,7 +94,7 @@ function process($html) {
     switch(gender) {
       case 'Female':
       case 'Male':
-        emit.Gender({
+        extraction.Gender({
           person: personId,
           gender,
         });
@@ -105,7 +103,7 @@ function process($html) {
 
   // Names of the primary person
   facts.getCardTitles('name').forEach((nameText) => {
-    emit.Name({
+    extraction.Name({
       person: personId,
       name: nameText,
     });
@@ -116,7 +114,7 @@ function process($html) {
     if(facts.hasFact(config.label)) {
       facts.getFacts(config.label, config.type).forEach((fact) => {
         fact.person = personId;
-        emit[config.type](fact);
+        extraction[config.type](fact);
       });
     }
   });
@@ -147,20 +145,20 @@ function process($html) {
     
     // Create couple relationship if both the father and mother exist
     if(fatherId && motherId) {
-      emit.Marriage({
+      extraction.Marriage({
         spouses: [fatherId, motherId],
       });
-      emit.Birth({
+      extraction.Birth({
         person: personId,
         parents: [fatherId, motherId],
       });
     } else if(fatherId) {
-      emit.Birth({
+      extraction.Birth({
         person: personId,
         parents: [fatherId],
       });
     } else if(motherId) {
-      emit.Birth({
+      extraction.Birth({
         person: personId,
         parents: [motherId],
       });
@@ -192,13 +190,13 @@ function process($html) {
         }
       });
 
-      emit.Marriage(marriage);
+      extraction.Marriage(marriage);
       parents.push(spouseId);
     }
     
     $children.forEach(function($childCard) {
       const childId = getPersonFromCard($childCard);
-      emit.Birth({
+      extraction.Birth({
         person: childId,
         parents,
       });
@@ -313,18 +311,18 @@ function getRelLists($dom) {
 }
 
 /**
- * Processes and emits the person from the card then returns their ID.
+ * Processes and extractions the person from the card then returns their ID.
  * 
  * @param {HTMLElement} $card
  * @return {String} person ID
  */
 function getPersonFromCard($card) {
   const personId = getRecordId($card.href);
-  emit.Person({
+  extraction.Person({
     id: personId,
   });
 
-  emit.Name({
+  extraction.Name({
     person: personId,
     name: getPersonName($card),
   });
@@ -335,13 +333,13 @@ function getPersonFromCard($card) {
     const birthYear = lifespanParts[0];
     const deathYear = lifespanParts[1];
     if(birthYear) {
-      emit.Birth({
+      extraction.Birth({
         person: personId,
         date: birthYear,
       });
     }
     if(deathYear) {
-      emit.Death({
+      extraction.Death({
         person: personId,
         date: deathYear,
       });

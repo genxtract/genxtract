@@ -1,9 +1,7 @@
 import Extraction from '../Extraction.js';
-import Emit from '../Emit.js';
 import process from '../lib/familysearch.js';
 
 const extraction = new Extraction('familysearch-person');
-const emit = new Emit(extraction);
 
 extraction.start();
 
@@ -32,10 +30,10 @@ async function extract() {
 
   const data = await res.json();
 
-  process({id, data, emit});
+  process({id, data, extraction});
 
   // Citation
-  emit.Citation({
+  extraction.Citation({
     title: document.title,
     url: window.location.href,
     accessed: Date.now(),

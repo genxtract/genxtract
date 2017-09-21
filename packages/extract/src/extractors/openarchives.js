@@ -1,9 +1,6 @@
 import Extraction from '../Extraction.js';
-import Emit from '../Emit.js';
 
 const extraction = new Extraction('openarchives');
-const emit = new Emit(extraction);
-
 extraction.start();
 
 extract()
@@ -26,7 +23,7 @@ async function extract() {
   // Persons
   for (const rawPerson of data.a2a_Person) {
     const person = rawPerson.pid;
-    emit.Person({id: person});
+    extraction.Person({id: person});
 
     if (rawPerson.a2a_PersonName) {
       const rawName = rawPerson.a2a_PersonName;
@@ -42,20 +39,20 @@ async function extract() {
 
       name = name.trim();
       if (name) {
-        emit.Name({person, name});
+        extraction.Name({person, name});
       }
     }
 
     let birthDate = getDate(rawPerson.a2a_BirthDate);
     let birthPlace = getPlace(rawPerson.a2a_BirthPlace);
     if (birthDate || birthPlace) {
-      emit.Birth({person, date: birthDate, place: birthPlace, parents: []});
+      extraction.Birth({person, date: birthDate, place: birthPlace, parents: []});
     }
 
     let deathDate = getDate(rawPerson.a2a_DeathDate);
     let deathPlace = getPlace(rawPerson.a2a_DeathPlace);
     if (deathDate || deathPlace) {
-      emit.Death({person, date: deathDate, place: deathPlace});
+      extraction.Death({person, date: deathDate, place: deathPlace});
     }
   }
 
@@ -104,46 +101,46 @@ async function extract() {
     // Birth
     // https://www.openarch.nl/show.php?archive=gld&identifier=2C973D9B-2A24-4E97-AC48-19C3A00C9D1A&lang=en&200
     case 'Geboorte':
-      emit.Birth({person: child, date: eventDate, place: eventPlace, parents});
+      extraction.Birth({person: child, date: eventDate, place: eventPlace, parents});
       break;
     // Baptism
     // https://www.openarch.nl/show.php?archive=elo&identifier=f0b964b5-2d86-b61e-66b1-fcbd25b9c47c&lang=en
     case 'Doop':
-      emit.Baptism({person: child, date: eventDate, place: eventPlace});
+      extraction.Baptism({person: child, date: eventDate, place: eventPlace});
       if (parents.length > 0) {
-        emit.Birth({person: child, parents});
+        extraction.Birth({person: child, parents});
       }
       break;
     // Marriage
     // https://www.openarch.nl/show.php?archive=rzh&identifier=7a9488e8-91bf-4961-b328-bb30915b9069&lang=en
     case 'Huwelijk':
-      emit.Marriage({date: eventDate, place: eventPlace, spouses: [bride, groom]});
+      extraction.Marriage({date: eventDate, place: eventPlace, spouses: [bride, groom]});
       if (brideParents.length > 0) {
-        emit.Birth({person: bride, parents: brideParents});
+        extraction.Birth({person: bride, parents: brideParents});
       }
       if (groomParents.length > 0) {
-        emit.Birth({person: groom, parents: groomParents});
+        extraction.Birth({person: groom, parents: groomParents});
       }
       break;
     // Death
     // https://www.openarch.nl/show.php?archive=elo&identifier=7b85fbb6-31e4-7867-00ec-c6514baa31b9&lang=en
     case 'Overlijden':
-      emit.Death({person: deceased, date: eventDate, place: eventPlace});
+      extraction.Death({person: deceased, date: eventDate, place: eventPlace});
       if (parents.length > 0) {
-        emit.Birth({person: deceased, parents});
+        extraction.Birth({person: deceased, parents});
       }
       break;
     // Burial
     // https://www.openarch.nl/show.php?archive=elo&identifier=09d0bfb0-fbba-943d-63f1-093f7f01439c&lang=en
     case 'Begraven':
-      emit.Burial({person: deceased, date: eventDate, place: eventPlace});
+      extraction.Burial({person: deceased, date: eventDate, place: eventPlace});
       if (parents.length > 0) {
-        emit.Birth({person: deceased, parents});
+        extraction.Birth({person: deceased, parents});
       }
       break;
   }
 
-  emit.Citation({
+  extraction.Citation({
     title: document.title,
     url: window.location.href,
     accessed: Date.now(),

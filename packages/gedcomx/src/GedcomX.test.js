@@ -1,15 +1,12 @@
-import Emit from '@genxtract/extract/src/Emit.js';
 import Extraction from '@genxtract/extract/src/Extraction.js';
 import GedcomX from './GedcomX.js';
 
 let extraction;
-let emit;
 let promise;
 
 describe('GedcomX', () => {
   beforeEach(() => {
     extraction = new Extraction('test');
-    emit = new Emit(extraction);
     const combinator = new GedcomX();
     promise = combinator.start();
     extraction.start();
@@ -27,7 +24,7 @@ describe('GedcomX', () => {
     })
     .catch((error) => done(error));
 
-    emit.Person({id: '1234'});
+    extraction.Person({id: '1234'});
 
     extraction.end();
   });
@@ -45,7 +42,7 @@ describe('GedcomX', () => {
     })
     .catch((error) => done(error));
 
-    emit.Person({id: '1234', primary: true});
+    extraction.Person({id: '1234', primary: true});
 
     extraction.end();
   });
@@ -65,7 +62,7 @@ describe('GedcomX', () => {
     })
     .catch((error) => done(error));
 
-    emit.Gender({person: '1234', gender: 'Male'});
+    extraction.Gender({person: '1234', gender: 'Male'});
 
     extraction.end();
   });
@@ -116,11 +113,11 @@ describe('GedcomX', () => {
     })
     .catch((error) => done(error));
 
-    emit.Name({person: '1234', name: 'John'});
-    emit.Name({person: '1234', name: 'John'}); // making sure we ignore duplicate names
-    emit.Name({person: '5678', name: 'John C Smith'});
-    emit.Name({person: '5678', given: 'John C', surname: 'Smith'});
-    emit.Name({person: '910', prefix: 'Sir', given: 'Richard Charles Nicholas', surname: 'Branson', suffix: 'III'});
+    extraction.Name({person: '1234', name: 'John'});
+    extraction.Name({person: '1234', name: 'John'}); // making sure we ignore duplicate names
+    extraction.Name({person: '5678', name: 'John C Smith'});
+    extraction.Name({person: '5678', given: 'John C', surname: 'Smith'});
+    extraction.Name({person: '910', prefix: 'Sir', given: 'Richard Charles Nicholas', surname: 'Branson', suffix: 'III'});
 
     extraction.end();
   });
@@ -142,9 +139,9 @@ describe('GedcomX', () => {
     })
     .catch((error) => done(error));
 
-    emit.Baptism({person: '1234', place: 'Somewhere'});
-    emit.Death({person: '1234', date: 'Sometime'});
-    emit.Citizenship({person: '1234', value: 'Somewhere'});
+    extraction.Baptism({person: '1234', place: 'Somewhere'});
+    extraction.Death({person: '1234', date: 'Sometime'});
+    extraction.Citizenship({person: '1234', value: 'Somewhere'});
 
     extraction.end();
   });
@@ -180,7 +177,7 @@ describe('GedcomX', () => {
     })
     .catch((error) => done(error));
 
-    emit.Birth({person: '12', place: 'Somewhere', parents: ['34', '56']});
+    extraction.Birth({person: '12', place: 'Somewhere', parents: ['34', '56']});
 
     extraction.end();
   });
@@ -208,7 +205,7 @@ describe('GedcomX', () => {
     })
     .catch((error) => done(error));
 
-    emit.Marriage({spouses: ['12', '34'], place: 'Somewhere'});
+    extraction.Marriage({spouses: ['12', '34'], place: 'Somewhere'});
 
     extraction.end();
   });
@@ -255,8 +252,8 @@ describe('GedcomX', () => {
     })
     .catch((error) => done(error));
 
-    emit.Marriage({spouses: ['12', '34'], place: 'Somewhere'});
-    emit.Citation({
+    extraction.Marriage({spouses: ['12', '34'], place: 'Somewhere'});
+    extraction.Citation({
       title: 'The Title',
       url: 'http://example.com/foo',
       accessed: 1494603896789,
@@ -303,14 +300,14 @@ describe('GedcomX', () => {
     })
     .catch((error) => done(error));
 
-    emit.Birth({person: '12', place: 'Somewhere', parents: []});
-    emit.Birth({person: '12', parents: ['34', '56']});
-    emit.Birth({person: '12', date: 'Sometime', parents: []});
+    extraction.Birth({person: '12', place: 'Somewhere', parents: []});
+    extraction.Birth({person: '12', parents: ['34', '56']});
+    extraction.Birth({person: '12', date: 'Sometime', parents: []});
 
     extraction.end();
   });
 
-  it.only('alternate id', (done) => {
+  it('alternate id', (done) => {
     extractionErrorListener(done);
     promise.then((data) => {
       expect(data).to.deep.equal({
@@ -349,19 +346,19 @@ describe('GedcomX', () => {
     })
     .catch((error) => done(error));
 
-    emit.Person({id: '1234'});
-    emit.AlternateId({person: '1234', id: '5678'});
-    emit.Gender({person: '5678', gender: 'Female'});
+    extraction.Person({id: '1234'});
+    extraction.AlternateId({person: '1234', id: '5678'});
+    extraction.Gender({person: '5678', gender: 'Female'});
 
-    emit.Person({id: 'abc'});
-    emit.Birth({
+    extraction.Person({id: 'abc'});
+    extraction.Birth({
       person: 'abc',
       parents: ['1234'],
     });
-    emit.AlternateId({person: 'abc', id: 'xyz', preferred: true});
-    emit.Gender({person: 'abc', gender: 'Female'});
+    extraction.AlternateId({person: 'abc', id: 'xyz', preferred: true});
+    extraction.Gender({person: 'abc', gender: 'Female'});
 
-    emit.Birth({
+    extraction.Birth({
       person: 'jry',
       parents: ['abc'],
     });
@@ -393,8 +390,8 @@ describe('GedcomX', () => {
     })
     .catch(done);
 
-    emit.Birth({person: '1234', date: 'Sometime'});
-    emit.Marriage({spouses: ['1234'], date: 'Sometime'});
+    extraction.Birth({person: '1234', date: 'Sometime'});
+    extraction.Marriage({spouses: ['1234'], date: 'Sometime'});
     extraction.end();
   });
 
@@ -412,7 +409,7 @@ describe('GedcomX', () => {
       done();
     })
     .catch((error) => done(error));
-    emit.Marriage({spouses: ['1234'], place: 'Somewhere', date: 'Sometime'});
+    extraction.Marriage({spouses: ['1234'], place: 'Somewhere', date: 'Sometime'});
     extraction.end();
   });
 
@@ -434,7 +431,7 @@ describe('GedcomX', () => {
       done();
     })
     .catch((error) => done(error));
-    emit.Birth({person: '1234', parents: ['567']});
+    extraction.Birth({person: '1234', parents: ['567']});
     extraction.end();
   });
 
@@ -452,8 +449,8 @@ describe('GedcomX', () => {
       done();
     })
     .catch((error) => done(error));
-    emit.Person({id: 1234});
-    emit.Birth({person: 1234, date: 'Somewhere'});
+    extraction.Person({id: 1234});
+    extraction.Birth({person: 1234, date: 'Somewhere'});
     extraction.end();
   });
 
@@ -483,10 +480,10 @@ describe('GedcomX', () => {
       done();
     })
     .catch((error) => done(error));
-    emit.Birth({person: '1234', parents: ['90']});
-    emit.Birth({person: '1234', parents: ['90']});
-    emit.Marriage({spouses: ['1234', '5678'], place: 'Somewhere'});
-    emit.Marriage({spouses: ['1234', '5678'], place: 'Somewhere'});
+    extraction.Birth({person: '1234', parents: ['90']});
+    extraction.Birth({person: '1234', parents: ['90']});
+    extraction.Marriage({spouses: ['1234', '5678'], place: 'Somewhere'});
+    extraction.Marriage({spouses: ['1234', '5678'], place: 'Somewhere'});
     extraction.end();
   });
 });

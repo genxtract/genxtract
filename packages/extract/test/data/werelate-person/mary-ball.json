@@ -1,0 +1,816 @@
+[
+  {
+    "id": "werelate-person",
+    "type": "START"
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "Person",
+      "data": {
+        "id": "Mary_Ball_(5)",
+        "primary": true
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "ExternalId",
+      "data": {
+        "person": "Mary_Ball_(5)",
+        "url": "https://www.werelate.org/wiki/Person:Mary_Ball_%285%29",
+        "id": "Mary_Ball_(5)"
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "Name",
+      "data": {
+        "person": "Mary_Ball_(5)",
+        "name": "Mary Ball",
+        "given": null,
+        "surname": null,
+        "prefix": null,
+        "suffix": null
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "Gender",
+      "data": {
+        "person": "Mary_Ball_(5)",
+        "gender": "Female"
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "Birth",
+      "data": {
+        "person": "Mary_Ball_(5)",
+        "place": "Lancaster County, Virginia",
+        "date": "1708",
+        "parents": []
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "Person",
+      "data": {
+        "id": "Augustine_Washington_(1)",
+        "primary": null
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "Name",
+      "data": {
+        "person": "Augustine_Washington_(1)",
+        "name": "Captain Augustine Washington",
+        "given": null,
+        "surname": null,
+        "prefix": null,
+        "suffix": null
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "ExternalId",
+      "data": {
+        "person": "Augustine_Washington_(1)",
+        "url": "https://www.werelate.org/wiki/Person:Augustine_Washington_%281%29",
+        "id": "Augustine_Washington_(1)"
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "Marriage",
+      "data": {
+        "spouses": [
+          "Mary_Ball_(5)",
+          "Augustine_Washington_(1)"
+        ],
+        "place": "",
+        "date": "6 Mar 1731"
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "Death",
+      "data": {
+        "person": "Mary_Ball_(5)",
+        "place": "Fredericksburg, Virginia, United States",
+        "date": "25 Aug 1789"
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "Person",
+      "data": {
+        "id": "Joseph_Ball_(3)",
+        "primary": null
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "Name",
+      "data": {
+        "person": "Joseph_Ball_(3)",
+        "name": "Col. Joseph Ball, of St. Mary's White Chapel Parish",
+        "given": null,
+        "surname": null,
+        "prefix": null,
+        "suffix": null
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "ExternalId",
+      "data": {
+        "person": "Joseph_Ball_(3)",
+        "url": "https://www.werelate.org/wiki/Person:Joseph_Ball_%283%29",
+        "id": "Joseph_Ball_(3)"
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "Gender",
+      "data": {
+        "person": "Joseph_Ball_(3)",
+        "gender": "Male"
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "Birth",
+      "data": {
+        "person": "Joseph_Ball_(3)",
+        "place": null,
+        "date": "1649",
+        "parents": []
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "Death",
+      "data": {
+        "person": "Joseph_Ball_(3)",
+        "place": null,
+        "date": "bef 1711"
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "Person",
+      "data": {
+        "id": "Mary_Unknown_(5029)",
+        "primary": null
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "Name",
+      "data": {
+        "person": "Mary_Unknown_(5029)",
+        "name": "Mary Unknown",
+        "given": null,
+        "surname": null,
+        "prefix": null,
+        "suffix": null
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "ExternalId",
+      "data": {
+        "person": "Mary_Unknown_(5029)",
+        "url": "https://www.werelate.org/wiki/Person:Mary_Unknown_%285029%29",
+        "id": "Mary_Unknown_(5029)"
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "Gender",
+      "data": {
+        "person": "Mary_Unknown_(5029)",
+        "gender": "Female"
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "Birth",
+      "data": {
+        "person": "Mary_Unknown_(5029)",
+        "place": null,
+        "date": "Bef 1672",
+        "parents": []
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "Death",
+      "data": {
+        "person": "Mary_Unknown_(5029)",
+        "place": null,
+        "date": "1721"
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "Marriage",
+      "data": {
+        "spouses": [
+          "Joseph_Ball_(3)",
+          "Mary_Unknown_(5029)"
+        ],
+        "place": null,
+        "date": "abt 1707"
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "Birth",
+      "data": {
+        "person": "Mary_Ball_(5)",
+        "place": null,
+        "date": null,
+        "parents": [
+          "Joseph_Ball_(3)",
+          "Mary_Unknown_(5029)"
+        ]
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "Person",
+      "data": {
+        "id": "Augustine_Washington_(1)",
+        "primary": null
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "Name",
+      "data": {
+        "person": "Augustine_Washington_(1)",
+        "name": "Captain Augustine Washington",
+        "given": null,
+        "surname": null,
+        "prefix": null,
+        "suffix": null
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "ExternalId",
+      "data": {
+        "person": "Augustine_Washington_(1)",
+        "url": "https://www.werelate.org/wiki/Person:Augustine_Washington_%281%29",
+        "id": "Augustine_Washington_(1)"
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "Gender",
+      "data": {
+        "person": "Augustine_Washington_(1)",
+        "gender": "Male"
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "Birth",
+      "data": {
+        "person": "Augustine_Washington_(1)",
+        "place": null,
+        "date": "Abt 1694",
+        "parents": []
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "Death",
+      "data": {
+        "person": "Augustine_Washington_(1)",
+        "place": null,
+        "date": "1743"
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "Marriage",
+      "data": {
+        "spouses": [
+          "Mary_Ball_(5)",
+          "Augustine_Washington_(1)"
+        ],
+        "place": null,
+        "date": "6 Mar 1731"
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "Person",
+      "data": {
+        "id": "George_Washington_(6)",
+        "primary": null
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "Name",
+      "data": {
+        "person": "George_Washington_(6)",
+        "name": "President George Washington",
+        "given": null,
+        "surname": null,
+        "prefix": null,
+        "suffix": null
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "ExternalId",
+      "data": {
+        "person": "George_Washington_(6)",
+        "url": "https://www.werelate.org/wiki/Person:George_Washington_%286%29",
+        "id": "George_Washington_(6)"
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "Death",
+      "data": {
+        "person": "George_Washington_(6)",
+        "place": null,
+        "date": "1799"
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "Birth",
+      "data": {
+        "person": "George_Washington_(6)",
+        "place": null,
+        "date": "1732",
+        "parents": [
+          "Mary_Ball_(5)",
+          "Augustine_Washington_(1)"
+        ]
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "Person",
+      "data": {
+        "id": "Betty_Washington_(2)",
+        "primary": null
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "Name",
+      "data": {
+        "person": "Betty_Washington_(2)",
+        "name": "Betty Washington",
+        "given": null,
+        "surname": null,
+        "prefix": null,
+        "suffix": null
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "ExternalId",
+      "data": {
+        "person": "Betty_Washington_(2)",
+        "url": "https://www.werelate.org/wiki/Person:Betty_Washington_%282%29",
+        "id": "Betty_Washington_(2)"
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "Death",
+      "data": {
+        "person": "Betty_Washington_(2)",
+        "place": null,
+        "date": "1797"
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "Birth",
+      "data": {
+        "person": "Betty_Washington_(2)",
+        "place": null,
+        "date": "1733",
+        "parents": [
+          "Mary_Ball_(5)",
+          "Augustine_Washington_(1)"
+        ]
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "Person",
+      "data": {
+        "id": "Samuel_Washington_(6)",
+        "primary": null
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "Name",
+      "data": {
+        "person": "Samuel_Washington_(6)",
+        "name": "Samuel Washington",
+        "given": null,
+        "surname": null,
+        "prefix": null,
+        "suffix": null
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "ExternalId",
+      "data": {
+        "person": "Samuel_Washington_(6)",
+        "url": "https://www.werelate.org/wiki/Person:Samuel_Washington_%286%29",
+        "id": "Samuel_Washington_(6)"
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "Death",
+      "data": {
+        "person": "Samuel_Washington_(6)",
+        "place": null,
+        "date": "1781"
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "Birth",
+      "data": {
+        "person": "Samuel_Washington_(6)",
+        "place": null,
+        "date": "1734",
+        "parents": [
+          "Mary_Ball_(5)",
+          "Augustine_Washington_(1)"
+        ]
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "Person",
+      "data": {
+        "id": "John_Washington_(26)",
+        "primary": null
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "Name",
+      "data": {
+        "person": "John_Washington_(26)",
+        "name": "John Augustine Washington",
+        "given": null,
+        "surname": null,
+        "prefix": null,
+        "suffix": null
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "ExternalId",
+      "data": {
+        "person": "John_Washington_(26)",
+        "url": "https://www.werelate.org/wiki/Person:John_Washington_%2826%29",
+        "id": "John_Washington_(26)"
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "Death",
+      "data": {
+        "person": "John_Washington_(26)",
+        "place": null,
+        "date": "1787"
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "Birth",
+      "data": {
+        "person": "John_Washington_(26)",
+        "place": null,
+        "date": "1736",
+        "parents": [
+          "Mary_Ball_(5)",
+          "Augustine_Washington_(1)"
+        ]
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "Person",
+      "data": {
+        "id": "Charles_Washington_(5)",
+        "primary": null
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "Name",
+      "data": {
+        "person": "Charles_Washington_(5)",
+        "name": "Charles Washington",
+        "given": null,
+        "surname": null,
+        "prefix": null,
+        "suffix": null
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "ExternalId",
+      "data": {
+        "person": "Charles_Washington_(5)",
+        "url": "https://www.werelate.org/wiki/Person:Charles_Washington_%285%29",
+        "id": "Charles_Washington_(5)"
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "Death",
+      "data": {
+        "person": "Charles_Washington_(5)",
+        "place": null,
+        "date": "1799"
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "Birth",
+      "data": {
+        "person": "Charles_Washington_(5)",
+        "place": null,
+        "date": "1738",
+        "parents": [
+          "Mary_Ball_(5)",
+          "Augustine_Washington_(1)"
+        ]
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "Person",
+      "data": {
+        "id": "Mildred_Washington_(7)",
+        "primary": null
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "Name",
+      "data": {
+        "person": "Mildred_Washington_(7)",
+        "name": "Mildred Washington",
+        "given": null,
+        "surname": null,
+        "prefix": null,
+        "suffix": null
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "ExternalId",
+      "data": {
+        "person": "Mildred_Washington_(7)",
+        "url": "https://www.werelate.org/wiki/Person:Mildred_Washington_%287%29",
+        "id": "Mildred_Washington_(7)"
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "Death",
+      "data": {
+        "person": "Mildred_Washington_(7)",
+        "place": null,
+        "date": "1740"
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "Birth",
+      "data": {
+        "person": "Mildred_Washington_(7)",
+        "place": null,
+        "date": "1739",
+        "parents": [
+          "Mary_Ball_(5)",
+          "Augustine_Washington_(1)"
+        ]
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "DATA",
+    "data": {
+      "type": "Citation",
+      "data": {
+        "title": "Person:Mary Ball (5) - Genealogy",
+        "url": "https://www.werelate.org/wiki/Person:Mary_Ball_%285%29",
+        "accessed": 1483228800000,
+        "repository_name": "WeRelate",
+        "repository_website": "werelate.org",
+        "repository_url": "http://www.werelate.org"
+      }
+    }
+  },
+  {
+    "id": "werelate-person",
+    "type": "END"
+  }
+]

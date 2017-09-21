@@ -1,0 +1,226 @@
+[
+  {
+    "id": "findmypast-person",
+    "type": "START"
+  },
+  {
+    "id": "findmypast-person",
+    "type": "DATA",
+    "data": {
+      "type": "Person",
+      "data": {
+        "id": 1243559397,
+        "primary": true
+      }
+    }
+  },
+  {
+    "id": "findmypast-person",
+    "type": "DATA",
+    "data": {
+      "type": "ExternalId",
+      "data": {
+        "person": 1243559397,
+        "url": "https://tree.findmypast.com/#/trees/cf4f2e3a-43ca-4d91-8323-b8ed85da5d51/1243559397/profile",
+        "id": 1243559397
+      }
+    }
+  },
+  {
+    "id": "findmypast-person",
+    "type": "DATA",
+    "data": {
+      "type": "Name",
+      "data": {
+        "person": 1243559375,
+        "name": null,
+        "given": "genxtract",
+        "surname": "genxtract",
+        "prefix": null,
+        "suffix": null
+      }
+    }
+  },
+  {
+    "id": "findmypast-person",
+    "type": "DATA",
+    "data": {
+      "type": "Name",
+      "data": {
+        "person": 1243559397,
+        "name": null,
+        "given": "Father",
+        "surname": "genxtract",
+        "prefix": null,
+        "suffix": null
+      }
+    }
+  },
+  {
+    "id": "findmypast-person",
+    "type": "DATA",
+    "data": {
+      "type": "Birth",
+      "data": {
+        "person": 1243559397,
+        "place": "Hometown, Mississippi",
+        "date": "1956-02-21",
+        "parents": null
+      }
+    }
+  },
+  {
+    "id": "findmypast-person",
+    "type": "DATA",
+    "data": {
+      "type": "Death",
+      "data": {
+        "person": 1243559397,
+        "place": "Cleveland, Ohio",
+        "date": "2016-12-08"
+      }
+    }
+  },
+  {
+    "id": "findmypast-person",
+    "type": "DATA",
+    "data": {
+      "type": "Name",
+      "data": {
+        "person": 1243559398,
+        "name": null,
+        "given": "Mother",
+        "surname": "genxtract",
+        "prefix": null,
+        "suffix": null
+      }
+    }
+  },
+  {
+    "id": "findmypast-person",
+    "type": "DATA",
+    "data": {
+      "type": "Name",
+      "data": {
+        "person": 1243559405,
+        "name": null,
+        "given": "Grandfather",
+        "surname": "genxtract",
+        "prefix": null,
+        "suffix": null
+      }
+    }
+  },
+  {
+    "id": "findmypast-person",
+    "type": "DATA",
+    "data": {
+      "type": "Name",
+      "data": {
+        "person": 1243559412,
+        "name": null,
+        "given": "Grandmother",
+        "surname": "genxtract",
+        "prefix": null,
+        "suffix": null
+      }
+    }
+  },
+  {
+    "id": "findmypast-person",
+    "type": "DATA",
+    "data": {
+      "type": "Marriage",
+      "data": {
+        "spouses": [
+          1243559397,
+          1243559398
+        ],
+        "place": null,
+        "date": null
+      }
+    }
+  },
+  {
+    "id": "findmypast-person",
+    "type": "DATA",
+    "data": {
+      "type": "Birth",
+      "data": {
+        "person": 1243559375,
+        "place": null,
+        "date": null,
+        "parents": [
+          1243559397,
+          1243559398
+        ]
+      }
+    }
+  },
+  {
+    "id": "findmypast-person",
+    "type": "DATA",
+    "data": {
+      "type": "Marriage",
+      "data": {
+        "spouses": [
+          1243559405,
+          1243559412
+        ],
+        "place": null,
+        "date": null
+      }
+    }
+  },
+  {
+    "id": "findmypast-person",
+    "type": "DATA",
+    "data": {
+      "type": "Birth",
+      "data": {
+        "person": 1243559397,
+        "place": null,
+        "date": null,
+        "parents": [
+          1243559405,
+          1243559412
+        ]
+      }
+    }
+  },
+  {
+    "id": "findmypast-person",
+    "type": "DATA",
+    "data": {
+      "type": "Birth",
+      "data": {
+        "person": 1243559397,
+        "place": null,
+        "date": null,
+        "parents": [
+          1243559405,
+          1243559412
+        ]
+      }
+    }
+  },
+  {
+    "id": "findmypast-person",
+    "type": "DATA",
+    "data": {
+      "type": "Citation",
+      "data": {
+        "title": "Family Tree | https://findmypast.com",
+        "url": "https://tree.findmypast.com/#/trees/cf4f2e3a-43ca-4d91-8323-b8ed85da5d51/1243559397/profile",
+        "accessed": 1483228800000,
+        "repository_name": "findmypast",
+        "repository_website": "tree.findmypast.com",
+        "repository_url": "https://tree.findmypast.com"
+      }
+    }
+  },
+  {
+    "id": "findmypast-person",
+    "type": "END"
+  }
+]

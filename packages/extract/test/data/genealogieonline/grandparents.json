@@ -1,0 +1,235 @@
+[
+  {
+    "id": "genealogieonline",
+    "type": "START"
+  },
+  {
+    "id": "genealogieonline",
+    "type": "DATA",
+    "data": {
+      "type": "Person",
+      "data": {
+        "id": "I39388",
+        "primary": true
+      }
+    }
+  },
+  {
+    "id": "genealogieonline",
+    "type": "DATA",
+    "data": {
+      "type": "Name",
+      "data": {
+        "person": "I39388",
+        "name": "Johannes Lambertus Hendricus Josephus Westenberg",
+        "given": null,
+        "surname": null,
+        "prefix": null,
+        "suffix": null
+      }
+    }
+  },
+  {
+    "id": "genealogieonline",
+    "type": "DATA",
+    "data": {
+      "type": "Birth",
+      "data": {
+        "person": "I39388",
+        "place": "den Helder Nhl. Nederland",
+        "date": "1904",
+        "parents": []
+      }
+    }
+  },
+  {
+    "id": "genealogieonline",
+    "type": "DATA",
+    "data": {
+      "type": "Death",
+      "data": {
+        "person": "I39388",
+        "place": "den Helder Nhl. Nederland",
+        "date": null
+      }
+    }
+  },
+  {
+    "id": "genealogieonline",
+    "type": "DATA",
+    "data": {
+      "type": "Person",
+      "data": {
+        "id": "I39363",
+        "primary": null
+      }
+    }
+  },
+  {
+    "id": "genealogieonline",
+    "type": "DATA",
+    "data": {
+      "type": "Name",
+      "data": {
+        "person": "I39363",
+        "name": "Hendrik Westenberg",
+        "given": null,
+        "surname": null,
+        "prefix": null,
+        "suffix": null
+      }
+    }
+  },
+  {
+    "id": "genealogieonline",
+    "type": "DATA",
+    "data": {
+      "type": "Death",
+      "data": {
+        "person": "I39363",
+        "place": null,
+        "date": "1956-02-14"
+      }
+    }
+  },
+  {
+    "id": "genealogieonline",
+    "type": "DATA",
+    "data": {
+      "type": "Birth",
+      "data": {
+        "person": "I39363",
+        "place": null,
+        "date": "1873-02-05",
+        "parents": []
+      }
+    }
+  },
+  {
+    "id": "genealogieonline",
+    "type": "DATA",
+    "data": {
+      "type": "Person",
+      "data": {
+        "id": "I39364",
+        "primary": null
+      }
+    }
+  },
+  {
+    "id": "genealogieonline",
+    "type": "DATA",
+    "data": {
+      "type": "Name",
+      "data": {
+        "person": "I39364",
+        "name": "Alida Petronella Jansen",
+        "given": null,
+        "surname": null,
+        "prefix": null,
+        "suffix": null
+      }
+    }
+  },
+  {
+    "id": "genealogieonline",
+    "type": "DATA",
+    "data": {
+      "type": "Death",
+      "data": {
+        "person": "I39364",
+        "place": null,
+        "date": "1958-06-18"
+      }
+    }
+  },
+  {
+    "id": "genealogieonline",
+    "type": "DATA",
+    "data": {
+      "type": "Birth",
+      "data": {
+        "person": "I39364",
+        "place": null,
+        "date": "1871-07-20",
+        "parents": []
+      }
+    }
+  },
+  {
+    "id": "genealogieonline",
+    "type": "DATA",
+    "data": {
+      "type": "Person",
+      "data": {
+        "id": "I39389",
+        "primary": null
+      }
+    }
+  },
+  {
+    "id": "genealogieonline",
+    "type": "DATA",
+    "data": {
+      "type": "Name",
+      "data": {
+        "person": "I39389",
+        "name": "Maria Petronella Spaans",
+        "given": null,
+        "surname": null,
+        "prefix": null,
+        "suffix": null
+      }
+    }
+  },
+  {
+    "id": "genealogieonline",
+    "type": "DATA",
+    "data": {
+      "type": "Marriage",
+      "data": {
+        "spouses": [
+          "I39388",
+          "I39389"
+        ],
+        "place": null,
+        "date": null
+      }
+    }
+  },
+  {
+    "id": "genealogieonline",
+    "type": "DATA",
+    "data": {
+      "type": "Birth",
+      "data": {
+        "person": "I39388",
+        "place": null,
+        "date": null,
+        "parents": [
+          "I39363",
+          "I39364"
+        ]
+      }
+    }
+  },
+  {
+    "id": "genealogieonline",
+    "type": "DATA",
+    "data": {
+      "type": "Citation",
+      "data": {
+        "title": "Johannes Lambertus Hendricus Josephus Westenberg (1904-) » Voorouders Monique en Jan Vis en aanverwante personen » Genealogie Online",
+        "url": "https://www.genealogieonline.nl/en/voorouders-monique-en-jan-vis/I39388.php",
+        "accessed": 1483228800000,
+        "repository_name": "genealogieonline",
+        "repository_website": "genealogieonline.nl",
+        "repository_url": "https://www.genealogieonline.nl"
+      }
+    }
+  },
+  {
+    "id": "genealogieonline",
+    "type": "END"
+  }
+]
